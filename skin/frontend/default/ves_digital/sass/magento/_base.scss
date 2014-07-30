@@ -1,0 +1,158 @@
+* { margin:0; padding:0; }
+
+body          {
+			    line-height: 18px;
+			    color: $gray-light;
+                font-size: $font-size-base;                
+				}
+
+a {
+    img {
+        border: none;
+    }
+     &:hover {
+        text-decoration: none;
+        color: $theme-color-hover;
+    }
+    &:focus {
+        outline: none;
+        outline-offset: -2px;
+        text-decoration: none;
+    }
+    cursor: hand;cursor: pointer;
+}
+
+img {
+    max-width: 100%;
+}
+
+body, td, th, input, textarea, select, a {
+    outline: 0 none;
+}
+/* Content */
+p             { margin:0 0 10px; }
+strong        { font-weight:bold; }
+address       { font-style:normal; line-height:1.35; display:  inline; }
+cite          { font-style:normal; }
+q,
+blockquote    { quotes:none; }
+q:before,
+q:after       { content:''; }
+small,big     { font-size:1em; }
+/*sup           { font-size:1em; vertical-align:top; }*/
+
+/* Lists */
+
+ul,ol {
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+}
+ul li , ol li {
+}
+
+/* Tools */
+.hidden       { display:block !important; border:0 !important; 
+    margin:0 !important; padding:0 !important; 
+    font-size:0 !important; line-height:0 !important; 
+    width:0 !important; height:0 !important; overflow:hidden !important; }
+.nobr         { white-space:nowrap !important; }
+.wrap         { white-space:normal !important; }
+.a-left       { @include rtl-text-align-left (); }
+.a-center     { text-align:center !important; }
+.a-right      { @include rtl-text-align-right(); }
+.v-top        { vertical-align:top; }
+.v-middle     { vertical-align:middle; }
+.f-left       { @include rtl-float-left(); }
+.f-right      { @include rtl-float-right (); }
+.f-none       { float:none !important; }
+.f-fix        { @include rtl-float-left(); width:100%; }
+.no-display   { display:none; }
+.no-margin    { margin:0 !important; }
+.no-padding   { padding:0 !important; }
+.no-bg        { background:none !important; }
+/* ======================================================================================= */
+
+.htabs {
+    border-bottom:1px solid #F2F5F8;
+    a {
+        @include rtl-border-right( 1px solid #F2F5F8);
+        color: #000000;
+        display: none;
+        @include rtl-float-left();
+        font-family: proximanovasemibold;
+        font-size: 18px;
+        margin-bottom: -1px;
+        padding: 15px 20px;
+        text-align: center;
+        text-decoration: none;
+        &.selected {
+            background: none repeat scroll 0 0 #FFFFFF;
+            color: $theme-color-hover;
+        }
+    }
+    > a {
+        border-radius: 5px 0 0;
+    }
+} 
+.tab-content {
+    margin-bottom: 15px;
+    padding: 15px;
+    z-index: 2;
+    &.box-description,
+    & .box-tags {
+       h2{ display: none;} 
+    }
+}
+
+/* carousel */
+.carousel-controls {
+    height: 26px;
+    position: absolute;
+    @include rtl-right (10px);
+    top: 0px;
+    width: 55px;
+    .carousel-control {
+        @include border-top-radius( 3px);  
+        @include border-bottom-radius( 3px);
+        cursor: pointer;
+    }
+} 
+.carousel-control {
+    background-color: #F4F4F4;
+    color: #B0B0B0;
+    cursor: pointer;
+    font-size: 22px;
+    height: 26px;
+    line-height: 24px!important;
+    text-shadow: none;
+    top: 38%;
+    @include transition (all 0.3s ease 0s);
+    width: 26px;
+    z-index: 15;
+    &:hover {
+        background-color: $theme-color-hover;
+        color: #FFFFFF;
+        @include transition (all 0.3s ease 0s);
+    }
+    &.left {
+        background-image: none;
+        @include border-top-radius( 3px);  
+        @include border-bottom-radius( 3px);
+    }
+    &.right {
+        background-image: none;
+        @include border-top-radius( 3px);  
+        @include border-bottom-radius( 3px);
+    }
+}
+#colorbox {
+     @include box-sizing(content-box);
+}
+.color {
+    color: $theme-color-hover;
+}
+.carousel-indicators li.active {   
+    background-color: $theme-color-hover;
+    @include box-shadow (0 0 0 2px $theme-color-hover);
+}

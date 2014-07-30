@@ -1,0 +1,15 @@
+$image-theme-path-base:'../../../images/';
+$image-theme-path : '../../../images/pink/';
+
+
+$pink:                  #ff1493;
+$blue:                  #57a6b9;
+$red:                   #e76d66;
+
+$theme-color-default   : $blue; // using for default color of all pages such as background color for top menu, block header
+$theme-color-secondary : $pink ; 
+$theme-color-primary   : $red;
+
+
+$theme-color 			: $blue;
+$theme-color-hover      : $pink;

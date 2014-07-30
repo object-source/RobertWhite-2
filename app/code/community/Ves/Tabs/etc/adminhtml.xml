@@ -1,0 +1,49 @@
+<?xml version="1.0"?> 
+<config>
+     <menu>
+            <vesextensions module="ves_tabs">
+                <title>VenusTheme</title>
+                <sort_order>50</sort_order>
+                <children>
+                    <tabs translate="title" module="ves_tabs">
+                        <title>Ves Tabs</title>
+                        <children>
+                            <configuration translate="title" module="ves_tabs">
+                                <title>Configuration</title>
+                                <sort_order>5</sort_order>
+                                <action>adminhtml/system_config/edit/section/ves_tabs</action>
+                            </configuration>
+                        </children>
+                    </tabs>
+                </children>
+            </vesextensions>
+    </menu>
+		<acl>
+            <resources>
+                <admin>
+                    <children>
+                        <system>
+                            <children>
+                                <config>
+                                    <children>
+                                        <ves_tabs>
+                                            <title>Ves Tabs</title>
+                                        </ves_tabs>
+                                    </children>
+                                </config>
+                            </children>
+                        </system>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        <translate>
+			<modules>
+				<Ves_Tabs>
+					<files>
+						<default>Ves_Tabs.csv</default>
+					</files>
+				</Ves_Tabs>
+			</modules>
+		</translate>
+</config>

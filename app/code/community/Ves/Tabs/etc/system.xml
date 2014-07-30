@@ -1,0 +1,398 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <ves translate="label" module="ves_tabs">
+            <label>Venus Theme</label>
+            <sort_order>211</sort_order>
+        </ves>
+    </tabs>
+	<sections>
+        <ves_tabs>
+            <label>Ves Tabs</label>
+            <tab>ves</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>10</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+			
+            	<ves_tabs translate="label">
+					
+                    <label>General Setting</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>     
+							<last_update translate="label">
+							<label>Current Update Time</label>
+							<frontend_type>label</frontend_type>
+							<frontend_model>ves_tabs/system_config_form_field_notification</frontend_model>
+							<sort_order>3</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>0</show_in_website>
+							<show_in_store>0</show_in_store>
+						</last_update> 
+                    	<show translate="label" module="core">
+							<label>Enabled</label>
+							<sort_order>10</sort_order>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</show>	
+						
+						<title translate="label">
+                            <label>Module Title </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>15</sort_order>
+                            <comment>Empty for hide</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </title>
+                        <cmsblock translate="label">
+                            <label>Select Static Block</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ves_tabs/system_config_source_listCms</source_model>
+                            <sort_order>20</sort_order>
+                            <comment>Choose Template for your module</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </cmsblock>
+
+                        <pretext translate="label">
+                            <label>Module Description </label>
+                            <frontend_type>textarea</frontend_type>
+                            <sort_order>25</sort_order>
+                            <comment>Empty for hide</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </pretext>
+                        <prefix translate="label">
+                            <label>Class Prefix </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>30</sort_order>
+                            <comment>Class prefix of module block</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </prefix>
+						
+						<desc_maxchar>
+                            <label>Description Max Chars</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>35</sort_order>
+                            <comment>Set maximun products playing in module</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </desc_maxchar>
+                        <limit_item>
+                            <label>Limit items In Modules</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>40</sort_order>
+                            <comment>Set maximun products playing in module</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </limit_item>
+                         <itemsrow>
+                            <label>Columns</label>
+                            <frontend_type>text</frontend_type>
+                            <comment>Set maximun products in n Columns</comment>
+                            <sort_order>45</sort_order>
+                            <show_in_default>4</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </itemsrow>
+                       <itemspage>
+                            <label>Max items on a page</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </itemspage>
+                        <image_width>
+                            <label>Image Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>100</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image_width>
+
+                        <image_height>
+                            <label>Image Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>110</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </image_height>
+
+                        <swap_image_number>
+                            <label>Swap Image Number</label>
+                            <comment>Input index number of product additional images to use for Swap image (index number start from 0), for example: you want get image 3 for swap image, you should input swap image number = 2 </comment>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>120</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </swap_image_number>
+
+                        <popup_quickview_width>
+                            <label>Popup Quickview Width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>130</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </popup_quickview_width>
+
+                        <popup_quickview_height>
+                            <label>Popup Quickview Height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>140</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </popup_quickview_height>
+						
+					</fields>
+				</ves_tabs>
+				
+				<!-- PRODUCT_SOURCE_SETTING_END -->
+				
+				<!-- IMAGE_SOURCE_SETTING -->
+				<catalog_source_setting>
+					<label>Catalog - Products Source Setting</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1999</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+					 <catsid translate="label">
+                            <label>Categories ID: </label>
+                            <frontend_type>multiselect</frontend_type>
+                            <source_model>ves_tabs/system_config_source_ListCategories</source_model>
+                            <comment>Eg: 22,23. Empty for all categories.</comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </catsid> 
+						
+						<sourceProductsMode translate="label">
+                            <label>Show Products From: </label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>ves_tabs/system_config_source_listType</source_model>                         
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </sourceProductsMode>
+                        	
+					</fields>
+				</catalog_source_setting>
+				<!-- PRODUCT_SOURCE_SETTING_END -->
+				
+				<main_slider>
+					<label>Item Setting</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>3000</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>                       
+						<thumbnailMode translate="label">
+                            <label>Render Thumbnail</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>23</sort_order>
+                            <comment>Whether to render thumbnail with cropping-resizing function, only use for source from "image", "file" and "catalog"..</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </thumbnailMode>
+						 <thumbWidth translate="label">
+                            <label>Thumb width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>24</sort_order>
+							<backend_model>ves_tabs/system_config_backend_tabs_checkvalue</backend_model>
+							<comment>Thumb image width, only use for source from "image", "file" and "catalog"..</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </thumbWidth>  
+                        <thumbHeight translate="label">
+                            <label>Thumb height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>26</sort_order>
+							<comment>Thumb image height, only use for source from "image", "file" and "catalog"..</comment>
+							<backend_model>ves_tabs/system_config_backend_tabs_checkvalue</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </thumbHeight>
+                         <show_tab_icon>
+                            <label>Enable Tab Icons</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>27</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_tab_icon>
+                        <icon_width translate="label">
+                            <label>Tab Icon width</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>28</sort_order>
+                            <backend_model>ves_tabs/system_config_backend_tabs_checkvalue</backend_model>
+                            <comment>Thumb image width, only use for category image show beside tab name</comment>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </icon_width>  
+                        <icon_height translate="label">
+                            <label>Tab Icon height</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>29</sort_order>
+                            <comment>Thumb image height, only use for category image show beside tab name</comment>
+                            <backend_model>ves_tabs/system_config_backend_tabs_checkvalue</backend_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </icon_height>				
+						<show_des>
+                            <label>Enable Main Description </label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_des> 
+                        <show_price>
+                            <label>Enable Main Price </label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>35</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_price> 
+                     
+                        <show_title>
+                            <label>Enable Main Title </label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_title>
+                        <show_img>
+                            <label>Enable Main Image </label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>45</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_img>
+                       <show_wc>
+                            <label>Enable Wishlist and Compare</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>48</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_wc>
+                        <show_btn>
+                            <label>Enable Button Cart</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_btn>
+                        <detail>
+                            <label>Enable Detail Link</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>52</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </detail>
+                       <show_pzoom>
+                            <label>Show Product Image Zooming</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>55</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </show_pzoom>
+                        <enable_quickview>
+                            <label>Enable Quickview</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>65</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enable_quickview>
+                        <enable_swap>
+                            <label>Enable Swap Images</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>75</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enable_swap>
+                        <enable_sale_icon>
+                            <label>Enable Sale Icon</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>85</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enable_sale_icon>
+                        <enable_new_icon>
+                            <label>Enable New Icon</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>90</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </enable_new_icon>
+                        <review>
+                            <label>Enable Rating</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>95</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </review>
+					</fields>
+				</main_slider>                
+         		 
+            </groups>
+        </ves_tabs>
+    </sections>    
+</config>

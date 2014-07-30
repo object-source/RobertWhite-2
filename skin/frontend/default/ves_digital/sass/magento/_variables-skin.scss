@@ -1,0 +1,44 @@
+/******************************************************
+ * @package Ves Theme Framework for Magento
+ * @version 1.0
+ * @author http://www.venustheme.com
+ * @copyright Copyright (C) Augus 2013 Venustheme.com <$emai:venustheme@gmail.com>.All rights reserved.
+ * @license   GNU General Public License version 2
+*******************************************************/
+
+// Global values
+// --------------------------------------------------
+
+// Variables
+// --------------------------------------------------
+$image-theme-path-base:'../images/';
+$image-theme-path : '../images/default/';
+
+// themes colors
+// -------------------------
+$brown:					#b39770;
+$browndark: 			#e4dcd2;
+$lightbrown:			#f6eee3;	
+$blue:                  #57a6b9;
+$bluedark:              #0064cd;
+$bluelight:             #d3d3d3;
+$yellow:                #ffc40d;
+$orange:                #f89406;
+$pink:                  #c3325f;
+$purple:                #7a43b6;
+$white :			 	#FFFFFF;
+$black :				#000000;
+$cyandark:   			#4e4d49;
+$green:                 #95bb7a;
+$red:                   #e76d66;
+$dark:                  #7f7f7f;
+$lightgray:             #88898e;
+$blacklight:            #363636;
+
+$theme-color-default   : $green; // using for default color of all pages such as background color for top menu, block header
+$theme-color-primary   : $blue; // for hightligh block header, button as default it is  color
+$theme-color-secondary : $red ; 
+
+
+$theme-color 			: $green;
+$theme-color-hover      : $red;

@@ -1,0 +1,165 @@
+/******************************************************
+ * @package Ves Theme Framework for Magento
+ * @version 1.0
+ * @author http://www.venustheme.com
+ * @copyright Copyright (C) Augus 2013 Venustheme.com <@emai:venustheme@gmail.com>.All rights reserved.
+ * @license   GNU General Public License version 2
+*******************************************************/
+
+/*Navigation default*/
+#mainmenutop {
+	 border:  none;
+	 background-color: transparent;
+}
+
+	#ves-mainnav ul.nav > li {@include rtl-float-left();} 
+#ves-mainnav .nav {
+	&  > li > a {
+		text-transform: uppercase;
+		padding: 26px 20px ;
+		&:before {
+		   width: 0%;
+		   height: 5px;
+		   background-color: $menu-lvnd-bg-hover ;
+		   bottom: 0;
+		   left: 0;
+		    right:0;
+		   margin: auto;
+		   content: "";
+		   position: absolute;
+		   @include transition(all 0.4s ease-out 0s);
+		}
+		.caret {
+		    border-bottom-color: $menu-lvnd-color;
+		    border-top-color: $menu-lvnd-color;
+		}
+
+	}
+	&  > li:hover > a {
+		background: none;
+		color: $menu-lvnd-bg-hover!important;
+		&:before {
+		   width: 100%;
+		   @include transition(all 0.4s ease-out 0s)
+		}
+		.caret {
+		    border-bottom-color: $menu-lvnd-color-hover!important;
+		    border-top-color: $menu-lvnd-color-hover!important;
+		}
+		
+	}
+	li {
+		position:relative; 
+		@include rtl-text-align-left();
+		&.over{
+			z-index:998;
+			> a{
+				color:$menu-lvtop-color-hover;
+			}
+		}
+		&.active{
+			> a{
+				color:$menu-lvtop-color-hover; 
+			}
+		}
+		ul{
+			
+			li{	
+				float:none; 
+				a {
+					background: url(#{$image-theme-path}circle-li.png) no-repeat -10px 12px scroll;
+					@include transition ( all 0.3s ease 0s);
+					display: block;
+					border-bottom: 1px solid #f3f3f3;
+					padding: 3px 0;
+					&:hover {
+						background-position:  5px 12px;
+						@include rtl-padding-left(20px);
+						@include transition ( all 0.3s ease 0s);
+						color: $menu-lvnd-bg-hover;
+
+						.caret {
+						    border-bottom-color: $menu-lvnd-color-hover!important;
+						    border-top-color: $menu-lvnd-color-hover!important;
+							
+						}
+					}
+
+				}
+				&.parent{}
+				&.active{
+					a {
+						background-position:  5px 12px;
+						@include rtl-padding-left (20px);
+					}
+				}
+				&.last{}
+				&:hover{}
+				&:last-child {
+					> a {border-bottom: none;}
+				}
+			}
+		}
+		ul,
+		div{
+			&.shown-sub{
+				@include rtl-left(0); z-index:999;
+			}
+		}
+		.shown-sub{
+			ul.shown-sub,
+			li div.shown-sub { @include rtl-left(100px); }
+		}
+	}
+	a {
+		font-family: $menu-lvtop-font-family;
+		font-size: $menu-lvtop-font-size;
+		display:block; 
+		line-height:$menu-lvtop-line-height; 
+		text-decoration:none;
+		 color:$menu-lvtop-color; 
+		//&:hover{
+		//	color:$menu-lvtop-color-hover;
+		//}
+	}
+
+}
+#nav {
+
+	div{
+		position:absolute; width:15em; top:$menu-height; @include rtl-left(-10000px); 
+		ul{
+			position:static; width:auto; border:none;
+		}
+	}
+	li ul {
+		position:absolute; 
+				width:15em; 
+				top:$menu-height; 
+				@include rtl-left(-10000px);
+				background-color: $white;
+			    @include box-shadow( 0 1px 3px #D3D3D3 );
+				padding:  0 10px;
+	}
+			
+}
+
+.navbar-nav > li > .dropdown-menu {
+	@include opacity (0);
+	display: block;    
+	@include translate (-15% , 0px);
+	@include box-shadow (0 1px 3px #D3D3D3);
+	border: none;
+	visibility: hidden;
+	@include rtl-left (0);
+	@include rtl-float-left();
+}
+
+.navbar-nav > li:hover > .dropdown-menu{
+    z-index: 1;
+    visibility: visible;
+    @include transition( all 500ms cubic-bezier(0.09, 0.68, 0, 0.99) 0s );
+	@include opacity (1) ;   
+	@include translate (0px, 0px);
+	z-index: 10;
+}

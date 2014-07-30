@@ -1,0 +1,156 @@
+// Support for RTL (Right to Left) & non-latin fonts
+
+$rtl-left : left;
+$rtl-right : right;
+$theme-border-color:            #eaeaea;
+$theme-border:                  1px solid $theme-border-color;
+
+$theme-padding           : $line-height-computed - 5;
+$theme-margin            : $line-height-computed - 5;
+$theme-line-height       : 30px;
+
+$btn-theme-primary       : $theme-color ;
+$btn-theme-primary-hover : $theme-color-hover ;
+
+$text-primary-theme : $theme-color;
+$text-danger-theme : $theme-color-secondary;
+
+$font-proximanovalight: proximanovalight!default;
+$font-proximanovasemibold: proximanovasemibold!default;
+
+/**
+ * Heading Page
+ */
+$heading-line-height            : 30px;
+
+
+$mainnav-color-hover    : $theme-color-hover;
+/* 
+ * product block
+ */
+
+$product-name-font-size		        : $font-size-base + 2;
+$product-name-color  		        : #3E3D39;
+$product-name-color-hover  		    : $theme-color-hover;
+$product-name-font-family			: $font-proximanovalight;
+$product-price-old-color 			: $gray;
+$product-price-old-size				: $font-size-base;
+$product-price-font-size    		: $font-size-base + 4 ;
+$product-price-color				: $product-name-color-hover;
+$product-price-tax                  : #bbb;
+
+$list-product-name-font-size		    : $product-name-font-size;
+$list-product-name-color  		        : $product-name-color;
+$list-product-name-color-hover  		: $product-name-color-hover;
+$list-product-name-font-family			: $product-name-font-family;
+$list-product-price-font-size    		: $font-size-large;
+
+
+/* buttons */
+$btn-wrap-border:   #CCC ;
+$btn-wrap-bg    : $white; 
+
+/* 
+ * htab module 
+ */
+$htab-border-color 	     : transparent; 
+$htab-border 		     : $nav-tabs-border-color; 
+$htab-nav-padding	     : 7px 25px 7px 25px;
+$htab-nav-color		     : $gray;
+$htab-bg    		     : $white;
+$htab-bg-selected     	 : $theme-color-default;
+$htab-nav-selected-color : $white;
+
+
+
+/* 
+ * Default Menu
+ */
+
+$menu-bg					:$gray-darker;
+$menu-height				:79px;
+
+
+$menu-lvtop-font-size		:14px;
+$menu-lvtop-font-family		:$font-family-base;
+$menu-lvtop-line-height		:$menu-lvtop-font-size * 2;
+$menu-lvtop-color			: $gray;
+$menu-lvtop-color-hover     :$theme-color-secondary;
+$menu-lvtop-padding         : 25px 20px;
+
+$menu-lvnd-height			: 30px;
+$menu-lvnd-font-size		: 14px;
+$menu-lvnd-font-family		: $font-family-base;
+$menu-lvnd-line-height		: $menu-lvnd-font-size * 1.5;
+$menu-lvnd-padding          : ($menu-lvnd-height - $menu-lvnd-line-height)/2  15px;
+$menu-lvnd-color			: $menu-lvtop-color;
+$menu-lvnd-color-hover   	: $theme-color-hover;
+$menu-lvnd-bg				: $lightbrown;
+$menu-lvnd-bg-hover			: $theme-color-hover;
+/* 
+ * Mega Menu Module
+ */
+$megamenu-bg: #000; 
+$megamenu-border-color:#999;
+/* 
+ * Block Modules 
+ */
+$block-module-title-font   	 	: $font-family-base;
+$block-module-title-color    	: $red;
+$block-module-title-bg			: $brown;
+$block-module-title-border   	: 1px solid #F2F5F8;
+$block-module-title-fontsize 	: $font-size-base + 1;
+$block-module-title-lineheight  : $heading-line-height;
+$block-module-content-bg        : #f8f7f5;
+$block-module-padding           : $theme-padding;
+$block-module-margin	        : $theme-padding;
+$block-module-border     		: 1px solid #c4c1bc;
+$block-module-badge            : $theme-color;
+ /* 
+  * LAYOUTS VAIRABLES 
+  */
+
+
+// topbar  
+$topbar-bg				: $gray-dark; 
+$topbar-color			: $lightgray;
+$topbar-font-size  		: $font-size-base - 2 ;
+$topbar-link-color      : $lightgray;
+$topbar-link-hover-color: $theme-color-secondary;
+
+//header-main
+$header-main-bg				: $white; 
+$header-main-padding        : auto;
+$header-main-height 		: 115px;
+
+//Pav-mainnav
+$mainnav-bg				: $lightbrown; 
+$mainnav-wrap-bg		: $brown;
+
+//Offcanvas
+$offcanvas-bg           : $theme-color-secondary;
+
+// footer position
+$footer-bg 				:  #272727;
+$footer-color 				:#808080;
+$footer-heading-font-size  : $font-size-base;
+$footer-heading-color		: $footer-color;
+$footer-heading-boder-color: 2px solid transparent;
+$footer-link-color         : $footer-color;
+$footer-link-hover-color   : $theme-color-hover;
+$footer-padding            : 30px;
+$footer-margin             : 30px;
+//footer-top
+$footertop-bg 			: #303030;
+$footertop-link         : $footer-link-hover-color;
+
+//footer-top
+$footercenter-bg 		: #292929;
+
+// powered by
+$power-bg              :  #272727;
+$power-text-color      : $footer-color;
+$power-link-color      : $theme-color-hover;
+$power-link-color-hover: $power-link-color;
+$power-padding         : $footer-padding;
+$power-margin          : $footer-margin;

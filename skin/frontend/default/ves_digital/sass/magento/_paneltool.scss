@@ -1,0 +1,295 @@
+/******************************************************
+ * @package Ves Theme Framework for Magento
+ * @version 1.0
+ * @author http://www.venustheme.com
+ * @copyright Copyright (C) Augus 2013 Venustheme.com <@emai:venustheme@gmail.com>.All rights reserved.
+ * @license   GNU General Public License version 2
+*******************************************************/
+ .paneltool{
+		position: fixed;
+		top: 05px;
+		@include transition  (all 0.6s);
+		@include rtl-left (-292px);
+		border:solid 1px #CCC;
+		@include box-shadow (1px -1px 3px #888888);
+          z-index: 9999;
+		&.active{
+			@include rtl-left(0px);
+			@include transition  (all 0.6s);
+		}
+		&.active .panelbutton{
+			color: $theme-color-hover;
+		}
+		&.themetool{
+			top: 70px
+		}
+		& .panelcontent{
+			background: #FFF; 
+			width: 290px;
+		}
+		.panelcontent > div{
+			padding: 15px;
+		}
+	}
+	.panelbutton{
+		border:solid 1px #CCC;
+		 background: #FFF; 
+	    padding: 9px 11px;
+	    position: absolute;
+	    @include rtl-right (-35px);
+	    top: 10px;
+	    @include rtl-border-left( none);
+	    cursor: hand; cursor: pointer;	
+	    @include box-shadow (2px -1px 2px #888888);
+	}
+	.editortool .panelbutton{
+		top: 230px
+	}
+
+#ves-paneltool.panel-open .panel-inner {
+	@include rtl-right(0);
+}
+#ves-paneltool h4 {
+	 margin-bottom: 10px;
+}
+#ves-paneltool .accordion-group{
+	margin-bottom: 5px;
+}
+
+#ves-paneltool form > *{
+	@include rtl-float-left();
+}
+
+#ves-paneltool form .group-input{
+	@include rtl-margin-right (5px);
+	padding: 5px 0;
+	label {
+		 @include rtl-float-left();
+		 @include rtl-margin-right(10px);
+	}
+}
+
+#ves-paneltool select{
+	padding: 5px;
+	@include rtl-float-left();
+	width: auto;
+}
+
+.box-patterns div{
+	display:block ;
+	width:38px;
+	height:38px;
+	@include rtl-float-left();
+	cursor:hand;
+	cursor:pointer;
+	border:solid 1px #f3f3f3;
+	margin:6px;
+	border:1px solid #ccc;	
+}
+.box-patterns div.active{
+	border:solid 1px red;
+}
+#ves-paneltool .nav-tabs > li:before,
+#ves-paneltool .nav-tabs > li:after{
+	display: none;
+}
+
+#customize-form{
+	position: relative;
+}
+#main-preview {
+   bottom: 0;
+    height: 100%;
+    @include rtl-left (0);
+    position: absolute;
+    @include rtl-right (0);
+    top: 0;
+    @include rtl-margin-left (300px);
+    transition-duration: 0.2s;
+    transition-property: left, right, top, bottom, width, margin;
+}
+#main-preview iframe { 
+    height: 100%;    
+    width: 100%; 
+}
+.colorpicker{
+	z-index: 99999;
+}
+#ves-customize{
+	width: 300px;
+	height: 100%;
+	position:absolute;
+	top: 0;
+	@include rtl-left(0px); 
+	z-index: 3;
+	box-shadow: 0 1px 3px #999;
+	transition-duration: 0.2s;
+    transition-property: left, right, top, bottom, width, margin;
+  	background: none repeat scroll 0 0 #F5F5F5;
+    @include rtl-border-right (1px solid rgba(0, 0, 0, 0.2));  
+}
+
+#ves-customize .wrapper{
+
+	padding: 12px; 
+}
+#customize-body input[type="text"], #customize-body select{
+    border: 1px solid #E2E2E2;
+    @include border-top-radius(3px);
+    @include border-bottom-radius(3px);
+    color: #FFFFFF;
+    font-size: 11px;
+    @include rtl-margin(0, 5px, 0, 0);
+    padding:5px;    
+    height: 30px;
+    line-height: 30px;
+    width: 65px;
+    @include rtl-float-left();
+}
+#customize-body select{
+	color:#888;
+}
+
+#customize-body .accordion-group label{
+	color:#888;
+	font-size: 11px;
+	font-weight: normal
+}
+
+#customize-body .panel-heading{
+	padding:5px 6px;
+	font-weight:bold;
+	font-size:11px;
+}
+#customize-body .panel-body{
+	padding:  15px 7px;
+}
+.accordion-group label{
+	@include rtl-float-left();
+	min-width: 100px;	
+	@include rtl-margin-right (5px);
+	margin-top: 5px;
+}
+#ves-customize .btn{
+	padding: 4px 12px;
+	font-size: 11px;
+	font-weight: bold;
+}
+#ves-customize .btn-show{
+	position: absolute;
+	top: 39px;
+	padding:6px 18px;
+	background:#CCC;
+	right:11px;
+	z-index: 99;
+	@include transition (all 1.2s);
+	cursor: hand;
+	cursor: pointer;
+
+}
+#customize-body .nav-tabs{
+	border-bottom: 1px solid #d7d7d7;
+}
+ #customize-body .nav-tabs a{
+	border:none;
+}
+#customize-body .nav-tabs a{
+	font-weight: bold;
+	font-size: 11px;
+	padding:6px 12px;
+	
+}
+ #customize-body .nav-tabs .active a{
+ 	background: $theme-color-hover;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    color: #FFFFFF
+ }
+ .accordion-heading .accordion-toggle{
+ 	font-size: 11px;
+ }
+#customize-body .tab-content {
+ 	padding-left: 0;
+ 	padding-right: 0;
+ 	margin-bottom: 0;
+}
+#customize-body .form-group{
+	margin-bottom: 6px;
+	clear: both;
+	overflow: hidden;
+}
+
+.clear-bg{
+	padding: 3px 6px;
+	@include rtl-margin-left (5px);
+	margin-top: 0;
+	display:  inline-block;
+	line-height: 24px;
+		color: #ffffff;
+	&:hover {
+		color: #ffffff;
+	}
+}
+
+/* .tab-content > .tab-pane, .pill-content > .pill-pane {
+    background: none repeat scroll 0 0 #FFFFFF;    
+    padding: 13px;
+} */
+
+.bi-wrapper > div{
+	@include rtl-float-left();
+	width: 20px;
+	height: 20px;
+	margin: 3px 4px;
+	border: solid 1px #999;
+	cursor:hand; cursor:pointer;
+}
+.bi-wrapper > div.active{
+	border-color:red;
+}
+.btn-small {
+	 border-radius: 0;
+	 background-color: $theme-color-hover ;
+	 color: #fff;
+	 padding: 3px 6px;
+}
+.btn-small:hover {
+	background-color: $theme-color;
+	 color: #fff;
+}
+/*
+.editortool .label-customize{
+	position: absolute;
+	right:-155px;
+	top: 250px;	
+	width: 115px;
+	height: 74px;
+	padding: 0;
+	background-image:url(../images/label_customize.png);
+	background-repeat: no-repeat;
+	background-position: 0 0;
+
+	background-color: transparent;
+	box-shadow: none;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-o-box-shadow: none;
+	border-radius: 0;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	-ms-border-radius: 0;
+	-o-border-radius: 0;
+	border: 0;
+}
+.editortool .label-customize:hover{
+	background-position: 0 -111px;
+}
+.paneltool.active .label-customize{
+	display: none;	
+}
+.paneltool .panelcontent {
+    text-align: left;
+}
+*/

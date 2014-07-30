@@ -1,0 +1,249 @@
+<?php
+	/*framework: get current theme setting*/
+	$helper = Mage::helper("ves_tempcp/framework")->getFramework( );
+	$themeConfig = $helper->getConfig();
+	$list_image_width = $themeConfig->get("listing_image_width", 300);
+	$list_image_width = !empty($list_image_width)?(int)$list_image_width: 300;
+	$list_image_height = $themeConfig->get("listing_image_height", 300);
+	$list_image_height = !empty($list_image_height)?(int)$list_image_height: 300;
+
+	$popup_quickview_width = $themeConfig->get("popup_quickview_width", "60%");
+	$popup_quickview_height = $themeConfig->get("popup_quickview_height", "80%");
+
+	/*end get setting*/
+
+	$qty = isset($config['quanlity']) ? $config['quanlity'] : 5;
+	$show_tab_icon = isset($config['show_tab_icon']) ? $config['show_tab_icon'] : 0;
+	/*quickview was enabled?*/
+	$quickview = isset($config['enable_quickview']) ? $config['enable_quickview'] : 0;
+	/*Swap images was enabled?*/
+	$swap_image = isset($config['enable_swap']) ? $config['enable_swap'] : 0;
+	$icon_width = isset($config['icon_width']) ? $config['icon_width'] : 50;
+	$icon_height = isset($config['icon_height']) ? $config['icon_height'] : 50;
+	$class_prefix = isset($config['prefix']) ? $config['prefix'] : "";
+	$current = 0;
+	$cols = (int)$this->getConfig("itemsrow",4);
+	$itemsperpage = (int)$this->getConfig("itemspage",4);
+	$desc_maxchar = (int)$this->getConfig("desc_maxchar");
+	$desc_maxchar = $desc_maxchar > 0 ?$desc_maxchar: 100;
+	$span = floor(12/$cols);
+	$active = 'news';
+	$modid = rand(1,9)+rand();
+
+	$_helper = $this->helper('catalog/output');
+
+?>
+<div class="<?php echo $this->getConfig('prefix');?> block categorytabs">
+	
+	<div class="block-title">
+		<?php if($this->getConfig('title')) { ?>
+		<h2><?php echo $this->getConfig('title') ?></h2>
+		<?php } ?>
+		<?php if( ($pretext=$this->getConfig("pretext")) && !$cms ) { ?>
+			<div class="pretext"><?php echo $pretext; ?></div>
+		<?php } else {
+			?>
+			<div class="pretext"><?php echo $cms; ?></div>
+			<?php
+		} ?>
+	</div>
+	
+	<?php if(!empty($items)) { ?>
+	<?php $_helper = $this->helper('catalog/output'); ?>
+	<div class="tab-nav">
+			<ul class="nav nav-tabs" id="categorytabs<?php echo $modid;?>">
+				<?php $width = (100/count($items));?>
+				<?php foreach($items as $item) { ?>
+					<?php
+					 $icon = "";
+					 if($show_tab_icon) {
+					 	$icon = $this->getCategoryImage( $item['category_id'], $icon_width, $icon_height );
+
+					 }
+					?>
+					<li style="width:<?php echo $width;?>%"><a href="#categorytab-<?php echo $item['category_id'].$modid;?>" data-toggle="tab"><?php if($show_tab_icon && $icon) { ?>
+						<img alt="" src="<?php echo $icon; ?>" class="hidden-sm hidden-xs pull-left" />
+						<?php } ?><?php echo $this->htmlEscape( $item['title'] ); ?></a></li>
+				<?php } ?>
+			</ul>
+	 </div>
+	 <div class="tab-content">
+	 	<?php $i=0; foreach( $items as $tab => $item ) { ?>
+			<?php if( isset($item['products']) && $item['products'] ) {     $products = $item['products']; ?>
+			<?php if( empty($products) || $products->getSize() <= 0){ continue; } ?>
+			<?php $products = $products->getItems(); ?>
+				<div class="tab-pane box-products  categorytabcarousel<?php echo $modid; ?> slide" id="categorytab-<?php echo $item['category_id'].$modid;?>">
+				
+				<?php if( count($products) > $itemsperpage ) { ?>
+				<a class="carousel-control left" href="#categorytab-<?php echo $item['category_id'].$modid;?>"   data-slide="prev">&lsaquo;</a>
+				<a class="carousel-control right" href="#categorytab-<?php echo $item['category_id'].$modid;?>"  data-slide="next">&rsaquo;</a>
+			
+				<?php } ?>
+				<div class="carousel-inner ">		
+				 <?php 
+					$pages = array_chunk( $products, $itemsperpage);
+				 ?>	
+				  <?php foreach ($pages as  $k => $tproducts ) {  ?>
+						<div class="item <?php if($k==0) {?>active<?php } ?>">
+							<?php foreach( $tproducts as $i => $_product ) {  $i=$i+1;?>
+								<?php if( $i%$cols == 1 ) { ?>
+								  <div class="row products-grid">
+								<?php } ?>
+									  <div class="vescol-lg-<?php echo $cols;?> col-md-<?php echo $span;?> col-sm-6 col-xs-12"><div class="product-block">
+									  	<?php
+				                            $swap_class = "";
+				                            if($swap_image && $hover_image = $helper->getProductImage($_product->getId(), 0, $list_image_width, $list_image_height)) {
+				                                    $swap_class = "swap";
+				                             } 
+				                        ?>
+										<div class="image <?php echo $swap_class; ?> product-image image-thumb"><a class="product-image" href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>">
+											<img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize($list_image_width, $list_image_height) ?>" alt="<?php echo $this->htmlEscape($_product->getName()) ?>" />
+											</a>
+											<?php if($swap_class) { ?>
+			                                <span class="hover-image">
+			                                    <a class="img hover-image" href="<?php echo $_product->getProductUrl(); ?>"><img src="<?php echo $hover_image; ?>"  alt="<?php echo $this->htmlEscape($_product->getName()) ?>"></a>
+			                                </span>
+			                                <?php } ?>
+											<?php if( $this->getConfig("show_pzoom") ) { ?>
+											<?php
+					                            $productId = $_product->getId();
+					                            $_product = Mage::getModel('catalog/product')->load($productId);
+					                        ?>
+					                        <a href="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(800);?>" class="colorbox product-zoom cboxElement" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><span class="fa fa-search-plus"></span></a>
+												<?php } ?>
+			 				<?php 
+                                // Get the Special Price
+                                $specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+                                // Get the Special Price FROM date
+                                $specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+                                // Get the Special Price TO date
+                                $specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+                                // Get Current date
+                                $today =  time();
+                             
+                                if ($specialprice) {
+                                    if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || $today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate)) {
+                            ?>
+                                    <span class="onsale"><?php echo $this->__("Sale");?></span>
+                            <?php  
+                                    }
+                                }
+                            ?>
+								
+									
+										<?php if ($quickview) { ?>
+					                        <a class="ves-tab-colorbox<?php echo $modid;?> ves-quickview box_quickview" href="<?php echo Mage::helper("ves_tempcp")->getQuickviewURL( $_product->getProductUrl() ); ?>"><?php echo $this->__('Quick View'); ?></a>
+					                    <?php } ?>
+										</div>
+										<?php if( $this->getConfig('show_title',1) ) { ?>
+											<h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><?php echo $this->htmlEscape($_product->getName()) ?></a></h2>
+										<?php } ?>
+
+										<?php if($this->getConfig('show_price',1)) { ?>
+										<div class="price"><?php echo $this->getPriceHtml($_product, true); ?></div>
+										<?php } ?>
+											
+
+										<?php if ( $this->getConfig('show_des') ) { ?>
+											<div class="description">
+												<p><?php
+														$product_short_desc = $_helper->productAttribute($_product, nl2br($_product->getShortDescription()), 'short_description');
+														echo $this->subString($product_short_desc, $desc_maxchar, "");
+													 ?>
+													</p>
+
+											</div>
+										<?php } ?>
+
+										<?php if ( $this->getConfig('review',1) ) { ?>
+											<div class="review"><?php echo $this->getReviewsSummaryHtml($_product, 'short') ?></div>
+										<?php } ?>
+
+										<?php if ($this->getConfig('show_btn',1) ) { ?>
+											<div class="actions">
+<?php 											if($_product->isSaleable()) { 
+												
+													if ('Yes' === $_product->getAttributeText('special_order')) {
+    					                    			$BtnText = 'Special Order Only';
+	                    					    	} else {
+					    	                    		$BtnText = 'Add to Cart';
+        	        					        	}
+?>
+												<button type="button" title="<?php echo $BtnText ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $BtnText ?></span></span></button>
+<?php 												} else { ?>
+												<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+												<?php } ?>
+												<?php if ($this->getConfig('detail') ) { ?>
+												<button type="button" title="<?php echo $this->__('Detail') ?>" class="button btn-detail" onclick="setLocation('<?php echo $_product->getProductUrl() ?>')"><span><span><?php echo $this->__('Detail') ?></span></span></button>
+												<?php } ?>
+												<?php if( $this->getConfig("show_wc", 1) ) { ?>		
+											<!-- Add to links -->
+											<ul class="add-to-links">
+												<?php if ($this->helper('wishlist')->isAllow()) : ?>
+													<li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist fa fa-heart"><span><?php echo $this->__('Add to Wishlist') ?></span></a></li>
+												<?php endif; ?>
+												<?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+													<li><a href="<?php echo $_compareUrl ?>" class="link-compare fa fa-retweet"><span><?php echo $this->__('Add to Compare') ?></span></a></li>
+												<?php endif; ?>
+											</ul>
+											<?php } ?>
+											</div>
+										<?php } ?>
+									  </div></div>
+							  
+							  <?php if( $i%$cols == 0 || $i==count($tproducts) ) { ?>
+								 </div>
+								<?php } ?>
+							<?php } ?>
+						</div>
+				  <?php } ?>
+				</div>
+			</div>
+			<?php } ?>
+		<?php } ?>
+	 </div>
+	<?php } ?>
+</div>
+
+<?php if( $this->getConfig("show_pzoom") ) {  ?>
+<script type="text/javascript">
+<!--
+jQuery(document).ready(function() {
+	if(typeof(colorbox) != "undefined"){
+		jQuery('.colorbox').colorbox({
+			overlayClose: true,
+			opacity: 0.5,
+			rel: false,
+			onLoad:function(){
+				jQuery("#cboxNext").remove(0);
+				jQuery("#cboxPrevious").remove(0);
+				jQuery("#cboxCurrent").remove(0);
+			}
+		});
+	} 
+});
+//-->
+</script>
+<?php } ?>
+<script type="text/javascript">
+<!--
+jQuery(function () {
+	jQuery('#categorytabs<?php echo $modid;?> a:first').tab('show');
+})
+jQuery('.categorytabcarousel<?php echo $modid;?>').carousel({interval:false,auto:false,pause:'hover'});
+//--></script>
+
+<?php if ($quickview) { ?>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery(".ves-tab-colorbox<?php echo $modid;?>").colorbox({
+                width: '<?php echo $popup_quickview_width; ?>', 
+                height: '<?php echo $popup_quickview_height; ?>',
+                overlayClose: true,
+                opacity: 0.5,
+                iframe: true, 
+        });
+        
+    });
+</script>
+<?php } ?>

@@ -1,0 +1,191 @@
+/******************************************************
+ * @package Ves Theme Framework for Magento
+ * @version 1.0
+ * @author http://www.venustheme.com
+ * @copyright Copyright (C) Augus 2013 Venustheme.com <@emai:venustheme@gmail.com>.All rights reserved.
+ * @license   GNU General Public License version 2
+*******************************************************/
+
+/* Forms */
+form          { display:inline; }
+fieldset      { border:0; }
+legend        { display:none; }
+
+/* Table */
+table         { border:0; border-spacing:0; empty-cells:show; font-size:100%; width: 100%; }
+caption,th,td { vertical-align:top; @include rtl-text-align-left(); font-weight:normal; }
+
+/* Global Styles ========================================================================= */
+/* Form Elements */
+input,select,textarea,button {
+  font-size: $font-size-base;
+  line-height: 30px ;
+  color: $input-color;
+  background-color: $input-bg;
+  border: 1px solid $input-border;
+  border-radius: $border-radius-small;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.button, input {
+  height: 30px;
+}
+input,select,textarea {
+  width: 100%;
+}
+.button, input.button {
+	background-color: $theme-color-hover;
+	border-radius: $border-radius-small;
+	border: 1px solid $theme-color-hover;
+	color: $white;
+  margin-top: 10px;
+ 	padding: 0 10px;
+   @include transition (all 0.3s ease 0s);
+  &:hover {
+     background-color: $theme-color;
+     border: 1px solid $theme-color; @include transition (all 0.3s ease 0s);
+  }
+}
+select,textarea {
+	padding: 5px;
+}
+option {
+    @include rtl-padding-right( 10px);
+}
+input.qty,input[title="Qty"] {
+    display: inline;
+    text-align: center;
+    width: 45px;
+}
+input[type="radio"], input[type="checkbox"] {
+    @include rtl-float-left();
+    margin: 0;
+    width: auto;
+}
+select[multiple], select[size] {
+    width: 300px;
+}
+label {
+	padding: 4px;
+	font-weight: normal;
+  	color: $gray;
+}
+.label {
+	display: table-cell;
+}
+/* Data Table */
+table { 
+	width:100%; border:1px solid #d9dde3;
+	.odd  {}
+	.even { background:#eeeded; }
+	td.last, th.last { border-right:0; }
+	tr.last th,tr.last td { }
+	th { padding:3px 8px; font-weight:bold; 
+    @include rtl-border-right (1px solid #d9dde3);}
+	td { padding:3px 8px; }
+
+	tbody {
+		th,td { border-bottom:1px solid #d9dde3; 
+      @include rtl-border-left(1px solid #d9dde3); }
+	}
+/* Bundle products tables */
+	tbody.odd tr { background:#f8f7f5 !important; }
+	tbody.even tr { background:#f6f6f6 !important; }
+	tbody.odd tr td,
+	tbody.even tr td { border-bottom:0; }
+	tbody.odd tr.border td,
+	tbody.even tr.border td { border-bottom:1px solid #d9dde3; }
+
+	tbody td .option-label { font-weight:bold; font-style:italic; }
+	tbody td .option-value { @include rtl-padding-left(10px); }
+ 
+}
+
+.data-table {
+    width: 100%;
+  th, td {
+      padding: 10px;
+  }
+  thead {
+      background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+      border-bottom: 1px solid #E5E5E5;
+    th {
+        font-weight: bold;
+        vertical-align: bottom;
+        &.wrap {
+          white-space: normal;
+      }
+    }
+  }
+   tr.even td,  tr.even th,
+  tr.odd td, tr.odd th {
+      @include rtl-border-right(1px solid #d9dde3);
+      color: #777;
+      padding: 10px;
+  }
+   tr.even td.last,
+  tr.odd td.last {
+      @include rtl-border-right (medium none);
+  }
+  tr.odd.last {
+      border-bottom: 1px solid #EEEEEE;
+  }
+  tr.even {
+      background-color: #FBFBFB;
+  }
+  tbody {
+    tr.product-shop-row:hover {
+      background-color: #FFFFFF;
+    }
+    &.odd td {
+        border-width: 0 1px;
+    }
+    &.odd tr.last {
+        border-bottom: 1px solid #E5E5E5;
+    }
+    &.even {
+        background-color: #F5F5F5;
+    }
+    &.even td {
+        border-width: 0 1px;
+    }
+  }
+  th .tax-flag {
+      font-weight: normal;
+  }
+  .cell-label {
+      display: none;
+  }
+}
+#opc-login,
+.account-login {
+  .buttons-set{ 
+    overflow: hidden;
+    button {
+     @include rtl-float-right();
+   }
+  } 
+}
+.form-list {
+ .field {
+  width: 300px;
+  @include rtl-margin-right(10px);
+  @include rtl-float-left();
+ }
+  input.input-text {
+    width: 300px;
+  }
+}
+.back-link {
+  @include rtl-text-align-right();
+  margin-top: 10px;
+}
+
+
+.cart .shipping input.input-text, .cart .shipping select {
+    width: 100%;
+}
+
+.multiple-checkout select {
+    width: auto
+}

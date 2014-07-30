@@ -1,0 +1,14 @@
+$image-theme-path-base:'../../../images/';
+$image-theme-path : '../../../images/blue/';
+
+
+$blue:                  #57a6b9;
+$red:                   #e76d66;
+$green:                 #95bb7a;
+
+$theme-color-default   : $red; // using for default color of all pages such as background color for top menu, block header
+$theme-color-secondary : $blue ; 
+$theme-color-primary   : $green;
+
+$theme-color 			: $red;
+$theme-color-hover      : $blue;

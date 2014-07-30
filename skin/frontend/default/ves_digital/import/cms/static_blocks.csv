@@ -1,0 +1,35 @@
+Block_Id,Title,Content,Identifier,Creation_Time,Update_Time,Is_Active,Stores
+2,"Cookie restriction notice","<p>This website requires cookies to provide all of its features. For more information on what data is contained in the cookies, please see our <a href=""{{store direct_url=""privacy-policy-cookie-restriction-mode""}}"">Privacy Policy page</a>. To accept cookies from this site, please click the Allow button below.</p>",cookie_restriction_notice_block,"2014-01-24 03:18:19","2014-01-24 03:18:19",1,0
+3,"Customer Service","<div class=""block-title""><span>Customer Service</span></div>
+<div class=""block-content"">
+<ul class=""links"">
+<li><a title=""Site Map"" href=""catalog/seo_sitemap/category/"">Site Map</a></li>
+<li><a title=""Search Terms"" href=""catalogsearch/term/popular/"">Search Terms</a></li>
+<li><a title=""Advanced Search"" href=""catalogsearch/advanced/"">Advanced Search</a></li>
+<li><a title=""Orders and Returns"" href=""sales/guest/form/"">Orders and Returns</a></li>
+<li><a title=""Contact Us"" href=""contacts/"">Contact Us</a></li>
+</ul>
+</div>",customer-service,"2014-02-06 10:07:09","2014-02-25 02:49:11",1,0
+4,"About Us","<div class=""block-title""><span>About Us</span></div>
+<div class=""block-content"">
+<ul class=""links"">
+<li><a href=""#"">Responsive</a></li>
+<li><a href=""#"">Magento themes</a></li>
+<li><a href=""#"">E-commerce</a></li>
+<li><a href=""#"">The company</a></li>
+<li><a href=""#"">Terms</a></li>
+</ul>
+</div>",about-us,"2014-02-11 08:22:21","2014-02-12 02:58:02",1,0
+5,"Contact Us","<div class=""contact-us"">
+<div class=""block-title""><span>Contact Us</span></div>
+<div class=""block-content"">
+<p>If your question is not answered there, please use one of the contact methods below.</p>
+<ul>
+<li><span class=""fa fa-map-marker""> </span>Proin gravida, velit auctor aliquet</li>
+<li><span class=""fa fa-mobile-phone""> </span>Phone: +01 888 (000) 1234</li>
+<li><span class=""fa fa-envelope""> </span>Email: pavdigitaltore@gmail.com</li>
+</ul>
+</div>
+</div>",contact-us,"2014-02-11 08:24:10","2014-02-12 02:56:18",1,0
+6,Paypal,"<p><img src=""{{media url=""wysiwyg/images/paypal.png""}}"" alt="""" /></p>",paypal,"2014-02-11 09:57:57","2014-02-11 09:57:57",1,0
+7,"Banner slideshow","<p><img src=""{{media url=""wysiwyg/images/banner-sidebar.png""}}"" alt="""" /></p>",banner_slidershow,"2014-03-12 08:45:02","2014-03-12 08:45:02",1,0

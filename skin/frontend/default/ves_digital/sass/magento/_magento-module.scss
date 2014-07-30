@@ -1,0 +1,199 @@
+/******************************************************
+ * @package Ves Theme Framework for Magento
+ * @version 1.0
+ * @author http://www.venustheme.com
+ * @copyright Copyright (C) Augus 2013 Venustheme.com <@emai:venustheme@gmail.com>.All rights reserved.
+ * @license   GNU General Public License version 2
+*******************************************************/
+.dropdown{ display: block !important;}
+.header .links li,
+.currency,
+.form-language{
+	> a {
+		padding: 3px 8px;
+		background-color: $blacklight;
+		border: 1px solid $blacklight;
+		@include border-left-radius ( 3px);
+		@include border-right-radius ( 3px);
+		color: $topbar-color;
+		margin:  0 3px;
+		display: inline-block;
+		&:hover {
+		    color: $topbar-link-hover-color;
+		}
+		span {
+			@include rtl-margin-left(5px);
+		}
+	}
+}
+.currency{
+	ul {
+		li{
+			a {
+				background: url(#{$image-theme-path}circle-li.png) no-repeat -10px 12px scroll;
+				@include transition ( all 0.3s ease 0s);
+				display: block;
+				padding: 0;
+				&:hover {
+						background-position:  5px 12px;
+						@include rtl-padding-left(20px);
+						@include transition ( all 0.3s ease 0s);
+				}
+			}
+
+		}
+		
+	}
+}
+.language .form-language{
+	a {
+		&,
+		a{
+			background-position: 8px center;
+			background-repeat: no-repeat;
+			@include rtl-padding-left(30px) ;
+		}
+	}
+}
+.currency,
+.form-language{
+	ul {
+		@include opacity (0);
+		display: block;    
+		@include translate (-25% , 0px);
+		visibility: hidden;
+		@include box-shadow (0 1px 3px #D3D3D3);
+		padding: 5px;
+		margin-top: 10px;
+		border:  none;
+		@include border-top-radius (0);
+		@include border-bottom-radius (3px);
+			border-top: 5px solid $theme-color-hover;
+		
+		li{
+			border-bottom: 1px solid #f3f3f3;
+			&:last-child {
+				border-bottom: none;
+			}
+			a {
+				padding-top: 3px;
+				padding-bottom: 3px;
+				line-height: 28px;
+				&:hover {
+					 color: $theme-color-hover;
+					 background-color: transparent; 
+				}
+			}
+
+		}
+		
+	}
+	&.open {
+		ul {
+			z-index: 1;
+		    @include transition( all 500ms cubic-bezier(0.09, 0.68, 0, 0.99) 0s );
+			@include opacity (1) ;   
+			@include translate (0px , 0px);
+			visibility: visible;
+			z-index: 10;
+		}
+	}
+}
+/* Topcart */
+	#cart{ 
+		position: relative;
+		.content{ 
+			min-width: 275px; 
+			position: absolute; 
+			@include rtl-right(0); padding-top: 10px;
+			@include rtl-padding-left (0px) ;
+			z-index: 9; 
+			visibility: hidden; 
+			@include opacity (0); 
+			@include transition( all 300ms ease-in-out);
+			.block-content{
+				border-top: 5px solid $theme-color-hover;
+			}
+		}
+		&.active{
+			.content{ visibility: visible; 
+				@include rtl-padding-left(15px); @include opacity (1);}
+		}
+		.heading .cart-inner {
+		   > span {
+	            font-size: 14px; 
+	            padding: 5px 5px;
+	            @include rtl-margin-left(3px);
+	            background: $blacklight;
+	            border: 1px solid $blacklight;
+	            @include border-left-radius ( 3px );
+				@include border-right-radius ( 3px );
+	            color: $white;
+	        }
+	        &:hover {
+	            > span { 
+	                background: $theme-color-hover ;   
+	                border: 1px solid $theme-color-hover ;
+	                
+	            }
+	            a{
+					 color: $theme-color-hover ;
+				}
+	        }
+	        a {
+				color: $topbar-color;
+				 span span {
+					 color: $theme-color-hover ;
+					 display:  inline-block;
+					 margin-bottom: 0;
+				}
+	        }
+	    }
+	}
+
+/* swap-images */
+.product-block{
+	.image{ 
+		position: relative;
+		overflow: hidden;
+		.hover-image{ 
+			position: absolute; top:0; 
+			@include rtl-left (0); visibility: hidden; @include opacity (0);
+			@include transition (opacity 300ms ease-in-out 0s);
+			width: 100%;
+		}
+		&:hover{
+			.hover-image{ visibility: visible; @include opacity (1); @include transition (opacity 300ms ease-in-out 0s);}
+		}
+	}
+}
+/*block-subscribe*/
+#footer .block-subscribe {
+	input.input-text {
+	    background: none repeat scroll 0 0 #FFFFFF;
+	    border: none;
+	    
+	    @include border-left-radius (7px);
+	    @include border-right-radius (0);
+	    @include rtl-float-left();
+	    padding: 5px 10px;
+	    width: 162px;
+	    height:  35px;
+	    line-height: 35px;
+	}
+	.button {
+	    @include border-left-radius (0);
+	    @include border-right-radius (7px);
+	    border: none;
+	    height:  35px;
+	    line-height: 35px;
+	    @include rtl-padding(0, 15px, 0, 15px);
+	    margin-top: 0;
+	}
+	.validation-advice {
+		top: 45px;
+	    display: block;
+	    position: absolute;
+	    width: 100%;
+	}
+}

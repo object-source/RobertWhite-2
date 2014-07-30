@@ -1,0 +1,344 @@
+/******************************************************
+ * @package Ves Theme Framework for Magento
+ * @version 1.0
+ * @author http://www.venustheme.com
+ * @copyright Copyright (C) Augus 2013 Venustheme.com <@emai:venustheme@gmail.com>.All rights reserved.
+ * @license   GNU General Public License version 2
+*******************************************************/
+/* Layout ================================================================================ */
+.wrapper {}
+#page {
+	margin: 0 auto;
+}
+.page-print { background:#fff; padding:25px 30px; text-align:left; }
+.page-empty { background:#fff; padding:20px; text-align:left; }
+.page-popup { background:#fff; padding:25px 30px; text-align:left; }
+.main-container { }
+.main {}
+body{
+    &.layout-boxed-md{
+        background: url("#{$image-theme-path-base}pattern/pattern14.png");
+        #page{  max-width: $container-desktop; @include box-shadow(0 0 5px #888); background: $white;}
+    }
+    &.layout-boxed-lg{
+        background: url("#{$image-theme-path-base}pattern/pattern14.png");
+        #page{  max-width: $container-lg-desktop; @include box-shadow(0 0 5px #888);background: $white; }
+
+    }
+    &.fullwidth{ }
+ } 
+ 
+ /*
+ * TOPBAR 
+ */
+#content {
+    @include border-left-radius ( 5px);
+    @include border-right-radius ( 5px);
+    @include box-shadow ( 0 1px 2px #d9dadb );
+    background-color: #FDFDFD;
+    padding: 20px;
+}
+.review-product-list,
+.catalogsearch-result-index,
+.catalog-category-view,
+.cms-index-index,
+.catalog-product-view{
+    #content{
+        @include border-left-radius ( 0 );
+        @include border-right-radius ( 0 );
+        @include box-shadow ( none );
+        background-color: transparent;
+        padding: 0; 
+    }
+}
+#topbar {
+	
+    color: $topbar-color;
+    font-size: $topbar-font-size;
+    background-color: $topbar-bg;
+    padding: 10px 0;
+	.form-language {
+	}
+	.links {  
+		li { 
+			display: inline-block;
+			a span {
+				 margin-left: 0;
+				  margin-right: 5px;
+			}
+		}
+	}
+	.welcome-msg { 
+
+	    font-size: $topbar-font-size + 1;        
+        @include rtl-margin(4px, 10px, 0, 0);
+		a { 
+			color:#ebbc58; 
+		}
+	}
+}
+ /*
+ * HEADER 
+ */
+ #header-main {
+  background: $header-main-bg;
+    @include  box-shadow ( 0 0 2px rgba(194, 194, 194, 0.6));
+    border-top: 1px solid #e7e7e7;
+    border-bottom: 1px solid #e7e7e7;
+    margin-bottom: 20px;
+    .header-wrap {
+        position: relative;
+        &:after{ display:block; content:"."; clear:both; font-size:0; line-height:0; height:0; overflow:hidden; }
+    }
+ }
+/**LOGO**/
+.logo { 
+	@include rtl-float-left ();
+    margin: 25px 0;
+	strong { 
+        position:absolute; 
+        top:-999em; 
+        @include rtl-left (-999em); 
+        width:0; height:0;
+         font-size:0; line-height:0; 
+         text-indent:-999em; overflow:hidden; } 
+}
+.top-search .form-search {
+	position: relative;
+    margin: 25px 0 ;
+        width: 200px;
+    input {
+        @include rtl-padding-right (25px);
+        @include rtl-padding-left (8px);
+		@include border-left-radius ( 5px );
+		@include border-right-radius ( 5px );
+        border: $theme-border;
+    }
+    button.button-search {
+        color: #FFFFFF;
+        cursor: pointer;
+        height: 30px;
+        line-height: 30px;
+        position: absolute;
+        @include rtl-right(0);
+        top: 0;
+        text-align: center;
+        width: 30px;
+        background: url(#{$image-theme-path}icon-search.png) no-repeat center center scroll;
+        border: 1px solid transparent;
+        margin-top: 0;
+    }
+
+	.search-autocomplete { 
+		z-index:999; @include rtl-left(40px); top:22px !important;
+		ul {
+			border:1px solid #5c7989; background-color:#f9f5f0; 
+			li { 
+				@include rtl-text-align-left();
+                 border-bottom:1px solid #f4eee7;
+                @include rtl-padding(2px, 8px, 1px, 8px); cursor:pointer; 
+				.amount { 
+					@include rtl-float-right();
+                     font-weight:bold; 
+				}
+				&.odd { 
+					background-color:#fffefb; 
+				}
+				&.selected { background-color:#f7e8dd; }
+			}
+		} 
+	}
+}
+
+.top-container { 
+	clear:both;
+	@include rtl-padding(5px, 10px, 0, 12px); 
+	 text-align:right; 
+	a { 
+		font-size:11px; 
+		color:#ebbc58; 
+	}
+} 
+/*
+ * NAVIGATION
+ */
+ #ves-mainnav {
+ }
+/*
+ * SLIDESHOW 
+ */
+ .ves-slideshow {}
+/*
+ * SHOWCASE 
+ */
+ .ves-showcase {}
+/*
+ * PROMOTION 
+ */
+ .ves-promotion {}
+/*
+ * MAIN CONTENT
+ */ 
+ .cms-index-index #columns .container{
+     margin-bottom: 0 ;
+ }
+ #columns .container {
+ 	 margin-bottom: 20px ;
+ }
+/*
+ * MASSBOTTOM
+ */
+ .ves-massbottom {
+ }
+ 
+/* BreadCrumbs */
+.breadcrumbs {  
+	@include rtl-margin(0,0, 15px,0); 
+	li { 
+        display:inline;
+        &:last-child span {
+            color: $theme-color-hover;
+        }
+    }
+}
+
+/* FOOTER*/
+
+/* Footer ================================================================================ */
+#footer {
+    color: $footer-link-color;
+	.container-inner{
+		padding: $footer-padding;
+	}
+    .footer-top{
+       .container-inner {
+        background-color: $footertop-bg;
+		@include border-top-radius ( 3px );
+       }
+        
+    }
+    .footer-center{
+        .container-inner{
+            background-color: $footercenter-bg;
+        }
+        .box-heading span span {
+        }
+    }
+    .footer-bottom{
+       .container-inner{
+            background-color: $footer-bg;
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: $footer-link-color;
+        @include transition ( padding 0.5s ease 0s);
+        &:hover {
+            color:$footer-link-hover-color;
+        }
+    }
+    ul {
+    	li {
+	        @include transition ( all 0.3s ease 0s);
+	        padding: 7px 0;
+	        &:hover {
+	            color: $footer-link-hover-color;
+	            @include transition ( all 0.3s ease 0s);
+	        }
+	    }
+       	&.links {
+       		li {
+       			padding: 0;
+       			a {
+					background: url('#{$image-theme-path}circle-li.png') no-repeat -10px 12px scroll;
+					@include transition ( all 0.3s ease 0s);
+					display: inline-block;
+	        		padding: 7px 0;
+					&:hover {
+							background-position:  5px 12px;
+							@include rtl-padding-left( 20px);
+							@include transition ( all 0.3s ease 0s);
+					}
+				}
+			}
+       	}
+    }
+    .block-title {
+    	font-size: $font-size-base + 4;
+    	color: $white;
+    	font-family: proximanovasemibold;
+    	line-height: 30px;
+    	margin-bottom: 15px;
+        padding: 0;
+        border-bottom: 0;
+    }
+    .block {
+        @include border-left-radius ( 0 );
+        @include border-right-radius ( 0 );
+        @include box-shadow ( none );
+        margin-bottom: 0;
+        background-color: transparent;
+    }
+}
+
+/*FOOTER TOP*/
+
+/*FOOTER CENTER*/
+/* ======================================================================================= */
+
+/* POWER BY */
+
+#powered {
+    color: $power-text-color ;
+    .container-inner {
+         background-color: $power-bg;
+         border-top: 1px solid #303030; 
+		@include border-bottom-radius ( 3px );
+         margin-bottom: $power-margin; 
+         padding: $power-padding;
+         overflow: hidden;
+    }
+    a {
+        color: $power-link-color;
+        &:hover {
+            color: $power-link-color-hover;
+            text-decoration: underline;
+        }
+    }
+}
+.paypal {
+    @include rtl-text-align-right();
+}
+.box_quickview {
+        background-color: $theme-color;
+        border: 1px solid $theme-color;
+        @include border-top-radius( 3px);  
+        @include border-bottom-radius( 3px);
+        cursor: pointer;
+        text-transform: uppercase;
+        @include transition (all 0.4s ease 0s);
+        color: $white;
+        font-size: 12px;
+        padding: 5px 0;
+        display:  inline-block;
+        position: absolute;
+        bottom: -50px;
+        left: 0;
+        right: 0;
+        margin: auto;
+        width: 100px;
+        text-align: center;
+        @include opacity (0);
+        &:hover {
+            background-color: $theme-color-hover;
+            border: 1px solid $theme-color-hover;
+            color: $white;
+             @include transition (all 0.4s ease 0s);
+        }
+}
+.product-block:hover .box_quickview {
+    @include transition (all 0.4s ease 0s);
+    @include opacity (1);
+    bottom: 0; 
+}

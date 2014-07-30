@@ -1,0 +1,376 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2013 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+$helper = Mage::helper("ves_tempcp/framework")->getFramework( );
+$themeConfig = $helper->getConfig();
+
+
+$listing_products_columns = $themeConfig->get("listing_products_columns", 0);
+$listing_products_columns_small = $themeConfig->get("listing_products_columns_small", 0);
+$listing_products_columns_minismall = $themeConfig->get("listing_products_columns_minismall", 0);
+$categoryPzoom = $themeConfig->get("category_pzoom", 0);
+
+$MAX_ITEM_ROW    = $themeConfig->get('listing_products_columns', 3);
+$MAX_ITEM_ROW    = $MAX_ITEM_ROW?$MAX_ITEM_ROW:3;
+$MAX_ITEM_ROW_SMALL = $themeConfig->get('listing_products_columns_small', 3) ;
+$MAX_ITEM_ROW_SMALL    = $MAX_ITEM_ROW_SMALL?$MAX_ITEM_ROW_SMALL:3;
+$MAX_ITEM_ROW_MINI  = $themeConfig->get('listing_products_columns_minismall', 2);
+$MAX_ITEM_ROW_MINI    = $MAX_ITEM_ROW_MINI?$MAX_ITEM_ROW_MINI:2;
+
+$cols = $MAX_ITEM_ROW ;
+$span = floor(12/$cols);
+$small = floor(12/$MAX_ITEM_ROW_SMALL);
+$mini = floor(12/$MAX_ITEM_ROW_MINI);
+
+$ajax_cart = $themeConfig->get("enable_ajaxcart", 0);
+$swap_image = $themeConfig->get("enable_swap", 0);
+$quickview = $themeConfig->get("enable_quickview", 0);
+$popup_quickview_width = $themeConfig->get("popup_quickview_width", "60%");
+$popup_quickview_height = $themeConfig->get("popup_quickview_height", "80%");
+
+$popup_image_width = $themeConfig->get("popup_image_width", 600);
+$popup_image_width = !empty($popup_image_width)?(int)$popup_image_width: 600;
+$popup_image_height = $themeConfig->get("popup_image_height", 600);
+$popup_image_height = !empty($popup_image_height)?(int)$popup_image_height: 600;
+
+$list_image_width = $themeConfig->get("listing_image_width", 260);
+$list_image_width = !empty($list_image_width)?(int)$list_image_width: 260;
+$list_image_height = $themeConfig->get("listing_image_height", 208);
+$list_image_height = !empty($list_image_height)?(int)$list_image_height: 208;
+
+$swap_image_number = $themeConfig->get("swap_image_number", 0);
+$swap_image_number = !empty($swap_image_number)?(int)$swap_image_number: 0;
+
+?>
+<?php
+/**
+ * Product list template
+ *
+ * @see Mage_Catalog_Block_Product_List
+ */
+?>
+<?php
+    $_productCollection=$this->getLoadedProductCollection();
+
+    $_helper = $this->helper('catalog/output');
+
+?>
+<?php if(!$_productCollection->count()): ?>
+<p class="note-msg"><?php echo $this->__('There are no products matching the selection.') ?></p>
+<?php else: ?>
+<?php $_collectionSize = $_productCollection->count() ?>
+<?php $_columnCount = !empty($cols)?$cols:$this->getColumnCount(); ?>  
+<div class="category-products">
+    <?php echo $this->getToolbarHtml() ?>
+    <?php // List mode ?>
+    <?php if($this->getMode()!='grid'): ?>
+    <?php $_iterator = 0; ?>
+    <div class="products-list" id="products-list">
+     <?php $i=0; foreach ($_productCollection as $_product): ?>       
+        <div class="item<?php if( ++$_iterator == sizeof($_productCollection) ): ?> last<?php endif; ?>">
+            <div class="product-block">
+				<div class="row">
+					<?php // Product Image ?>
+					<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <?php
+                            $swap_class = "";
+                            if($swap_image && $hover_image = $helper->getProductImage($_product->getId(), $swap_image_number, $list_image_width, $list_image_height)) {
+                                    $swap_class = "swap";
+                             } 
+                        ?>
+						<div class="image <?php echo $swap_class; ?>">
+							<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize($list_image_width, $list_image_height); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+                             <?php if($swap_class) { ?>
+                                <span class="hover-image">
+                                    <a class="img" href="<?php echo $_product->getProductUrl(); ?>"><img src="<?php echo $hover_image; ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>"></a>
+                                </span>
+                                <?php } ?>
+                            </a>
+
+                             <?php if( $categoryPzoom ) { ?>
+                        <?php
+                            $productId = $_product->getId();
+                            $_product2 = Mage::getModel('catalog/product')->load($productId);
+                        ?>
+
+                        <a href="<?php echo $this->helper('catalog/image')->init($_product2, 'image')->resize($popup_image_width);?>" class="colorbox product-zoom" rel="nofollow" title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>"><span class="fa fa-search-plus"></span></a>
+                        <?php } ?>
+                             <?php 
+                                // Get the Special Price
+                                $specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+                                // Get the Special Price FROM date
+                                $specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+                                // Get the Special Price TO date
+                                $specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+                                // Get Current date
+                                $today =  time();
+                             
+                                if ($specialprice) {
+                                    if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || $today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate)) {
+                            ?>
+                                    <span class="onsale"><?php echo $this->__("Sale");?></span>
+                            <?php  
+                                    }
+                                }
+                            ?>
+                         <?php if ($quickview) { ?>
+                        <a class="ves-colorbox box_quickview" href="<?php echo Mage::helper("ves_tempcp")->getQuickviewURL( $_product->getProductUrl() ); ?>"><?php echo $this->__('Quick View'); ?></a>
+                    <?php } ?>
+                         
+                        </div>
+                    </div>
+                    <?php // Product description ?>
+                    <div class="col-lg-6 col-md-6 col-sm-5 col-xs-12">
+                        <div class="product-meta product-shop">
+                            <?php $_productNameStripped = $this->stripTags($_product->getName(), null, true); ?>
+                            <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped; ?>"><?php echo $_helper->productAttribute($_product, $_product->getName() , 'name'); ?></a></h2>
+                           
+                            
+                            <div class="desc std">
+                                <?php echo substr($_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description'), 0, 240); ?>
+                                <!--<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a> -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12">
+                         <?php if($_product->getRatingSummary()): ?>
+                            <div class="rating">
+                                <?php echo $this->getReviewsSummaryHtml($_product) ?>
+                            </div>
+                            <?php endif; ?>
+                            <div class="price">
+                                <?php echo $this->getPriceHtml($_product, true) ?>
+                            </div>
+                            <div class="add-to-links">
+                                <?php if ($this->helper('wishlist')->isAllow()) : ?>
+                                    <div class="wishlist">
+                                        <a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist"><span class="fa fa-heart"></span><?php echo $this->__('Add to Wishlist') ?></a>
+                                    </div>
+                                <?php endif; ?>
+                                <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                                <div class="compare">
+                                    <a href="<?php echo $_compareUrl ?>" class="link-compare"><span class="fa fa-retweet"></span><?php echo $this->__('Add to Compare') ?></a>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+<?php 						if($_product->isSaleable()) { 
+                            
+                            	if ('Yes' === $_product->getAttributeText('special_order')) {
+                        			$BtnText = 'Special Order Only';
+	                        	} else {
+    	                    		$BtnText = 'Add to Cart';
+        	                	}
+?>
+
+                            <div class="cart">
+                            	<button type="button" <?php if('Yes' === $_product->getAttributeText('special_order')) { echo " STYLE='width: 96%;'";} ?> title="<?php echo $BtnText ?>" class="button btn-cart" onclick="<?php if($ajax_cart) { ?>addToCart('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } else { ?>setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } ?>"><span><span><?php echo $BtnText ?></span></span></button>
+<?php
+								$StockLevel = (int) Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+	
+								if ('No' === $_product->getAttributeText('special_order')) {
+    								switch(true) {
+    									case $StockLevel <= 0:
+    										echo '<span class="stock-qty pull-right" STYLE="color: #e76d66;">Out of stock</span>';
+    										break;
+    									case $StockLevel < 11:
+											echo '<span class="stock-qty pull-right" STYLE="color: #95BB7C;">' . $StockLevel . ' in stock <?php echo ; ?></span>';    		
+    										break;
+    									default:
+    										echo '<span class="stock-qty pull-right" STYLE="color: #95BB7C;">In stock <?php echo ; ?></span>';    		
+    										break;
+									}
+								                            	
+                            		echo "</div>";
+                            	}
+                            } else { ?>
+                                <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
+<?php 						} ?>
+
+                    </div>   
+                </div>
+            </div>
+        </div>
+        
+    <?php endforeach; ?>
+   
+    <script type="text/javascript">decorateList('products-list', 'none-recursive')</script>
+
+    <?php else: ?>
+
+    <?php // Grid Mode ?>
+
+    <div class="products-block" id="products-grid">
+    <?php $i=0; foreach ($_productCollection as $_product): ?>
+        <?php if ($i++%$_columnCount==0): ?>
+        <div class="row products-grid">
+        <?php endif ?>
+       
+            <div class="col-xs-12 col-lg-<?php echo $span;?> col-md-<?php echo $small;?> col-sm-<?php echo $mini;?> item<?php if(($i-1)%$_columnCount==0): ?> first<?php elseif($i%$_columnCount==0): ?> last<?php endif; ?>">
+                <div class="product-block">
+                    <?php
+                            $swap_class = "";
+                            if($swap_image && $hover_image = $helper->getProductImage($_product->getId(), $swap_image_number, $list_image_width, $list_image_height)) {
+                                    $swap_class = "swap";
+                             } 
+                        ?>
+                    <div class="image <?php echo $swap_class; ?>">
+                        <a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" class="product-image"><img src="<?php echo $this->helper('catalog/image')->init($_product, 'small_image')->resize($list_image_width, $list_image_height); ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>" /></a>
+                        <?php if($swap_class) { ?>
+                                <span class="hover-image">
+                                    <a class="img" href="<?php echo $_product->getProductUrl(); ?>"><img src="<?php echo $hover_image; ?>" alt="<?php echo $this->stripTags($this->getImageLabel($_product, 'small_image'), null, true) ?>"></a>
+                                </span>
+                        <?php } ?>
+                       
+                        <?php if( $categoryPzoom ) { ?>
+                        <?php
+                            $productId = $_product->getId();
+                            $_product2 = Mage::getModel('catalog/product')->load($productId);
+                        ?>
+
+                        <a href="<?php echo $this->helper('catalog/image')->init($_product2, 'image')->resize($popup_image_width);?>" class="colorbox product-zoom" rel="nofollow" title="<?php echo $_helper->productAttribute($_product, $_product->getName(), 'name'); ?>"><span class="fa fa-search-plus"></span></a>
+                        <?php } ?>
+                         <?php 
+                                // Get the Special Price
+                                $specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+                                // Get the Special Price FROM date
+                                $specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+                                // Get the Special Price TO date
+                                $specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+                                // Get Current date
+                                $today =  time();
+                             
+                                if ($specialprice) {
+                                    if($today >= strtotime( $specialPriceFromDate) && $today <= strtotime($specialPriceToDate) || $today >= strtotime( $specialPriceFromDate) && is_null($specialPriceToDate)) {
+                            ?>
+                                    <span class="onsale"><?php echo $this->__("Sale");?></span>
+                            <?php  
+                                    }
+                                }
+                            ?>
+
+                    <?php if ($quickview) { ?>
+                        <a class="ves-colorbox box_quickview" href="<?php echo Mage::helper("ves_tempcp")->getQuickviewURL( $_product->getProductUrl() ); ?>"><?php echo $this->__('Quick View'); ?></a>
+                    <?php } ?>
+                    </div>
+                    <h2 class="product-name"><a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $this->stripTags($_product->getName(), null, true) ?>"><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></a></h2>
+                    
+					<div class="price">
+                        <?php echo $this->getPriceHtml($_product, true) ?>
+                    </div>
+					 <div class="desc std">
+                                <?php //echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                <!--<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a> -->
+                            </div>
+                    <?php if($_product->getRatingSummary()): ?>
+                    <div class="rating">
+                     <?php echo $this->getReviewsSummaryHtml($_product, 'short') ?>
+                     </div>
+                    <?php endif; ?>
+					
+                    <div class="actions">
+<?php 					if($_product->isSaleable()) { 
+                        
+                        	if ('Yes' === $_product->getAttributeText('special_order')) {
+                        		$BtnText = 'Special Order Only';
+                        	} else {
+                        		$BtnText = 'Add to Cart';
+                        	}
+?>
+                            <button type="button" title="<?php echo $BtnText; ?>" class="button btn-cart" onclick="<?php if($ajax_cart) { ?>addToCart('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } else { ?>setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } ?>"><span><span><?php echo $BtnText; ?></span></span></button>                        
+<?php                            
+								$StockLevel = (int) Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+	
+							if ('No' === $_product->getAttributeText('special_order')) {
+    							switch(true) {
+    								case $StockLevel <= 0:
+    									echo '<span class="stock-qty pull-right" STYLE="color: #e76d66;">Out of stock</span>';
+    									break;
+    								case $StockLevel < 11:
+										echo '<span class="stock-qty pull-right" STYLE="color: #95BB7C;">' . $StockLevel . ' in stock <?php echo ; ?></span>';    		
+    									break;
+    								default:
+    									echo '<span class="stock-qty pull-right" STYLE="color: #95BB7C;">In stock <?php echo ; ?></span>';    		
+    									break;
+								}
+							}
+                        } else {
+                            echo '<p class="availability out-of-stock"><span>' . $this->__('Out of stock') . '</span></p>';
+						} ?>
+                        <!--ul class="add-to-links"-->
+                            <?php i//f ($this->helper('wishlist')->isAllow()) : ?>
+                                <!--li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist fa fa-heart" title="Wishlist"><span><?php echo $this->__('Add to Wishlist') ?></span></a></li-->
+                            <?php //endif; ?>
+                            <?php //if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                                <!--li><a href="<?php echo $_compareUrl ?>" class="link-compare fa fa-retweet" title="Compare"><span><?php echo $this->__('Add to Compare') ?></span></a></li-->
+                            <?php //endif; ?>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        <?php if ($i%$_columnCount==0 || $i==$_collectionSize): ?>
+        </div>
+        <?php endif ?>
+        <?php endforeach ?>
+        <script type="text/javascript">decorateGeneric($$('ul.products-grid'), ['odd','even','first','last'])</script>
+
+    <?php endif; ?>
+        <?php if( $categoryPzoom ) {  ?>
+            <script type="text/javascript"><!--
+                jQuery(document).ready(function() {
+                    jQuery('.colorbox').colorbox({
+                        overlayClose: true,
+                        opacity: 0.5,
+                        rel: false,
+                        onLoad:function(){
+                            jQuery("#cboxNext").remove(0);
+                            jQuery("#cboxPrevious").remove(0);
+                            jQuery("#cboxCurrent").remove(0);
+                        }
+                    });
+                     
+                });
+            //--></script>
+            <?php } ?>
+    </div>
+    <div class="toolbar-bottom">
+        <?php echo $this->getToolbarHtml() ?>
+    </div>
+</div>
+<?php endif; ?>
+<?php if ($quickview) { ?>
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        jQuery(".ves-colorbox").colorbox({
+                width: '<?php echo $popup_quickview_width; ?>', 
+                height: '<?php echo $popup_quickview_height; ?>',
+                overlayClose: true,
+                opacity: 0.5,
+                iframe: true, 
+        });
+        
+    });
+</script>
+<?php } ?>

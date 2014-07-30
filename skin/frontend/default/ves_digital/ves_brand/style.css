@@ -1,0 +1,12 @@
+.vescarousel{
+	padding: 25px;
+	overflow: hidden;
+}
+.vescarousel .carousel-control{
+}
+.vescarousel .carousel-control.left{
+	left: -2px;
+}
+.vescarousel .carousel-control.right{
+	right: -2px;
+}

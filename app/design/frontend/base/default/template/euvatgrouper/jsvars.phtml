@@ -1,0 +1,13 @@
+<?php
+/**
+ * Autor: Sven Geiß
+ * (c) 2014 ||GEISSWEB| https://www.geissweb.de
+ */
+?>
+<script type="text/javascript">
+//<![CDATA[
+var gw_vat_check_url = '<?php echo Mage::getUrl('',array('_secure'=>true)); ?>vatcheck/';
+var gw_loader_src = '<?php echo $this->getLayout()->createBlock('core/text')->getSkinUrl('images/opc-ajax-loader.gif', array('_secure'=>true));?>';
+var gw_osc_integration = '<?php echo Mage::getStoreConfig('euvatgrouper/extension_info/osc_integration', Mage::app()->getStore()->getId());?>';
+//]]>
+</script>

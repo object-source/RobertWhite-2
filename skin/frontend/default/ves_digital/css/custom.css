@@ -1,0 +1,21 @@
+.product-shop .add-to-cart .btn-cart {
+	background-color: #e76d66;
+	color: white;
+}
+
+.product-block .product-name {
+	height: 48px !important;
+}
+
+.fa {
+	font-size: 1.5em !important;
+}
+
+#footer a {
+	color: #e76d66 !important;	
+}
+
+#vesbrandcarousel5 .carousel-inner {
+	width: 1140px;
+	padding-left: 5px;
+}

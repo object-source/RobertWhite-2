@@ -1,0 +1,26 @@
+.product-shop .add-to-cart .btn-cart,
+.products-grid .actions .btn-cart {
+	background-color: #e76d66;
+	color: white;
+}
+
+.product-shop .add-to-cart .btn-cart:hover,
+.products-grid .actions .btn-cart:hover {
+  background-color: #95bb7a;
+  border: 1px solid #95bb7a;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+}
+
+.price-including-tax .price {
+	padding-left: 0.9em;
+}
+
+.product-details .price {
+	padding-left: 1em;
+}
+
+.product-details . product-name .price {
+        position: absolute;
+        right: 29px;
+}

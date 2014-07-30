@@ -1,0 +1,70 @@
+#ves-accordion span.head a {
+	float: left!important;
+}
+.language .form-language a, .language .form-language a a {
+    background-position: 92% center;
+}
+#header .topLinks .links li > a,
+#footer ul.links li a,
+#ves-mainnav .nav li ul li a,
+.currency ul li a{
+	background-position: 110% 12px;
+	&:hover {
+		 background-position: 96% 12px;
+	}
+}
+
+.currency ul, .form-language ul,
+.navbar-nav > li > .dropdown-menu {
+	
+  -webkit-transform: translate(20%, 0);
+      -ms-transform: translate(20%, 0); // IE9+
+          transform: translate(20%, 0);
+}
+.widget-product-list .image {
+    float: right!important;
+    margin-right: 0!important;
+    margin-left: 10px;
+}
+.zoomContainer .zoomWindow {
+	 float: right!important;
+	 right: 335px!important;
+	 left: inherit;
+}
+
+.offcanvas-effect-3.offcanvas-menu-open .offcanvas-pusher{
+  -webkit-transform: translate3d(-280px, 0, 0)!important;
+          transform: translate3d(-280px, 0, 0)!important;
+}
+
+.offcanvas-effect-3.offcanvas-menu {
+	-webkit-transform: translate3d(100%, 0, 0)!important;
+	transform: translate3d(100%, 0, 0)!important;
+}
+.offcanvas-effect-3.offcanvas-menu-open .offcanvas-effect-3.offcanvas-menu {
+
+	-webkit-transform: translate3d(0, 0, 0)!important;
+	transform: translate3d(0, 0, 0)!important;
+
+}
+
+
+.vescontentslider .ves-caption {
+	 text-align: left;
+}
+
+	#footer .block-subscribe input.input-text {
+	   border-radius: 0 7px 7px 0;
+	}
+	#footer .block-subscribe .button {
+	    border-radius: 7px 0 0 7px;
+	}
+@media only screen and (max-width: 990px) {
+
+#header .quick-access .inner-toggle {
+	
+  -webkit-transform: translate(20%, 0);
+      -ms-transform: translate(20%, 0); // IE9+
+          transform: translate(20%, 0);
+}
+}

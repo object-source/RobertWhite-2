@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<theme>
+	<version value="1.4">
+		<ccc available="true" />
+		<guest_checkout available="true" />
+		<one_page_checkout available="true" />
+		<store_locator available="true" />
+	</version>
+	<name>Venus BikeStore</name>
+	<positions>
+		<position>top</position>
+		<position>header</position>
+		<position>left</position>
+		<position>right</position>
+		<position>slideshow</position>
+		<position>showcase</position>
+		<position>promotion</position>
+		<position>breadcrumbs</position>
+		<position>global_messages</position>
+		<position>contentTop</position>
+		<position>contentBottom</position>
+		<position>content</position>
+		<position>massbottom</position>
+		<position>footerTop</position>
+		<position>footerCenter</position>
+		<position>footer</position>
+
+	</positions>
+
+	<skins>
+		<skin>default</skin>		
+		<skin>green</skin>		
+		<skin>blue</skin>
+		<skin>pink</skin>
+	</skins>
+
+	<fontsizes>
+				<option>9</option>
+				<option>10</option>
+				<option>11</option>
+				<option>12</option>
+				<option>13</option>
+				<option>14</option>
+				<option>15</option>
+				<option>16</option>
+	</fontsizes>
+
+	<fonts>
+				<option value="Verdana, Geneva, sans-serif">Verdana</option>
+				<option value="Georgia, &quot;Times New Roman&quot;, Times, serif">Georgia</option>
+				<option value="Arial, Helvetica, sans-serif">Arial</option>
+				<option value="Impact, Arial, Helvetica, sans-serif">Impact</option>
+				<option value="Tahoma, Geneva, sans-serif">Tohoma</option>
+				<option value="&quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif">Trebuchet</option>
+				<option value="&quot;Arial Black&quot;, Gadget, sans-serif">Arial Black</option>
+				<option value="Times, &quot;Times New Roman&quot;, serif">Times</option>
+				<option value="&quot;Palatino Linotype&quot;, &quot;Book Antiqua&quot;, Palatino, serif">Palatino Linotype</option>
+				<option value="&quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif">Lucida Sans Unicode</option>
+				<option value="&quot;MS Serif&quot;, &quot;New York&quot;, serif">MS Serif</option>									
+				<option value="&quot;Comic Sans MS&quot;, cursive">Comic Sans MS</option>
+				<option value="&quot;Courier New&quot;, Courier, monospace">Courier New</option>
+				<option value="&quot;Lucida Console&quot;, Monaco, monospace">Lucida Console</option>											
+	</fonts>
+
+	<modules>
+		<module>pavmegamenu</module>
+		<module>pavslideshow</module>
+		<module>pavproductcarousel</module>
+	</modules>
+
+	<default>
+		<skin>default</skin>
+		<theme_width>auto</theme_width>
+		<enable_custom_copyright>0</enable_custom_copyright>
+		<enable_development_mode>0</enable_development_mode>
+		<copyright><![CDATA[<b>Copyright 2</b> 2013 PavoThemes.Com.]]></copyright>
+		
+		<google_url2><![CDATA[http://fonts.googleapis.com/css?family=Jacques+Francois+Shadow|Pirata+One]]></google_url2>
+		<google_family2><![CDATA['Pirata One', cursive]]></google_family2>
+		<body_selector2><![CDATA[body, h1, h3,h4, .box-title]]></body_selector2>
+		<theme_intro><![CDATA[ Venus Base On Magento ]]></theme_intro>
+	</default>
+
+<!-- Internal Modules - support by venustheme framework-->
+
+	<internal_modules>
+
+		<fields name="promotion">
+
+			<fieldset name="promotion">
+				<field name="promotion_label" type="label"><![CDATA[Custom Module]]></field>
+
+				<field name="widget_promotion_name" type="input" label="Module Name" id=""></field>
+
+				<field name="widget_promotion_data" label="Custom Us Module" description="" type="editor" width="500px" height="300px" cols="15" rows="2"><![CDATA[
+					<div class="block hidden-xs"><img style="border-radius: 5px;" src="{{media url="wysiwyg/images/banner-mass-bottom.jpg"}}" alt="" /></div>
+					]]></field>
+
+				<field name="widget_promotion_block_id" type="staticblocklist" default="" label="Static Block" description="If you select a static block, it will override custom html of module"></field>
+
+				<field name="widget_promotion_layout" type="layout" size="10" label="Layout" default="all" style="width:280px;min-height:100px" description="Select one or more layout page which module will show there">
+					<option>cms</option>		
+					<option>contacts</option>		
+					<option>catalog-product</option>
+					<option>catalog-category</option>
+					<option>checkout</option>
+					<option>tag</option>
+					<option>catalogsearch</option>
+					<option>sales</option>
+					<option>customer</option>
+					<option>wishlist</option>
+					<option>review</option>
+					<option>oauth</option>
+					<option>newsletter</option>
+					<option>downloadable</option>
+				</field>
+				<field name="widget_promotion_status" type="list" label="Status" default="1" description="Show/hide module">
+					<option value="1">Yes</option>		
+					<option value="0">No</option>
+				</field>
+			</fieldset>
+		</fields>
+
+		<fields name="footerTop">
+
+			<fieldset name="footertop">
+				<field name="footertop_label" type="label"><![CDATA[Custom Module]]></field>
+
+				<field name="widget_footertop_name" type="input" label="Module Name" id=""></field>
+
+				<field name="widget_footertop_data" label="Custom Us Module" description="" type="editor" width="500px" height="300px" cols="15" rows="2"><![CDATA[
+							<div class="row">	
+				<div class="col-lg-12 col-md-12  col-sm-12 col-xs-12"><div class="social">
+<p><a title="" href="#"><i class="fa fa-pinterest">&nbsp;</i>Pinterest</a> <a title="" href="#"><i class="fa fa-facebook">&nbsp;</i>Facebook</a> <a title="" href="#"><i class="fa fa-google-plus">&nbsp;</i>Google+</a> <a title="" href="#"><i class="fa fa-twitter">&nbsp;</i>Twitter</a> <a title="" href="#"><i class="fa fa-youtube">&nbsp;</i>Youtube</a></p>
+
+</div></div>
+				</div>	
+					]]></field>
+
+				<field name="widget_footertop_block_id" type="staticblocklist" default="" label="Static Block" description="If you select a static block, it will override custom html of module"></field>
+
+				<field name="widget_footertop_layout" type="layout" size="10" label="Layout" default="all" style="width:280px;min-height:100px" description="Select one or more layout page which module will show there">
+					<option>cms</option>		
+					<option>contacts</option>		
+					<option>catalog-product</option>
+					<option>catalog-category</option>
+					<option>checkout</option>
+					<option>tag</option>
+					<option>catalogsearch</option>
+					<option>sales</option>
+					<option>customer</option>
+					<option>wishlist</option>
+					<option>review</option>
+					<option>oauth</option>
+					<option>newsletter</option>
+					<option>downloadable</option>
+				</field>
+				<field name="widget_footertop_status" type="list" label="Status" default="1" description="Show/hide module">
+					<option value="1">Yes</option>		
+					<option value="0">No</option>
+				</field>
+			</fieldset>
+
+		</fields>
+		
+		
+		<fields name="footerCenter">
+
+			<fieldset name="footerCenter">
+				<field name="footerCenter_label" type="label"><![CDATA[Custom Module]]></field>
+
+				<field name="widget_footerCenter_name" type="input" label="Module Name" id=""></field>
+
+				<field name="widget_footerCenter_data" label="Custom Us Module" description="" type="editor" width="500px" height="300px" cols="15" rows="2"><![CDATA[
+				<div class="row">
+<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">{{block type="cms/block" block_id="customer-service"}}</div>
+<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">{{block type="cms/block" block_id="about-us "}}</div>
+<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">{{block type="cms/block" block_id="contact-us"}}</div>
+<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">{{block type="newsletter/subscribe" name="newsletter" template="newsletter/subscribe.phtml"}}</div>
+</div>
+					]]></field>
+
+				<field name="widget_footerCenter_block_id" type="staticblocklist" default="" label="Static Block" description="If you select a static block, it will override custom html of module"></field>
+
+				<field name="widget_footerCenter_layout" type="layout" size="10" label="Layout" default="all" style="width:280px;min-height:100px" description="Select one or more layout page which module will show there">
+					<option>cms</option>		
+					<option>contacts</option>		
+					<option>catalog-product</option>
+					<option>catalog-category</option>
+					<option>checkout</option>
+					<option>tag</option>
+					<option>catalogsearch</option>
+					<option>sales</option>
+					<option>customer</option>
+					<option>wishlist</option>
+					<option>review</option>
+					<option>oauth</option>
+					<option>newsletter</option>
+					<option>downloadable</option>
+				</field>
+				<field name="widget_footerCenter_status" type="list" label="Status" default="1" description="Show/hide module">
+					<option value="1">Yes</option>		
+					<option value="0">No</option>
+				</field>
+			</fieldset>
+
+		</fields>
+	</internal_modules>
+
+</theme>
+
