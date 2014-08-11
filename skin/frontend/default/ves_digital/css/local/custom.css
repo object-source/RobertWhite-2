@@ -1,7 +1,14 @@
 .product-shop .add-to-cart .btn-cart,
 .products-grid .actions .btn-cart {
-	background-color: #e76d66;
+	/*background-color: #e76d66;*/
+	background-color: #CC2D2D;
 	color: white;
+}
+
+.product-block .colorbox.product-zoom span,
+.block.block-cart .block-content .actions .button,
+.button, input.button {
+	background-color: #CC2D2D;
 }
 
 .product-shop .add-to-cart .btn-cart:hover,

@@ -1788,7 +1788,8 @@ body.layout-boxed-lg #page {
   border-top-left-radius: 3px;
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;
-  color: #88898e;
+  /*color: #88898e;*/
+  color: #CFD0D2;
   margin: 0 3px;
   display: inline-block;
 }
