@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Webpos
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config>
+	<menu>
+        <sales>
+            <children>
+                <webpos module="webpos">
+                    <title>Web POS</title>
+                    <action>webposadmin/adminhtml_webpos</action>
+					<sort_order>1</sort_order>
+                </webpos>
+            </children>
+        </sales>
+    </menu>
+	<acl>
+		<resources>
+			<all>
+				<title>Allow Everything</title>
+			</all>
+			<admin>
+				<children>
+					<sales>
+						<children>
+							<webpos>
+								<title>Web POS</title>
+								<sort_order>1</sort_order>
+							</webpos>
+						</children>
+					</sales>
+					<system>
+						<children>
+							<config>
+								<children>
+									<webpos translate="title" >
+										<title>Web POS</title>
+										<sort_order>1</sort_order>
+									</webpos>
+								</children>
+							</config>
+						</children>
+					</system>
+				</children>
+			</admin>
+		</resources>
+	</acl>
+	<translate>
+		<modules>
+			<Magestore_Webpos>
+				 <files>
+						<default>Magestore_Webpos.csv</default>
+				 </files>
+			</Magestore_Webpos>
+		</modules>
+	</translate>   
+</config>

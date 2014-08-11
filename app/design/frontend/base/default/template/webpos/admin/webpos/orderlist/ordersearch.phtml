@@ -1,0 +1,69 @@
+<?php 
+$_collections = $this->getOrderGridCollections();
+?>
+<?php if(count($_collections)):?>	
+	<div class="grid" id="order-items_grid">
+			<table class="data-table" id="data-table">
+				<thead>
+					<tr class="theadings">
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Order #') ?></th>
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Date') ?></th>
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Bill To Name') ?></th>
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Ship To Name') ?></th>
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Email')?></th>                    
+						<th class="no-link last"><?php echo $this->helper('webpos')->__('Status') ?></th>
+						<th class="no-link last"></th>
+						
+					</tr>
+				</thead>
+				<?php $i = 0;?>
+				<?php foreach($_collections as $_collection): $i++;
+					$incrementId = $_collection->getIncrementId();
+					$orderId = $_collection->getId();
+				
+				?>
+				<tbody>
+					<tr class="<?php echo ($i%2)?'fist even':' last odd'?>">
+						<td><?php echo $incrementId?></td>
+						<td><?php echo $_collection->getData('created_at')?></td>
+						<td><?php echo $_collection->getData('billing_name')?></td>
+						<td><?php echo $_collection->getData('shipping_name')?></td>
+						<td><?php echo $this->getEmail($orderId)?>					
+						<td><?php echo $_collection->getData('status')?></td>
+						<td><a id="show-vieworder-<?php echo $_collection->getId()?>" href="javascript:void(0);"><?php echo $this->helper('webpos')->__('View Order')?></a> | 
+							<?php if($this->hasInvoice($orderId)):?>							
+							<a href="<?php echo $this->getUrl('webpos/index/printInvoice',array('order_id'=>$orderId,'_secure'=>true))?>" onclick="this.target='_blank'"><?php echo $this->helper('sales')->__(' Print Invoice')?></a>
+							<?php //endif;?>
+							<?php endif;?>
+						</td>
+						
+					</tr>
+				</tbody>
+				<script type="text/javascript">
+					Event.observe(window, 'load', function() {
+
+						var vieworderPopup = new Control.Modal($('order-popup-<?php echo $_collection->getId()?>'), {
+							overlayOpacity: 0.65,
+							fade: true,
+							fadeDuration: 0.3
+						});
+
+						$('show-vieworder-<?php echo $_collection->getId()?>').observe('click', function(e) {
+							e.preventDefault();
+							vieworderPopup.open();
+						});
+
+						$$('div#order-popup-<?php echo $_collection->getId()?> p.close a').invoke('observe', 'click', function(e) {
+							e.preventDefault();
+							vieworderPopup.close();
+						});
+
+					});
+				</script>
+				<?php endforeach?>
+			</table>
+	</div>	
+<?php endif?>
+<script type="text/javascript">
+
+

@@ -1,0 +1,319 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Academic Free License (AFL 3.0)
+ * that is bundled with this package in the file LICENSE_AFL.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/afl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2012 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+?>
+<?php
+/**
+ * Shopping cart template
+ *
+ * @see Mage_Checkout_Block_Cart
+ */
+?>
+<script>
+    //Rule
+    spendPointItems = new Array();
+    function getSpendBox(id){
+        content = 'webpos-spend-points'+id;
+        spendPointItems[id].getSpendBox(content);
+        $('overlay_modal').observe('click', function(event){
+            spendPointItems[id].spendPopup.hide(); 
+            event.stop();
+        });
+    }
+    function changeRewardProductRule(el, id) {
+        spendPointItems[id].changeRewardProductRule(el);    
+    }
+    function changePointCallback(points, id) {
+        spendPointItems[id].changePointCallback(points);
+    }
+    function applyRule(ruleId, itemId, point, productId){
+        if(ruleId == '') point = 0;
+        else if(!itemId || !point || !productId) return;
+        $('ajaxcart-load-ajax').show();
+        url = '<?php echo $this->getUrl('webpos/index/applyrule') ?>';
+        new Ajax.Request(url,{
+            method: 'post',
+            parameters:{
+                ruleId: ruleId,
+                itemId: itemId,
+                point: point
+            },
+            onSuccess: function(message){
+                spendPointItems[productId].spendPopup.hide();
+                mes = message.responseText;
+                if(mes == 'success')
+                    javascript:ajaxcart.addToCartHandle('<?php echo $this->getUrl('checkout/cart/index', array('_secure' => true)); ?>', '');   
+                else $('ajaxcart-load-ajax').hide();
+            },
+            onException: function (xhr, e){
+                window.location.href = redirect_error;
+            }
+        });
+    }
+    function removeRule(itemId){
+        $('ajaxcart-load-ajax').show();
+        url = '<?php echo $this->getUrl('webpos/index/removecatalog') ?>';
+        new Ajax.Request(url,{
+            method: 'post',
+            parameters:{
+                id: itemId,
+            },
+            onSuccess: function(message){
+                mes = message.responseText;
+                if(mes == 'success')
+                        javascript:ajaxcart.addToCartHandle('<?php echo $this->getUrl('checkout/cart/index', array('_secure' => true)); ?>', '');     
+                else $('ajaxcart-load-ajax').hide();
+            },
+            onException: function (xhr, e){
+                window.location.href = redirect_error;
+            }
+        });
+    }
+</script>
+<div class="cart">
+    <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    <?php echo $this->getChildHtml('form_before') ?>
+    <form action="<?php echo $this->getUrl('checkout/cart/updatePost', array('_secure'=>true)) ?>" method="post">
+        <fieldset>
+            <table id="shopping-cart-table" class="data-table cart-table">
+                <col width="1" />
+                <col />
+                <col width="1" />
+            <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+<!--                <col width="1" />-->
+            <?php endif ?>
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+            <?php if ($this->helper('tax')->displayCartPriceExclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+            <?php if ($this->helper('tax')->displayCartPriceInclTax() || $this->helper('tax')->displayCartBothPrices()): ?>
+                <col width="1" />
+            <?php endif; ?>
+                <col width="1" />
+
+            <?php $mergedCells = ($this->helper('tax')->displayCartBothPrices() ? 2 : 1); ?>
+                <thead>
+                    <tr>
+                        <th rowspan="<?php echo $mergedCells; ?>">&nbsp;</th>
+                        <th rowspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo $this->__('Product Name') ?></span></th>
+                        
+                        <?php if ($this->helper('wishlist')->isAllowInCart()) : ?>
+<!--                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center"><span class="nobr"><?php echo $this->__('Move to Wishlist') ?></span></th>-->
+                        <?php endif ?>
+                        <th class="a-center" colspan="<?php echo $mergedCells; ?>"><span class="nobr"><?php echo $this->__('Unit Price') ?></span></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center"><?php echo $this->__('Qty') ?></th>
+                        <th class="a-center" colspan="<?php echo $mergedCells; ?>"><?php echo $this->__('Subtotal') ?></th>
+                        <th rowspan="<?php echo $mergedCells; ?>" class="a-center">&nbsp;</th>
+                    </tr>
+                    <?php if ($this->helper('tax')->displayCartBothPrices()): ?>
+                    <tr>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                        <th class="a-right"><?php echo $this->helper('tax')->getIncExcTaxLabel(false) ?></th>
+                        <th><?php echo $this->helper('tax')->getIncExcTaxLabel(true) ?></th>
+                    </tr>
+                    <?php endif; ?>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="50" class="a-right">
+                            <?php if($this->getContinueShoppingUrl()): ?>
+                                <!--<button type="button" title="<?php echo $this->__('Continue Shopping') ?>" class="button btn-continue" onclick="setLocation('<?php echo $this->getContinueShoppingUrl() ?>')"><span><span><?php echo $this->__('Continue Shopping') ?></span></span></button>-->
+                            <?php endif; ?>
+                            <button type="submit" name="update_cart_action" value="update_qty" title="<?php echo $this->__('Update Shopping Cart'); ?>" class="button btn-update"><span><span><?php echo $this->__('Update Shopping Cart'); ?></span></span></button>
+                        </td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                <?php foreach($this->getItems() as $_item): ?>
+                    <?php echo $this->getItemHtml($_item) ?>
+                <?php endforeach ?>
+                </tbody>
+            </table>
+            <script type="text/javascript">decorateTable('shopping-cart-table')</script>
+        </fieldset>
+    </form>
+</div>
+
+
+
+<?php 
+	/**
+	 * ajaxcart template
+	 */
+?>
+<div id="ajaxcart-load-ajax" style="display:none;">
+	<div class="ajaxcart-overlay">&nbsp;</div>
+	<div class="ajaxcart-loading">
+		<img alt="<?php echo $this->__('Loading') ?>..." src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" /><br />
+		<?php echo $this->__('Loading') ?>...
+	</div>
+</div>
+<div id="ajaxcart-pop-up" style="display: none;">
+	<div class="ajaxcart-popup-overlay" onclick="closeAjaxPopup();">&nbsp;</div>
+	<div id="ajaxcart-content" class="ajaxcart-content" style="margin-left: 225px;"></div>
+</div>
+
+
+<script type="text/javascript">
+	var table = '<div class="cart">';
+	table +='<form method="post" action="<?php echo $this->getUrl('checkout/cart/updatePost', array('_secure'=>true)); ?>">';
+	table += '<fieldset>';
+	table += '<table class="data-table cart-table" id="shopping-cart-table">';
+	table += '<colgroup><col width="1">';
+	table += '<col>'
+	table += '<col width="1">';
+	table += '<col width="1">';
+	table += '<col width="1">';
+	table += '<col width="1">';
+	table += '<col width="1">';
+
+	table += '</colgroup><thead>'
+	table += '<tr class="first last">';
+	table += '<th rowspan="1">&nbsp;</th>';
+	table += '<th rowspan="1"><span class="nobr"><?php echo $this->__('Product Name'); ?></span></th>';
+	
+	table += '<th colspan="1" class="a-center"><span class="nobr"><?php echo $this->__('Unit Price'); ?></span></th>';
+	table += '<th class="a-center" rowspan="1"><?php echo $this->__('Qty'); ?></th>';
+	table += '<th colspan="1" class="a-center"><?php echo $this->__('Subtotal');?></th>';
+	table += '<th class="a-center" rowspan="1">&nbsp;</th>';
+	table += '</tr>';
+	table += '</thead>';
+	table += '<tfoot>';
+	table += '<tr class="first last">';
+	table += '<td class="a-right last" colspan="50">';
+
+	table += '<button class="button btn-update" title="<?php echo $this->__('Update Shopping Cart'); ?>" value="update_qty" name="update_cart_action" type="submit"><span><span><?php echo $this->__('Update Shopping Cart'); ?></span></span></button>';
+	table += '</td>';
+	table += '</tr>';
+	table += '</tfoot>';
+	table += '<tbody>';
+	table += '</tbody>';
+	table += '</table>';
+	table += '</fieldset>';
+	table += '</form>';
+	table += '</div>';
+	
+function closeAjaxPopup(){
+	$('ajaxcart-pop-up').hide();
+	$('ajaxcart-content').innerHTML = '';
+}
+var miniCart = false;
+Event.observe(window,'load',function(){
+	miniCart = $$('div[class="block block-cart"]');
+	var overlayHeight = $$('body').first().getHeight() + 'px';
+	$$('div.ajaxcart-overlay').first().style.height = overlayHeight;
+	$$('div.ajaxcart-popup-overlay').first().style.height = overlayHeight;
+	if (!$$('ul[class="messages"]').first()){
+		var pageTitle = $$('.col-main').first().down('.page-title');
+		if (pageTitle){
+			var messageTag = document.createElement('ul');
+			messageTag.className = 'messages';
+			var pageTitleParent = pageTitle.parentNode;
+			pageTitleParent.insertBefore(messageTag,pageTitle.next());
+		}
+	}
+	ajaxcart.updateJscartEvent();
+	
+	
+});
+
+var ajaxcart = new Ajaxcartpage('ajaxcart-load-ajax','ajaxcart-pop-up','ajaxcart-content','div[class="cart"]','','ajaxcart');
+
+function setLocation(url){
+	if (url.search('/checkout/cart/add/') != -1
+		|| url.search('options=cart') != -1){
+		ajaxcart.addToCartHandle(url,'');
+	} else {
+		window.location.href = url;
+	}
+}
+
+function ajaxcartUpdateCartHtml(pageDest,aCache){
+	var shoppingCartTable = pageDest.down('#shopping-cart-table');
+	if (shoppingCartTable){
+		var cartTableHtml = '';
+		if (aCache.down('#shopping-cart-table'))
+			cartTableHtml = aCache.down('#shopping-cart-table').parentNode.innerHTML;
+		shoppingCartTable.parentNode.update(cartTableHtml);
+	}
+	
+	var crossSell = pageDest.down('.crosssell');
+	if (crossSell){
+		var crossSellHtml = '';
+		if (aCache.down('.crosssell'))
+			crossSellHtml = aCache.down('.crosssell').parentNode.innerHTML;
+		crossSell.parentNode.update(crossSellHtml);
+	}
+	
+	if (pageDest.down('.discount-form') && aCache.down('.discount-form'))
+		pageDest.down('.discount-form').update(aCache.down('.discount-form').innerHTML);
+	
+	var cacheShippingForm = aCache.down('#co-shipping-method-form');
+	if (cacheShippingForm){
+		if (pageDest.down('#co-shipping-method-form'))
+			pageDest.down('#co-shipping-method-form').update(cacheShippingForm.innerHTML);
+		else if (pageDest.down('.shipping-form'))
+			pageDest.down('.shipping-form').appendChild(cacheShippingForm);
+	}
+	
+	if (pageDest.down('#shopping-cart-totals-table') && aCache.down('#shopping-cart-totals-table'))
+		pageDest.down('#shopping-cart-totals-table').update(aCache.down('#shopping-cart-totals-table').innerHTML);
+	
+	if (miniCart && aCache.down('div[class="block block-cart"]')){
+		var miniCartHtml = aCache.down('div[class="block block-cart"]').innerHTML;
+		miniCart.each(function(mnc){mnc.update(miniCartHtml)});
+	}
+	
+	if (pageDest.down('ul.messages') && aCache.down('ul.messages'))
+		pageDest.down('ul.messages').update(aCache.down('ul.messages').innerHTML);
+}
+
+function ajaxUpdateFormAction(){
+	$$('form').each(function(el){
+		if (el.action.search('/checkout/cart/updatePost') != -1
+			|| el.action.search('/checkout/cart/estimateUpdatePost') != -1){
+			var submitButton = el.down('button[type="submit"]');
+			submitButton.observe('click',ajaxPostFormAction);
+		}
+	});
+}
+
+function ajaxPostFormAction(event){
+	ajaxcart.addToCartHandle(this.form.action,this.form.serialize());
+	event.stop();
+}
+function ajaxMoreTemplateJs(){
+	if ($('ajaxcart-content').down(".paypal-logo")) $('ajaxcart-pop-up').down(".paypal-logo").hide();
+	if ($('ajaxcart-content').down(".add-to-links")) $('ajaxcart-pop-up').down(".add-to-links").hide();
+}
+</script>
+

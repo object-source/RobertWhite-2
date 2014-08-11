@@ -1,0 +1,312 @@
+
+<?php $_order = $this->getOrder();?>
+<div id="order-popup">
+	<div class="head-view-order">
+		<h1><?php echo Mage::helper('webpos')->__('Order # %s', $_order->getRealOrderId()) ?></h1>
+	</div>
+	<div class="box-close">
+			<p class="close">
+				<a href="javascript:void(0)" onclick="TINY.box.hide()" id="box-close"><?php echo Mage::helper('webpos')->__('X')?></a>
+			</p>
+	</div>
+	<div class="view-order">
+		<div id="order-messages">
+			<?php //echo $this->getChildHtml('order_messages') ?>
+			
+		</div>
+		<?php //echo $this->getChildHtml('order_info') ?>			
+				<?php
+				$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+				$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+				?>
+				<div class="box-left">
+					<!--Order Information-->
+					<div class="entry-edit">
+						<div class="entry-edit-head">					
+							<h4 class="icon-head head-account"><?php echo Mage::helper('webpos')->__('Order # %s', $_order->getRealOrderId()) ?></h4>						
+						</div>
+						<div class="fieldset">
+							<table cellspacing="0" class="form-list">
+							<tr>
+								<td class="label"><label><?php echo Mage::helper('webpos')->__('Order Date') ?></label></td>
+								<td class="value"><strong><?php echo $orderAdminDate ?></strong></td>
+							</tr>
+							<?php if ($orderAdminDate != $orderStoreDate):?>
+							<tr>
+								<td class="label"><label><?php echo Mage::helper('webpos')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
+								<td class="value"><strong><?php echo $orderStoreDate ?></strong></td>
+							</tr>
+							<?php endif;?>
+							<tr>
+								<td class="label"><label><?php echo Mage::helper('webpos')->__('Order Status') ?></label></td>
+								<td class="value"><strong><span id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>
+							</tr>
+							<tr>
+								<td class="label"><label><?php echo Mage::helper('webpos')->__('Purchased From') ?></label></td>
+								<td class="value"><strong><?php echo $this->getOrderStoreName($_order) ?></strong></td>
+							</tr>						
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="box-right">
+					<!--Account Information-->
+					<div class="entry-edit">
+						<div class="entry-edit-head">
+							<h4 class="icon-head head-account"><?php echo Mage::helper('webpos')->__('Account Information') ?></h4>							
+						</div>
+						<div class="fieldset">
+							<div class="hor-scroll">
+								<table cellspacing="0" class="form-list">
+								<tr>
+									<td class="label"><label><?php echo Mage::helper('webpos')->__('Customer Name') ?></label></td>
+									<td class="value">																		
+										<strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong>								
+									</td>
+								</tr>
+								<tr>
+									<td class="label"><label><?php echo Mage::helper('webpos')->__('Email') ?></label></td>
+									<td class="value"><strong><?php echo $_order->getCustomerEmail() ?></strong></td>
+								</tr>
+								<?php if ($_groupName = $this->getCustomerGroupName($_order)) : ?>
+								<tr>
+									<td class="label"><label><?php echo Mage::helper('webpos')->__('Customer Group') ?></label></td>
+									<td class="value"><strong><?php echo $_groupName ?></strong></td>
+								</tr>
+								<?php endif; ?>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="clear"></div>
+
+				<div class="box-left">
+					<!--Billing Address-->
+					<div class="entry-edit">
+						<div class="entry-edit-head">
+							<h4 class="icon-head head-billing-address"><?php echo Mage::helper('webpos')->__('Billing Address') ?></h4>							
+						</div>
+						<fieldset class="fieldset">
+							<address class="address"><?php echo $_order->getBillingAddress()->getFormated(true) ?></address>
+						</fieldset>
+					</div>
+				</div>
+				<?php if (!$_order->getIsVirtual()): ?>
+				<div class="box-right">
+					<!--Shipping Address-->
+					<div class="entry-edit">
+						<div class="entry-edit-head">
+							<h4 class="icon-head head-shipping-address"><?php echo Mage::helper('webpos')->__('Shipping Address') ?></h4>						
+						</div>
+						<fieldset class="fieldset">
+							<address class="address"><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+						</fieldset>
+					</div>
+				</div>
+				<div class="clear"></div>
+				<?php endif; ?>
+		<!-- End order info-->
+
+			<input type="hidden" name="order_id" value="<?php echo $_order->getId() ?>"/>
+			<?php if ($_order->getIsVirtual()): ?>
+			<div class="box-right">
+			<?php else: ?>
+			<div class="box-left">
+			<?php endif; ?>
+				<!--Payment Method-->
+				<div class="entry-edit">
+					<div class="entry-edit-head">
+						<h4 class="icon-head head-payment-method"><?php echo Mage::helper('webpos')->__('Payment Information') ?></h4>
+					</div>
+					<fieldset class="fieldset">
+						<div class="payment_field">
+							<?php //echo $this->getPaymentHtml() ?>
+							<?php 
+								$block = $this->getLayout()->getBlock('order_payment');
+								// $block->setOrder(Mage::getModel('sales/order')->load($_order->getId()));							
+								$block->setOrder($_order);							
+							?>									
+							<?php echo $this->getChildHtml('order_payment') ?>
+							<div class="address"><?php echo Mage::helper('webpos')->__('Order was placed using %s', $_order->getOrderCurrencyCode()) ?></div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<?php if (!$_order->getIsVirtual()): ?>
+			<div class="box-right">
+				<!--Shipping Method-->
+				<div class="entry-edit">
+					<div class="entry-edit-head">
+						<h4 class="icon-head head-shipping-method"><?php echo Mage::helper('webpos')->__('Shipping &amp; Handling Information') ?></h4>
+					</div>
+					<fieldset class="fieldset">	
+						<div class="address">
+							<?php if ($_order->getShippingDescription()): ?>
+								<strong><?php echo $this->escapeHtml($_order->getShippingDescription()) ?></strong>					
+							<?php else: ?>
+								<?php echo $this->helper('webpos')->__('No shipping information available'); ?>
+							<?php endif; ?>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+			<?php endif; ?>
+			<div class="clear"></div>
+			<?php if ($_order->getGiftMessageId()): ?>
+				<?php $message = Mage::getModel('giftmessage/message')->load($_order->getGiftMessageId())?>
+				<div class="entry-edit giftmessage-entry">
+					<div class="entry-edit-head">
+						<h4><?php echo Mage::helper('sales')->__('Gift Message') ?></h4>
+					</div>
+					<fieldset class="fieldset">
+						<table cellspacing="0" class="form-list">
+							<tr>
+								<td style="width:20% !important" class="label"><label><?php echo Mage::helper('webpos')->__('From Name: ') ?></label></td>
+								<td class="value"><?php echo $message->getSender() ?></td>
+							</tr>
+							<tr>
+								<td style="width:20% !important" class="label"><label><?php echo Mage::helper('webpos')->__('To Name: ') ?></label></td>
+								<td class="value"><?php echo $message->getRecipient() ?></td>
+							</tr>
+							<tr>
+								<td style="width:20% !important" class="label"><label><?php echo Mage::helper('webpos')->__('Message: ') ?></label></td>
+								<td class="value"><?php echo $message->getMessage() ?></td>
+							</tr>								
+						</table>
+					</fieldset>
+				</div>
+			<?php endif ?>
+			<div class="clear"></div>
+			<div class="entry-edit-items">
+				<div class="entry-edit-head">
+					<h4 class="icon-head head-products"><?php echo Mage::helper('webpos')->__('Items Ordered') ?></h4>
+				</div>
+			</div>
+		
+		<!-- View Items-->
+			<div class="grid np">
+			  <div class="hor-scroll">
+				<table cellspacing="0" class="data order-tables">
+					<col />
+					<col width="1" />
+					<col width="1" />
+					<col width="1" />
+					<col width="1" />
+					<col width="1" />
+					<col width="1" />
+					<col width="1" />
+					<col width="1" />
+					<col width="1" />
+					<thead>
+						<tr class="theadings">
+							<th><?php echo $this->helper('webpos')->__('Product') ?></th>
+							<th><span class="nobr"><?php echo $this->helper('webpos')->__('Item Status') ?></span></th>
+							<th><span class="nobr"><?php echo $this->helper('webpos')->__('Original Price') ?></span></th>
+							<th><?php echo $this->helper('webpos')->__('Price') ?></th>
+							<th class="a-center"><?php echo $this->helper('webpos')->__('Qty') ?></th>
+							<th><?php echo $this->helper('webpos')->__('Subtotal') ?></th>
+							<th><span class="nobr"><?php echo $this->helper('webpos')->__('Tax Amount') ?></span></th>
+							<th><span class="nobr"><?php echo $this->helper('webpos')->__('Tax Percent') ?></span></th>
+							<th><span class="nobr"><?php echo $this->helper('webpos')->__('Discount Amount') ?></span></th>
+							<th class="last"><span class="nobr"><?php echo $this->helper('webpos')->__('Row Total') ?></span></th>	
+						</tr>
+					</thead>
+					<?php $_items = $_order->getItemsCollection() ?>
+					<?php $i=0;foreach ($_items as $_item):?>	
+						<?php $baseSubTotal = Mage::app()->getStore()->formatPrice($_item->getData('qty_ordered')/1 * $_item->getData('price')/1);?>
+						<?php $original_price = Mage::app()->getStore()->formatPrice($_item->getData('original_price'));?>						
+						<?php $price = Mage::app()->getStore()->formatPrice($_item->getData('price'));?>						
+						<?php $tax_amount = Mage::app()->getStore()->formatPrice($_item->getData('tax_amount'));?>						
+						<?php $discount_amount = Mage::app()->getStore()->formatPrice($_item->getData('discount_amount'));?>						
+						<?php $row_total = Mage::app()->getStore()->formatPrice($_item->getData('row_total'));?>						
+						<?php $tax_percent = $_item->getData('tax_percent').'%'?>						
+						<?php if ($_item->getParentItem()) continue; else $i++;?>
+						<tbody class="<?php echo $i%2?'even':'odd' ?>">
+							<tr class="<?php echo ($i%2)?'fist even':' last odd'?>">
+							<td><?php echo $_item->getData('name')?></td>							
+							<td><?php echo $_item->getStatus()?></td>
+							<td><?php echo $original_price?></td>
+							<td><?php echo $price?></td>
+							<td><?php echo $_item->getData('qty_ordered')?></td>
+							<td><?php echo $baseSubTotal?></td>						
+							<td><?php echo $tax_amount?>
+							<td><?php echo $tax_percent?></td>
+							<td><?php echo $discount_amount?></td>
+							<td><?php echo $row_total?></td>							
+						</tr>						
+						</tbody>
+					<?php endforeach; ?>
+				</table>
+			  </div>
+			</div>
+			
+		<br/>				
+		<div class="clear"></div>
+		<div class="clear"></div>
+		
+		<div class="box-left history">									
+			<!-- begin of customer comment -->
+			<?php if($_order->getWebposOrderComment()):?>	
+			
+				<div class="entry-edit comment">
+					<div class="entry-edit-head">
+						<h4 class="icon-head head-shipping-method"><?php echo Mage::helper('sales')->__('Customer Comment') ?></h4>
+					</div>
+					<div style="border: 1px solid #D6D6D6; overflow:auto;">			
+						<?php echo $_order->getWebposOrderComment();?>
+					</div>
+				</div>
+			
+			<?php endif;?>
+			<!-- end of customer comment -->
+			<!-- Survey -->
+			<?php
+				$orderId = $_order->getId();
+				$survey = Mage::getModel('webpos/survey')->load($orderId, 'order_id');		
+			?>
+			<?php if($survey->getId()):?>				
+				<div class="entry-edit survey">
+					<div class="entry-edit-head">
+						<h4 class="icon-head head-shipping-method"><?php echo Mage::helper('sales')->__('Survey Information') ?></h4>
+					</div>
+					<div style="border: 1px solid #D6D6D6; overflow:auto; white-space:nowrap;">						
+					<div class="grid">
+						<div class="hor-scroll">
+							<table cellspacing="0" class="data">
+								<tbody>					
+									<tr class="odd">
+										<td class="a-left" style="width:30%;border-right:none !important;font-weight:bold" ><?php echo Mage::helper('webpos')->__('Survey Question :') ?></td>
+										<td class="a-left">
+											<?php echo $survey->getQuestion();?>
+										</td>						
+									</tr>														
+									<tr class="even">							
+										<td class="a-left" style="width:25%;border-right:none !important;font-weight:bold"><?php echo Mage::helper('webpos')->__('Answer: ') ?></td>	
+										<td class="a-left">
+											<?php echo $survey->getAnswer();?>
+										</td>							
+									</tr>								
+								</tbody>
+							</table>
+						</div>
+					</div>
+					</div>
+				</div>				
+			<?php endif;?>					
+		</div>
+		<div class="box-right entry-edit order-total">
+			<div class="entry-edit-head"><h4><?php echo Mage::helper('webpos')->__('Order Totals') ?></h4></div>
+			<div class="order-totals">			
+				<?php 
+					$block = $this->getLayout()->getBlock('order_totals');
+					// $block->setOrder(Mage::getModel('sales/order')->load($_order->getId()));							
+					$block->setOrder($_order);							
+				?>			
+				<?php echo $this->getChildHtml('order_totals') ?>
+			</div>
+		</div>
+		<div class="clear"></div>			
+	</div>	
+</div>
+

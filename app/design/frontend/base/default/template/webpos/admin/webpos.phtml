@@ -1,0 +1,1218 @@
+<?php $styleChange = Mage::getStoreConfig('webpos/style_management/style', Mage::app()->getStore(true)->getId()) ?>
+<?php $background_color = Mage::helper('webpos')->getBackgroundColor($styleChange);?>
+<?php if (!$styleChange || $styleChange == 'orange'): ?>
+    <?php $styleUse = $this->getSkinUrl('images/webpos/style/orange/') ?>
+<?php else: ?>
+    <?php $styleUse = $this->getSkinUrl('images/webpos/style/' . $styleChange . '/') ?>
+<?php endif ?>
+
+<style type="text/css">
+    /*******Ajax cart style*********
+    *******************************/
+
+    div.ajaxcart-loading{
+        position:fixed;
+        top:45%;
+        left:50%;
+        width:172px;
+        text-align:center;showOrder
+        margin-left:-125px;
+        padding:15px 60px;
+        border:2px solid #F1AF73;
+        color:#D85909;
+        background:#FFF4E9;
+        z-index: 197;
+    }
+
+    div.ajaxcart-content{
+        position:absolute;
+        top: 18%;
+        width: 471px;
+        border:2px solid #C4C1BC;
+        background:#FFF4E9;
+        z-index: 189;
+    }
+
+    div.ajaxcart-overlay{
+        width: 100%;
+        background: #000000;
+        position: fixed;
+        opacity: 0.5;
+        filter:alpha(opacity=50);
+        top: 0;
+        left: 0;
+        z-index: 196;
+    }
+
+    div.ajaxcart-popup-overlay{
+        width: 100%;
+        background: #000000;
+        position: fixed;
+        opacity: 0.5;
+        filter:alpha(opacity=50);
+        top: 0;
+        left: 0;
+        z-index: 188;
+    }
+
+    div.ajaxcart-product-name{
+        margin: 13px 0px -8px 23px;
+        font: bold 15px/1.35 Arial, Helvetica, sans-serif;
+    }
+
+    div.ajaxcart-continue{
+        margin: 18px;
+    }
+
+    div.ajaxcart-checkout{
+        float: right;
+    }
+
+    button.ajaxcart-btn-continue{
+        border: 1px solid #C4C1BC;
+        background: #CCC;
+        color: #000;
+        font: bold 12px/19px Arial, Helvetica, sans-serif;
+        cursor: pointer;
+    }
+
+    button.ajaxcart-btn-continue span.span{
+        border: 1px;
+        padding: 0 8px 0 8px;
+    }
+</style>
+
+<style type="text/css">
+    .header-left{
+        text-align:left;
+    }
+    .super-wrapper{
+        float:left;
+        overflow:hidden;
+        width:45%;
+    }
+
+    .super{
+        /*background: none repeat scroll 0 0 #F5F5F5;*/
+        border-right: 1px solid #DDDDDD;
+        padding: 14px 10px 0;
+    }	
+    .h-rightside{
+        float:right;
+        width: 130px;
+    }
+    .global-search-wrapper{
+        float:left;
+        width: 45%;
+    }
+    .global-search{
+        padding:10px 30px 0 24px;
+    }
+    .global-search legend{
+        color: #717171;
+        display: block;
+        font-size: 1.5em;
+        font-weight: bolder;
+        height: auto;
+        line-height: 2em;
+        overflow: auto;
+        visibility: visible;
+        width: auto;
+    }
+    /*div .cart{
+            height: 195px;
+            overflow: auto;
+    }*/
+    .global-search input{
+        font-size: 25px;
+        line-height: 25px;
+        /*width: 80%;*/
+        /*line-height: 1px;*/
+    }
+    #search_customer{
+        font-size: 25px;
+        line-height: 25px;
+        /*font-size: 2.2em;
+        width: 80%;*/
+    }
+    /* Search autocomplete */
+    div.autocomplete {
+        z-index:10000;
+        position:absolute;
+        width:250px;
+        background-color:white;
+        //border: none !important;
+        margin:0;
+        padding:0;
+    }
+    #product_search_autocomplete ul li:hover{
+        background-color:#DCEBF0;
+    }
+    div.autocomplete ul { margin:0; padding:0; }
+    div.autocomplete ul li.selected { background-color:#dcebf0; }
+    div.autocomplete ul li { padding:.5em .7em; min-height:32px; cursor:pointer; text-align:left; color:#2f2f2f; line-height:1.3em; }
+    #order-items .entry-edit .entry-edit-head{
+        display:none !important;
+    }
+
+    #edit_form{
+        background: none repeat scroll 0 0 #FBFAF6;
+    }
+    .header-top {
+        /*border-bottom: medium none !important;*/
+        border-color: #CBD3D4 #CBD3D4 -moz-use-text-color;
+        border-image: none;
+        /*border-style: solid solid none;*/
+        /*border-width: 1px 1px medium;*/
+        padding-bottom: 110px !important;
+        border-right: 1px solid #DDDDDD;
+        border-left: 1px solid #DDDDDD;
+        border-top: 1px solid #DDDDDD;
+    }
+    .grid tr.headings th.no-link {
+        color: #67767E;
+        padding: 6px 8px !important;
+    }
+
+    .grid tr.headings {
+        background: none repeat scroll 0 0 transparent !important;
+    }
+    .grid tr.headings th {
+        border-style: none !important;
+    }
+
+    .grid tr.headings th.no-link {
+        color: #000000;
+        font-size: 14px;
+        font-weight: normal;
+    }
+
+    .grid table td {
+        color: #666666;
+    }
+
+    .remove {
+        background: url("<?php echo $this->getSkinUrl('images/onestepcheckout/adminhtml/remove.png') ?>") no-repeat scroll transparent;
+        display: block;
+        margin: 0 auto;
+        text-indent: -9999px;
+        width: 21px;
+        height: 21px;
+        margin-top:10px;
+    }
+
+    #order-items_grid {
+        height: 195px;
+        overflow: auto;
+    }
+    #order-items_grid {
+        margin-bottom: 10px;
+        padding-bottom: 0;
+    }
+    #customer_search_autocomplete{
+        width: 480px!important;
+    }
+    button.btn-update{
+        background:<?php echo $background_color;?> !important;
+        border: 0 none;
+        color: #FFFFFF;
+        /*height: 40px;
+        padding: 0 0 0 9px;*/
+    }
+    button.btn-update span span{
+        color:white;
+    }
+
+    button.btn-empty{
+        display:none !important;
+    }
+    button.btn-continue{
+        display:none !important;
+    }
+    #customer_account_fields{
+        padding-top:20px;
+        padding-bottom:20px;
+    }
+    .data-table tfoot tr.first td {
+        background-color: #DEE5E8 !important;
+    }
+</style>
+<style type="text/css">
+    .one-step-checkout h3.step_1
+    {
+        background:url(<?php echo $styleUse; ?>onestepcheckout_step_1.png) center left no-repeat;
+    }
+
+    .one-step-checkout h3.step_2
+    {
+        background:url(<?php echo $styleUse; ?>onestepcheckout_step_2.png) center left no-repeat;
+    }
+
+    .one-step-checkout h3.step_3
+    {
+        background:url(<?php echo $styleUse; ?>onestepcheckout_step_3.png) center left no-repeat;
+    }
+
+    .one-step-checkout h3.step_4
+    {
+        background:url(<?php echo $styleUse; ?>onestepcheckout_step_4.png) center left no-repeat;
+    }
+
+    .one-step-checkout h3.step_5
+    {
+        background:url(<?php echo $styleUse; ?>onestepcheckout_step_5.png) center left no-repeat;
+    }
+    #review_step_header{
+        background:url(<?php echo $styleUse; ?>review_step_header.png) center left no-repeat !important;
+    }
+    button.btn-checkout {
+        background:<?php echo $background_color;?>;
+    }
+    
+    button.btn-checkout span span {
+        background-position: 100% 0 !important;
+        color:white;       
+        font-weight: bold;
+    }
+    button#add_coupon_code_button span{
+        background:url(<?php echo $styleUse; ?>apply_coupon.png) repeat scroll 0 0 transparent !important;
+        border: 0 none;
+        color: #FFFFFF;
+        /*height: 40px;
+        padding: 0 0 0 9px;*/
+    }
+    button#remove_coupon_code_button span{
+        background:url(<?php echo $styleUse; ?>apply_coupon.png) repeat scroll 0 0 transparent !important;
+        border: 0 none;
+        color: #FFFFFF;
+        /*height: 40px;
+        padding: 0 0 0 9px;*/
+    }
+
+    button#add_coupon_code_button span span {
+        background-position: 100% 0 !important;
+        /*padding: 0 25px 0 16px;*/
+    }
+    .ajax-loader1{
+        background:url(<?php echo $styleUse; ?>loading-icon.gif) top left no-repeat !important;
+    }
+    .ajax-loader2{
+        background:url(<?php echo $styleUse; ?>loading-icon.gif) top left no-repeat !important;
+    }
+    .ajax-loader3{
+        background:url(<?php echo $styleUse; ?>loading-icon.gif) top left no-repeat !important;
+    }
+    .ajax-loader4{
+        background:url(<?php echo $styleUse; ?>loading-icon.gif) top left no-repeat !important;
+    }
+    button.place-order-loader span {
+        background:none repeat scroll 0 0 #CCCCCC !important;
+        border: 0 none;
+        color: #FFFFFF;
+        font: bold 15px/40px Arial,Helvetica,sans-serif;
+        height: 40px;
+        padding: 0 0 0 9px;
+    }
+</style>
+<?php $this->clearCache(); ?>
+<div id="ajaxcart-load-ajax" style="display:none;">
+    <div id="load" class="ajaxcart-overlay">&nbsp;</div>
+    <div id="ajaxcart-loading" class="ajaxcart-loading">
+        <img alt="<?php echo $this->__('Loading') ?>..." src="<?php echo $this->getSkinUrl('images/opc-ajax-loader.gif') ?>" /><br />
+        <?php echo $this->__('Loading') ?>...
+    </div>
+    <div id="form-paypal" style="display:none;" class="form-paypal">
+    </div>
+</div>
+<ol class="one-step-checkout clearfix">
+    <li>
+        <h1 class="checkout_header"><?php echo $this->__('Web POS'); ?></h1>
+    </li>
+
+    <!-- Admin information -->
+    <div class="header-top">  
+        <div class="header-left">
+            <div class="super-wrapper">
+                <div class="super">
+                    <img width="220px" src="<?php echo $this->getSkinUrl('images/webpos/adminhtml/logo-web-pos.png') ?>" />
+                    <div class="h-rightside">
+                        <ul class="links">
+                            <li><?php echo $this->__("Date: %s", $this->formatDate(null, 'short', true)) ?></li>
+                            <?php $cookie = Mage::getSingleton('core/cookie'); ?>
+                            <li><?php echo $this->__("Staff: %s", $this->escapeHtml(Mage::getModel('admin/user')->load($cookie->get('webpos_admin_id'))->getUsername())) ?></li>
+                        </ul>
+                        <ul class="button">
+                            <li><a href="<?php echo $cookie->get('webpos_admin_adminlogin') ?>" class="link-logout"><?php echo $this->__('Return to Admin') ?></a></li>
+                            <li><a href="<?php echo $cookie->get('webpos_admin_adminlogout') ?>" class="link-logout"><?php echo $this->__('Log Out') ?></a></li>
+                        </ul>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>        
+            </div>
+        </div>
+        <div class="global-search-wrapper">
+            <div class="global-search">
+                <fieldset>
+                    <legend><?php echo $this->__("Name/Product SKU"); ?></legend>
+                    <?php $defSearch = $this->__('Global Record Search') ?>
+                    <input id="global_search" name="keyword" type="text" class="input-text" value="<?php if (!empty($query)): ?><?php echo $query ?><?php else: ?><?php echo $defSearch ?><?php endif ?>" onfocus="if (this.value == '<?php echo $defSearch ?>')
+                                this.value = '';" onblur="if (this.value == '')
+                                this.value = '<?php echo $defSearch ?>';" />
+                    <span id="global_search_indicator" class="autocomplete-indicator" style="display: none">
+                        <img src="<?php echo $styleUse; ?>loading-icon.gif" alt="<?php echo $this->__('Loading...') ?>" class="v-middle"/>
+                    </span>
+                    <div id="global_search_autocomplete" class="autocomplete" style="z-index:10;"></div>
+                    <script type="text/javascript">
+                        $("global_search").focus();
+                        new Ajax.Autocompleter(
+                                'global_search',
+                                'global_search_autocomplete',
+                                '<?php echo $this->getUrl('webpos/index/productSearch', array('_secure' => true)) ?>',
+                                {
+                                    paramName: "keyword",
+                                    minChars: 2,
+                                    indicator: "global_search_indicator",
+                                    updateElement: getSelectionId,
+                                    evalJSON: 'force',
+                                    onShow: function(element, update) {
+                                        if ($('sku_only')) {
+                                            var url_only = $('sku_only').getAttribute('url');
+                                            if (url_only != '') {
+                                                $("global_search").value = '';
+                                                $("global_search").focus();
+                                                $("global_search_indicator").hide();
+                                                ajaxcart.addToCartHandle(url_only, '');
+                                                var elem = $('global_search_autocomplete');
+                                                elem.removeChild(elem);
+
+                                            }
+                                        }
+                                        if (!update.style.position || update.style.position == 'absolute') {
+                                            update.style.position = 'absolute';
+                                            Position.clone(element, update, {
+                                                setHeight: false,
+                                                offsetTop: element.offsetHeight
+                                            });
+                                        }
+                                        Effect.Appear(update, {duration: 0.15});
+                                    }
+                                    // autoSelect: true
+                                }
+                        );
+                        function getSelectionId(li)
+                        {
+                            $("global_search").value = '';
+                            $("global_search").focus();
+                        }
+                    </script>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <div id="cart">
+        <?php echo $this->getChildHtml('checkout.cart'); ?>	
+    </div>
+    <div class="clear"></div>
+
+    <div id="customer_account_fields">
+        <div id="customer_guest" style="float:left;padding-right:20px;">
+            <input id="guest_customer" type="radio" name="order[account][type]" value="guest" onclick="showSearchCustomer();"/>
+            <label for="guest_customer"><?php echo $this->__("Guest Checkout") ?></label>
+            <div id="customer_guest_content">
+                <input id="guest_customer_id" disabled="disabled" type="hidden" name="order[customer_id]" value="false" />
+            </div>
+        </div>
+        <div id="customer_exist" style="float:left;">
+<!--            <input type="hidden" name="customer_flag" id="customer_flag" value="0">-->
+            <input id="exist_customer" type="radio" name="order[account][type]" value="exist" <?php
+            if (Mage::getModel('checkout/session')->getData('webpos_customerid')) {
+                echo 'checked="checked"';
+            }
+            ?> onclick="showSearchCustomer();"/>
+            <label for="exist_customer"><?php echo $this->__("Existing Customer") ?></label>
+            <br />
+            <?php $defCusSearch = $this->__('Phone/Email/Name') ?>
+            <input style="display:none;" id="search_customer" name="query" type="text" class="input-text" value="<?php if (!empty($query)): ?><?php echo $query ?><?php else: ?><?php echo $defCusSearch ?><?php endif ?>" onfocus="if (this.value == '<?php echo $defCusSearch ?>')
+                                this.value = '';" onblur="if (this.value == '')
+                                this.value = '<?php echo $defCusSearch ?>';" />
+            <span id="customer_search_indicator" class="autocomplete-indicator" style="display: none">
+                <img src="<?php echo $styleUse; ?>loading-icon.gif" alt="<?php echo $this->__('Loading...') ?>" class="v-middle"/>
+            </span>
+            <div id="customer_search_autocomplete" class="autocomplete"></div>
+            <script type="text/javascript">
+                        function showSearchCustomer() {
+                            if ($('exist_customer') && $('exist_customer').checked && $('search_customer')) {
+                                $('search_customer').show();
+                                if ($('show_create_account'))
+                                    $('show_create_account').hide();
+                                $('account_type_id').value = 'exist';
+                            } else {
+                                $('search_customer').hide();
+                                if ($('show_create_account'))
+                                    $('show_create_account').show();
+                                $('customer_id').value = '';
+                                $('account_type_id').value = 'guest';
+                                var save_customer_exist_url = '<?php echo $this->getUrl('webpos/index/save_customer_exist', array('_secure' => true)); ?>';
+                                save_customer_exist_url += 'customerId/0';
+                                new Ajax.Request(save_customer_exist_url, {
+                                    method: 'post',
+                                    parameters: '',
+                                    onFailure: '',
+                                    onSuccess: ''
+                                });
+                            }
+                        }
+                        new Ajax.Autocompleter(
+                                'search_customer',
+                                'customer_search_autocomplete',
+                                '<?php echo $this->getUrl('webpos/index/customerSearch', array('_secure' => true)) ?>',
+                                {
+                                    paramName: "keyword",
+                                    minChars: 2,
+                                    indicator: "customer_search_indicator",
+                                    updateElement: getCustomerSelectionId,
+                                    evalJSON: 'force'
+                                }
+                        );
+                        function getCustomerSelectionId(li) {
+                            $("search_customer").focus();
+
+                            if (li.getAttribute('id') && (li.getAttribute('id') != '') && (li.getAttribute('id') != 'null')) {
+                                var id = li.getAttribute('id');
+                            } else {
+                                var id = '';
+                            }
+                            if (li.getAttribute('email') && (li.getAttribute('email') != '') && (li.getAttribute('email') != 'null')) {
+                                var email = li.getAttribute('email');
+                            } else {
+                                var email = '';
+                            }
+                            if (li.getAttribute('prefix') && (li.getAttribute('prefix') != '') && (li.getAttribute('prefix') != 'null')) {
+                                var prefix = li.getAttribute('prefix');
+                            } else {
+                                var prefix = '';
+                            }
+                            if (li.getAttribute('firstname') && (li.getAttribute('firstname') != '') && (li.getAttribute('firstname') != 'null')) {
+                                var firstname = li.getAttribute('firstname');
+                            } else {
+                                var firstname = '';
+                            }
+                            if (li.getAttribute('middlename') && (li.getAttribute('middlename') != '') && (li.getAttribute('middlename') != 'null')) {
+                                var middlename = li.getAttribute('middlename');
+                            } else {
+                                var middlename = '';
+                            }
+                            if (li.getAttribute('lastname') && (li.getAttribute('lastname') != '') && (li.getAttribute('lastname') != 'null')) {
+                                var lastname = li.getAttribute('lastname');
+                            } else {
+                                var lastname = '';
+                            }
+                            if (li.getAttribute('suffix') && (li.getAttribute('suffix') != '') && (li.getAttribute('suffix') != 'null')) {
+                                var suffix = li.getAttribute('suffix');
+                            } else {
+                                var suffix = '';
+                            }
+                            if (li.getAttribute('company') && (li.getAttribute('company') != '') && (li.getAttribute('company') != 'null')) {
+                                var company = li.getAttribute('company');
+                            } else {
+                                var company = '';
+                            }
+                            if (li.getAttribute('city') && (li.getAttribute('city') != '') && (li.getAttribute('city') != 'null')) {
+                                var city = li.getAttribute('city');
+                            } else {
+                                var city = '';
+                            }
+                            if (li.getAttribute('country_id') && (li.getAttribute('country_id') != '') && (li.getAttribute('country_id') != 'null')) {
+                                var country_id = li.getAttribute('country_id');
+                            } else {
+                                var country_id = '';
+                            }
+                            if (li.getAttribute('region') && (li.getAttribute('region') != '') && (li.getAttribute('region') != 'null')) {
+                                var region = li.getAttribute('region');
+                            } else {
+                                var region = '';
+                            }
+                            if (li.getAttribute('postcode') && (li.getAttribute('postcode') != '') && (li.getAttribute('postcode') != 'null')) {
+                                var postcode = li.getAttribute('postcode');
+                            } else {
+                                var postcode = '';
+                            }
+                            if (li.getAttribute('telephone') && (li.getAttribute('telephone') != '') && (li.getAttribute('telephone') != 'null')) {
+                                var telephone = li.getAttribute('telephone');
+                            } else {
+                                var telephone = '';
+                            }
+                            if (li.getAttribute('fax') && (li.getAttribute('fax') != '') && (li.getAttribute('fax') != 'null')) {
+                                var fax = li.getAttribute('fax');
+                            } else {
+                                var fax = '';
+                            }
+                            if (li.getAttribute('vat_id') && (li.getAttribute('vat_id') != '') && (li.getAttribute('vat_id') != 'null')) {
+                                var vat_id = li.getAttribute('vat_id');
+                            } else {
+                                var vat_id = '';
+                            }
+                            if (li.getAttribute('region_id') && (li.getAttribute('region_id') != '') && (li.getAttribute('region_id') != 'null')) {
+                                var region_id = li.getAttribute('region_id');
+                            } else {
+                                var region_id = '';
+                            }
+                            if (li.getAttribute('street') && (li.getAttribute('street') != '') && (li.getAttribute('street') != 'null')) {
+                                var street = li.getAttribute('street');
+                            } else {
+                                var street = '';
+                            }
+                            $('customer_id').value = id;
+                            $('account_type_id').value = 'exist';
+                            if ($('billing:email'))
+                                $('billing:email').value = email;
+                            if ($('billing:prefix'))
+                                $('billing:prefix').value = prefix;
+                            if ($('billing:firstname'))
+                                $('billing:firstname').value = firstname;
+                            if ($('billing:middlename'))
+                                $('billing:middlename').value = middlename;
+                            if ($('billing:lastname'))
+                                $('billing:lastname').value = lastname;
+                            if ($('billing:suffix'))
+                                $('billing:suffix').value = suffix;
+                            if ($('billing:company'))
+                                $('billing:company').value = company;
+                            if ($('billing:city'))
+                                $('billing:city').value = city;
+                            if ($('billing:country_id'))
+                                $('billing:country_id').value = country_id;
+                            if ($('billing:region'))
+                                $('billing:region').value = region;
+                            if ($('billing:postcode'))
+                                $('billing:postcode').value = postcode;
+                            if ($('billing:telephone'))
+                                $('billing:telephone').value = telephone;
+                            if ($('billing:fax'))
+                                $('billing:fax').value = fax;
+                            if ($('billing:vat_id'))
+                                $('billing:vat_id').value = vat_id;
+                            if ($('billing:region_id'))
+                                $('billing:region_id').value = region_id;
+                            if ($('billing:street1'))
+                                $('billing:street1').value = street;
+<?php if (Mage::helper('webpos')->getActiveRewardPoints() && Mage::helper('rewardpoints')->isEnable()): ?>
+                                var save_customer_exist_url = '<?php echo $this->getUrl('webpos/index/save_customer_exist', array('_secure' => true)); ?>';
+                                //					save_customer_exist_url += 'customerId/'+id;
+                                /*BachLee 21.10.2013*/
+                                var save_address_url = '<?php echo $this->getUrl('webpos/index/save_address', array('_secure' => true)) ?>';
+                                //$('customer_flag').value = 0;
+                                new Ajax.Request(save_customer_exist_url, {
+                                    method: 'get',
+                                    parameters: {
+                                        customerId: id
+                                    },
+                                    onFailure: '',
+                                    onSuccess: function(transport) {
+                                        var customer_id = transport.responseText;
+                                        if (customer_id.length > 0) {
+                                           // $('customer_flag').value = 1;
+                                            //save_address_information(save_address_url);
+                                            checkCartToAddHandle(); /* Hai.Tran 24.10.2013 */
+                                        }
+                                    }
+
+                                });
+                                updateBillingRegion();
+<?php else: ?>
+                                var save_customer_exist_url = '<?php echo $this->getUrl('webpos/index/save_customer_exist', array('_secure' => true)); ?>';
+                                save_customer_exist_url += 'customerId/' + id;
+                                var save_address_url = '<?php echo $this->getUrl('webpos/index/save_address', array('_secure' => true)) ?>';
+                                new Ajax.Request(save_customer_exist_url, {
+                                    method: 'post',
+                                    parameters: '',
+                                    onFailure: '',
+                                    onSuccess: '',
+                                    onComplete: function(){
+                                        checkCartToAddHandle(); /* Hai.Tran 24.10.2013 */
+                                    }
+                                });
+                                updateBillingRegion();
+                                //save_address_information(save_address_url);
+<?php endif; ?>
+
+                            
+//                            if ($('customer_flag').value === 1) {
+//                                save_address_information(save_address_url);
+//                            }
+
+                            /* Up Hai.Ta 28.5.2013 */
+<?php if (Mage::helper('webpos')->getConfigCheckEmail()): ?>
+                                var urlLoadQuote = '<?php echo Mage::helper('webpos')->getUrlSetCustomerToQuote(); ?>';
+                                var carUrlLoadQuote = '<?php echo $this->getUrl('webpos/index/checkcart', array('_secure' => true)) ?>';
+                                var handleLoadQuote = '<?php echo $this->getUrl('checkout/cart/index', array('_secure' => true)); ?>';
+                                if (email) {
+                                    _loadCustomer(urlLoadQuote, $('billing:email').value, carUrlLoadQuote, handleLoadQuote);
+                                }
+<?php endif; ?>
+                            /*end*/
+
+                        }
+                        if ($('exist_customer') && $('exist_customer').checked && $('search_customer')) {
+                            $('search_customer').show();
+                            if ($('show_create_account'))
+                                $('show_create_account').hide();
+                        } else {
+                            if ($('customer_id'))
+                                $('customer_id').value = '';
+                        }
+
+            </script>
+        </div>
+    </div>
+    <div class="clear"></div>
+    <li class="address-order">
+        <form id="one-step-checkout-form" method="post" action="<?php echo $this->getUrl('webpos/index/saveOrder', array('_secure' => true)); ?>">
+            <input id="customer_id" name="billing[customer_id]" type="hidden" value="<?php echo Mage::getModel('checkout/session')->getData('webpos_customerid'); ?>" />
+            <input id="account_type_id" name="billing[account_type]" type="hidden" value="<?php
+            if (Mage::getModel('checkout/session')->getData('webpos_customerid')) {
+                echo 'exist';
+            } else {
+                echo 'guest';
+            }
+            ?>" />
+            <div class="address-information <?php if ($this->configData['page_layout'] == '3columns'): ?>address-info-3-columns<?php endif; ?>">
+                <?php echo $this->getChildHtml('webpos.billing'); ?>				
+                <?php echo $this->getChildHtml('webpos.shipping'); ?>
+            </div>
+            <div class="order-information <?php if ($this->configData['page_layout'] == '3columns'): ?>order-info-3-columns<?php endif; ?>">
+                <ol>
+                    <?php if (!$this->isVirtual() && !Mage::helper('webpos')->isHideShippingMethod()): ?>
+                        <li class="shipping-method">						
+                            <h3  id="shipping_method_step_header" class="step_2">
+                                <?php echo $this->__('SHIPPING METHOD'); ?>
+                            </h3>
+                            <div class="onestepcheckout-shipping-method-section">
+                                <?php echo $this->getChildHtml('webpos.shipping_method'); ?>						
+                            </div>
+                            <div class="ajax-loader1" id="ajax-loader1" style="display:none;"></div>
+                        </li>
+                    <?php elseif (Mage::helper('webpos')->isHideShippingMethod()): ?>
+                        <?php $_shippingMethod = $this->hasOnlyOneShippingMethod(); ?>
+                        <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_shippingMethod; ?>" id="s_method_<?php echo $_shippingMethod; ?>" checked="checked" /></span>
+                    <?php endif; ?>
+                    <li class="payment-method">						
+                        <h3 id="payment_method_step_header" <?php if (!$this->isVirtual() && !Mage::helper('webpos')->isHideShippingMethod()): ?> class="step_3"<?php else: ?> class="step_2"<?php endif; ?>>
+                            <?php echo $this->__('PAYMENT METHOD'); ?>
+                        </h3>						
+                        <?php echo $this->getChildHtml('webpos.payment_method'); ?>												
+                    </li>
+                    <?php if ($this->configData['page_layout'] == '2columns'): ?>
+                        <li class="order-review-info">						
+                            <h3 id="review_step_header" <?php if (!$this->isVirtual() && !Mage::helper('webpos')->isHideShippingMethod()): ?> class="step_4" <?php else: ?> class="step_3"<?php endif ?>>
+                                <?php echo $this->__('ORDER REVIEW'); ?>
+                            </h3>					
+                            <?php echo $this->getChildHtml('webpos.review') ?>						
+                            <div class="ajax-loader3" id="ajax-loader3"  style="display:none;"></div>
+                        </li>
+                    <?php endif; ?>
+                </ol>
+            </div>
+
+            <?php if ($this->configData['page_layout'] == '3columns'): ?>
+                <div class="order-review-section">
+                    <ol>
+                        <li class="order-review-info">						
+                            <h3 id="review_step_header" <?php if (!$this->isVirtual() && !Mage::helper('webpos')->isHideShippingMethod()): ?> class="step_4" <?php else: ?> class="step_3"<?php endif ?>>
+                                <?php echo $this->__('ORDER REVIEW'); ?>
+                            </h3>					
+                            <?php echo $this->getChildHtml('webpos.review') ?>						
+                            <div class="ajax-loader3" id="ajax-loader3"  style="display:none;"></div>
+                        </li>
+                    </ol>
+                </div>
+            <?php endif; ?>
+            <?php $_helper = Mage::helper('webpos'); ?>			
+        </form>
+    </li>
+</ol>
+
+<script type="text/javascript">
+//<![CDATA[	
+    var redirect_error = '<?php echo $this->getUrl('webpos/index/index', array('_secure' => true)); ?>';
+<?php $cookie = Mage::getSingleton('core/cookie'); ?>
+<?php if ($webpos_order_id = $cookie->get('webpos_order_id')): ?>
+    <?php $cookie->delete('webpos_order_id') ?>
+    <?php $url = $this->getUrl('webpos/index/printInvoice', array('order_id' => $webpos_order_id, '_secure' => true)); ?>
+        window.open('<?php echo $url ?>', "_blank", "scrollbars=yes, resizable=yes, width=800, height=700");
+<?php endif ?>
+    var onestepcheckoutinadmin = true;
+    var preloadImage = '<?php echo $this->getSkinUrl('images/webpos/preload.gif') ?>';
+    var shipping_method_url = '<?php echo $this->getUrl('webpos/index/save_shipping', array('_secure' => true)); ?>';
+    var enable_update_payment = <?php echo $this->configData['update_payment'] ? 'true' : 'false'; ?>;
+    var show_login_link = false;
+    var show_term_condition_url = '<?php echo $this->getUrl('webpos/index/show_term_condition', array('_secure' => true)); ?>';
+    var form = $('one-step-checkout-form');
+    var reload_payment = <?php echo $this->configData['reload_payment']; ?>
+
+<?php if ($this->configData['enable_ajax']): ?>
+        var save_address_url = '<?php echo $this->getUrl('webpos/index/save_address', array('_secure' => true)) ?>';
+
+    <?php if ($this->isAjaxBillingField('country')): ?>
+            //save billing when country is changed
+            Event.observe('billing:country_id', 'change', function() {
+                //check empty fields
+                var empty = checkEmptyFields($('billing-new-address-form'));
+                if (empty == false || reload_payment == 2)
+                    save_address_information(save_address_url);
+            });
+        <?php if ($this->isShowShippingAddress()): ?>
+                Event.observe('shipping:country_id', 'change', function() {
+                    //check empty fields
+                    var empty = checkEmptyFields($('shipping-new-address-form'));
+                    if (empty == false || reload_payment == 2)
+                        save_address_information(save_address_url);
+                });
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if ($this->isAjaxBillingField('state/region')): ?>
+            //save billing when state / region is changed
+            Event.observe('billing:region_id', 'change', function() {
+                //check empty fields
+                var empty = checkEmptyFields($('billing-new-address-form'));
+                if (empty == false || reload_payment == 2)
+                    save_address_information(save_address_url);
+            });
+            Event.observe('billing:region', 'change', function() {
+                //check empty fields
+                var empty = checkEmptyFields($('billing-new-address-form'));
+                if (empty == false || reload_payment == 2)
+                    save_address_information(save_address_url);
+            });
+        <?php if ($this->isShowShippingAddress()): ?>
+                Event.observe('shipping:region_id', 'change', function() {
+                    //check empty fields
+                    var empty = checkEmptyFields($('shipping-new-address-form'));
+                    if (empty == false || reload_payment == 2)
+                        save_address_information(save_address_url);
+                });
+                Event.observe('shipping:region', 'change', function() {
+                    //check empty fields
+                    var empty = checkEmptyFields($('shipping-new-address-form'));
+                    if (empty == false || reload_payment == 2)
+                        save_address_information(save_address_url);
+                });
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if ($this->isAjaxBillingField('postcode')): ?>
+            //save billing when postcode is changed
+            Event.observe('billing:postcode', 'change', function() {
+                //check empty fields
+                var empty = checkEmptyFields($('billing-new-address-form'));
+                if (empty == false || reload_payment == 2)
+                    save_address_information(save_address_url);
+            });
+        <?php if ($this->isShowShippingAddress()): ?>
+                Event.observe('shipping:postcode', 'change', function() {
+                    //check empty fields
+                    var empty = checkEmptyFields($('shipping-new-address-form'));
+                    if (empty == false || reload_payment == 2)
+                        save_address_information(save_address_url);
+                });
+        <?php endif; ?>
+    <?php endif; ?>
+
+    <?php if ($this->isAjaxBillingField('city')): ?>
+            //save billing when city is changed
+            Event.observe('billing:city', 'change', function() {
+                //check empty fields
+                var empty = checkEmptyFields($('billing-new-address-form'));
+                if (empty == false || reload_payment == 2)
+                    save_address_information(save_address_url);
+            });
+        <?php if ($this->isShowShippingAddress()): ?>
+                Event.observe('shipping:city', 'change', function() {
+                    //check empty fields
+                    var empty = checkEmptyFields($('shipping-new-address-form'));
+                    if (empty == false || reload_payment == 2)
+                        save_address_information(save_address_url);
+                });
+        <?php endif; ?>
+    <?php endif; ?>
+
+        //telephone
+        Event.observe('billing:telephone', 'change', function() {
+            //check empty fields
+            var empty = checkEmptyFields($('billing-new-address-form'));
+            if (empty == false)
+                save_address_information(save_address_url);
+        });
+        Event.observe('shipping:telephone', 'change', function() {
+            //check empty fields
+            var empty = checkEmptyFields($('shipping-new-address-form'));
+            if (empty == false)
+                save_address_information(save_address_url);
+        });
+<?php endif ?>
+
+    //document.observe('dom:loaded', function() {
+    //fix for IE9
+    Event.observe(window, 'load', function() {
+        if ($RF(form, 'payment[method]') != null) {
+            var payment_method = $RF(form, 'payment[method]');
+            if ($('container_payment_method_' + payment_method)) {
+                $('container_payment_method_' + payment_method).show();
+            }
+            if ($('payment_form_' + payment_method)) {
+                $('payment_form_' + payment_method).show();
+            }
+        }
+    });
+
+    function disable_payment() {
+        var options = document.getElementsByName('payment[method]');
+        for (var i = 0; i < options.length; i++) {
+            if (!$(options[i].id).checked) {
+                var container = options[i].id.replace('p_method', 'container_payment_method');
+                if ($(container)) {
+                    $(container).innerHTML = '';
+                }
+            }
+        }
+    }
+
+    function checkpayment() {
+        var options = document.getElementsByName('payment[method]');
+        var pay = true;
+        for (var i = 0; i < options.length; i++) {
+            if ($(options[i].id).checked) {
+                pay = false;
+                break;
+            }
+        }
+        if (pay == true) {
+            return false;
+        }
+        return true;
+    }
+
+    function checkcart() {
+        var checkcartUrl = '<?php echo $this->getUrl('webpos/index/checkcart', array('_secure' => true)) ?>';
+        new Ajax.Request(checkcartUrl, {
+            method: 'post',
+            parameters: '',
+            onFailure: '',
+            onSuccess: function(transport) {
+                if (transport.status == 200) {
+                    if (transport.responseText == 'noItem') {
+                        //alert(transport.responseText);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        });
+    }
+
+    function oscPlaceOrder(element) {
+
+        var validator = new Validation('one-step-checkout-form');
+        if (validator.validate()) {
+            if ($('p_method_hosted_pro') && $('p_method_hosted_pro').checked) {
+                $('onestepcheckout-place-order-loading').show();
+                $('onestepcheckout-button-place-order').removeClassName('btn-checkout');
+                $('onestepcheckout-button-place-order').addClassName('place-order-loader');
+                $('ajaxcart-load-ajax').show();
+                checkAjax('<?php
+echo $this->getUrl('onestepcheckout/admin/saveOrderPro', array('_secure' => true));
+;
+?>');
+            } else {
+                //alert(checkcart());
+                var checkcartUrl = '<?php echo $this->getUrl('webpos/index/checkcart', array('_secure' => true)) ?>';
+                $('onestepcheckout-place-order-loading').show();
+                $('onestepcheckout-button-place-order').removeClassName('btn-checkout');
+                $('onestepcheckout-button-place-order').addClassName('place-order-loader');
+                new Ajax.Request(checkcartUrl, {
+                    method: 'post',
+                    parameters: '',
+                    onFailure: '',
+                    onSuccess: function(transport) {
+                        if (transport.status == 200) {
+                            if (transport.responseText == 'noItem') {
+                                alert('<?php echo $this->__('Shopping Cart is Empty! Please add product to cart!'); ?>');
+                                $('onestepcheckout-place-order-loading').hide();
+                                $('onestepcheckout-button-place-order').addClassName('btn-checkout');
+                                $('onestepcheckout-button-place-order').removeClassName('place-order-loader');
+                                return false;
+                            } else {
+                                if (checkpayment()) {
+                                    element.disabled = true;
+                                    already_placing_order = true;
+                                    disable_payment();
+                                    $('onestepcheckout-place-order-loading').show();
+                                    $('onestepcheckout-button-place-order').removeClassName('btn-checkout');
+                                    $('onestepcheckout-button-place-order').addClassName('place-order-loader');
+                                    $('one-step-checkout-form').submit();
+                                    // checkAjax('<?php echo $this->getCheckoutUrl(); ?>');
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    function checkAjax(url) {
+        var form = $('one-step-checkout-form');
+        var payment_method = $RF(form, 'payment[method]');
+        var shipping_method = $RF(form, 'shipping_method');
+        var parameters = {
+            payment: payment_method,
+            shipping_method: shipping_method
+        }
+        get_billing_data(parameters);
+        get_shipping_data(parameters);
+
+        if ($('giftmessage-type') && $('giftmessage-type').value != '') {
+            parameters[$('giftmessage-type').name] = $('giftmessage-type').value;
+        }
+        if ($('create_account_checkbox_id') && $('create_account_checkbox_id').checked) {
+            parameters['create_account_checkbox'] = 1;
+        }
+        if ($('gift-message-whole-from') && $('gift-message-whole-from').value != '') {
+            parameters[$('gift-message-whole-from').name] = $('gift-message-whole-from').value;
+        }
+        if ($('gift-message-whole-to') && $('gift-message-whole-to').value != '') {
+            parameters[$('gift-message-whole-to').name] = $('gift-message-whole-to').value;
+        }
+        if ($('gift-message-whole-message') && $('gift-message-whole-message').value != '') {
+            parameters[$('gift-message-whole-message').name] = $('gift-message-whole-message').value;
+        }
+        if ($('billing-address-select') && $('billing-address-select').value != '') {
+            parameters[$('billing-address-select').name] = $('billing-address-select').value;
+        }
+        if ($('shipping-address-select') && $('shipping-address-select').value != '') {
+            parameters[$('shipping-address-select').name] = $('shipping-address-select').value;
+        }
+
+        new Ajax.Request(url, {
+            method: 'post',
+            evalJS: 'force',
+            onSuccess: function(transport) {
+                // alert(JSON.parse(transport.responseText).url);
+                if (JSON.parse(transport.responseText).url == 'null' || JSON.parse(transport.responseText).url == null) {
+                    $('ajaxcart-loading').style.display = 'block';
+                    $('ajaxcart-loading').style.top = '15%';
+                    $('ajaxcart-loading').style.left = '40%';
+                    $('ajaxcart-loading').style.width = '551px';
+                    $('ajaxcart-loading').style.height = '400px';
+                    $('ajaxcart-loading').style.overflow = 'hidden';
+                    $('ajaxcart-loading').style.padding = '5px';
+                    $('ajaxcart-loading').innerHTML = JSON.parse(transport.responseText).html;
+                    $('iframe-warning').style.textAlign = 'left';
+                }
+                else
+                {
+                    window.location.href = JSON.parse(transport.responseText).url;
+                }
+            },
+            onFailure: function(transport) {
+            },
+            parameters: parameters
+        });
+    }
+
+<?php //if ($this->isCustomerLoggedIn()):     ?>
+    // var save_address_url = '<?php echo $this->getUrl('onestepcheckout/index/save_address', array('_secure' => true)) ?>';
+    // save_address_information(save_address_url);
+<?php //endif;     ?>
+
+
+//]]>
+</script>
+
+<div id="onestepcheckout_popup_overlay" style="display: none;">&nbsp;</div>
+<div id="loading-process" style="display: none;"></div>
+
+<!-- Terms and conditions -->
+<?php $_helper = Mage::helper('webpos'); ?>
+<?php $width = $_helper->getTermPopupWidth() ? $_helper->getTermPopupWidth() : 482; ?>
+<?php $height = $_helper->getTermPopupHeight() ? $_helper->getTermPopupHeight() : 530; ?>
+<?php if ($_helper->enableTermsAndConditions()): ?>
+    <?php if (!$_helper->enableCustomSize()): ?>
+        <div id="onestepcheckout-toc-popup" style="display:none;">
+            <div class="onestepcheckout-popup-wrapper" style="height: 515px !important;">
+                <div class="onestepcheckout-popup-wrapper-inner">
+                    <h1><?php echo $_helper->getTermTitle(); ?></h1>
+
+                    <div class="onestepcheckout-toc-terms">
+                        <?php echo $_helper->getTermsConditionsHtml(); ?>
+                    </div>
+
+                    <p class="close"><a href="javascript:void(0);"><?php echo $this->__('Close'); ?></a></p>
+                </div>
+            </div>
+            <div class="onestepcheckout-popup-footer">&nbsp;</div>
+        </div>
+    <?php else: ?>
+        <div id="onestepcheckout-toc-popup" style="display:none; width:<?php echo $width ?>px; height:<?php echo $height ?>px;">
+            <div class="onestepcheckout-popup-wrapper2" style="width:<?php echo $width ?>px; height:<?php echo $height ?>px;">
+                <div class="onestepcheckout-popup-wrapper-inner2">
+                    <h1><?php echo $_helper->getTermTitle(); ?></h1>
+
+                    <div class="onestepcheckout-toc-terms">
+                        <?php echo $_helper->getTermsConditionsHtml(); ?>
+                    </div>
+
+                    <p class="close"><a href="javascript:void(0);"><?php echo $this->__('Close'); ?></a></p>
+                </div>
+            </div>
+            <div class="onestepcheckout-popup-footer2">&nbsp;</div>
+        </div>
+    <?php endif; ?>
+
+<?php endif; ?>
+<div id="order-list" class="order-list">
+    <div class="order-list-header">
+        <div class="search-logo">
+            <div><img src="<?php echo $this->getSkinUrl('images/webpos/orderlist/order_list1.png') ?>"></div>
+            <div><label id="label-order-list"><?php echo $this->helper('webpos')->__('Order <br> List') ?></label></div>
+        </div>
+        <div class="orderlist_search" style="float: left;">
+            <form id="orderlist-search-form" method="post" action="" style="float:left">
+                <ul id="search-order" class="search-order">
+                    <li>
+                        <label><?php echo $this->helper('webpos')->__('Order ID') ?></label>
+                        <br/>
+                        <input type="text" name="order-id" id="order-id" class="input-text" 
+                               onkeydown="javascript: if (event.keyCode == 13)
+            orderlistSearch()"/>
+                    </li>
+                    <li>
+                        <label><?php echo $this->helper('webpos')->__("Customer's name / email") ?></label>
+                        <br/>
+                        <input type="text" name="name-email" id="customer-name-email" class="input-text" 
+                               onkeydown="javascript: if (event.keyCode == 13)
+            orderlistSearch()" />
+                    </li>
+                    <li id="a-search">
+                        <button type="button" class="button btn-checkout" id="button-orderlist-search" onclick="orderlistSearch()"><span><span><?php echo $this->helper('sales')->__('Search') ?></span></span></button>
+                    </li>
+                </ul>
+            </form>	
+        </div>
+    </div>
+    <div id="order_list_grid">
+        <?php echo $this->getChildHtml('order_list') ?>
+    </div>
+    <div id="ajax-loader4" class="ajax-loader4" style="display:none; margin-left: 45%; margin-bottom: 40px; width: 32px; height: 32px; position: relative; margin-top: 140px;"></div>
+</div>
+
+<script type="text/javascript">
+
+//<![CDATA[
+    /*
+     *  Orderlist Search 
+     */
+    function orderlistSearch()
+    {
+        var formValidator = new Validation('orderlist-search-form');
+        if (formValidator.validate()) {
+            var order_id = $('order-id').value;
+            var name_email = $('customer-name-email').value;
+            var review = $('order_list_grid');
+            // review.update('<div class="ajax-loader4"></div>');
+
+            var url = '<?php echo $this->getUrl('webpos/index/orderlistSearch', array('_secure' => true)) ?>';
+            var parameters = {
+                order_id: order_id,
+                name_email: name_email
+            }
+            $('ajax-loader4').show();
+            review.hide();
+            new Ajax.Request(url, {
+                method: 'post',
+                parameters: parameters,
+                onSuccess: function(transport)
+                {
+                    if (transport.status == 200) {
+                        var response = getResponseText(transport);
+                        review.update(response.review);
+                        $('ajax-loader4').hide();
+                        review.show();
+                    }
+                },
+                onFailure: ''
+
+            });
+
+        }
+    }
+
+    // Print order
+    function showPrint(link)
+    {
+        window.open(link, "_blank", "scrollbars=yes, resizable=yes, width=800, height=700");
+    }
+//]]>	
+</script>
+
+<script type="text/javascript">
+    function viewOrder(orderId)
+    {
+        var vieworderPopup = new Control.Modal($('order-popup-' + orderId), {
+            overlayOpacity: 0.65,
+            fade: true,
+            fadeDuration: 0.3
+        });
+
+        vieworderPopup.open();
+
+        $$('div#order-popup-' + orderId + ' p.close a').invoke('observe', 'click', function(e) {
+            e.preventDefault();
+            vieworderPopup.close();
+        });
+
+    }
+
+    function showOrder(orderId)
+    {
+        var url = '<?php echo $this->getUrl('webpos/index/viewOrder', array('_secure' => true)) ?>' + 'order_id/' + orderId;
+        TINY.box.show(url, 1, 750, 0, 1);
+    }
+    function checkCartToAddHandle() {
+        var checkcartUrl = '<?php echo $this->getUrl('webpos/index/checkcart', array('_secure' => true)) ?>';
+        new Ajax.Request(checkcartUrl, {
+            method: 'post',
+            parameters: '',
+            onFailure: '',
+            onSuccess: function(transport) {
+                if (transport.status == 200) {
+                    var stringre = transport.responseText;
+                    if (stringre.trim() == 'noItem') {
+                    } else {
+                        javascript:ajaxcart.addToCartHandle('<?php echo $this->getUrl('checkout/cart/index', array('_secure' => true)); ?>', '');
+                    }
+                }
+            }
+        });
+    }
+    checkCartToAddHandle();
+//    var checkcartUrl = '<?php echo $this->getUrl('webpos/index/checkcart', array('_secure' => true)) ?>';
+//    new Ajax.Request(checkcartUrl, {
+//        method: 'post',
+//        parameters: '',
+//        onFailure: '',
+//        onSuccess: function(transport) {
+//            if (transport.status == 200) {
+//                var stringre = transport.responseText;
+//                if (stringre.trim() == 'noItem') {
+//                } else {
+//                    javascript:ajaxcart.addToCartHandle('<?php echo $this->getUrl('checkout/cart/index', array('_secure' => true)); ?>', '');
+//                }
+//            }
+//        }
+//    });
+
+</script>

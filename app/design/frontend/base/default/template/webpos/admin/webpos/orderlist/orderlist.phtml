@@ -1,0 +1,48 @@
+<?php 
+$_collection = $this->getOrderGridCollections();
+?>
+<?php if(count($_collection)):?>	
+	<div class="grid" id="order_grid">
+			<table class="data-table" id="data-table">
+				<thead>
+					<tr class="theadings">
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Order #') ?></th>
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Date') ?></th>
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Bill To Name') ?></th>
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Ship To Name') ?></th>
+						<th class="no-link"><?php echo $this->helper('webpos')->__('Email')?></th>                    
+						<th class="no-link last"><?php echo $this->helper('webpos')->__('Status') ?></th>
+						<th class="no-link last"></th>
+						<th class="no-link last"></th>
+						
+					</tr>
+				</thead>
+				<?php $i = 0;?>
+				<?php foreach($_collection as $_order): $i++;
+					$incrementId = $_order->getIncrementId();
+					$orderId = $_order->getId();
+					$url = $this->getUrl('webpos/index/printInvoice',array('order_id'=>$orderId,'_secure'=>true));
+				?>
+				<tbody>
+					<tr class="<?php echo ($i%2)?'fist even':' last odd'?>">
+						<td><?php echo $incrementId?></td>
+						<td><?php echo $_order->getData('created_at')?></td>
+						<td><?php echo $_order->getData('billing_name')?></td>
+						<td><?php echo $_order->getData('shipping_name')?></td>
+						<td><?php echo $this->getEmail($orderId)?>					
+						<td><?php echo $_order->getStatusLabel()?></td>
+						<td><a href="javascript:void(0)" style="cursor:pointer;" id="show-vieworder-<?php echo $_order->getId()?>" onclick="showOrder('<?php echo $_order->getId()?>'); return false;"><?php echo $this->helper('webpos')->__('View Order')?></a></td> 						
+						<td><a href="" onclick="showPrint('<?php echo $url?>'); return false;"><?php echo $this->helper('sales')->__(' Print Invoice')?></a></td>																
+					</tr>
+				</tbody>				
+				<?php endforeach?>
+			</table>
+	</div>
+	<?php echo $this->getChildHtml('order_tab_info');?>
+<?php else:?>
+	<div class="grid" id="order_grid" style="margin-top:30px; margin-bottom:30px; text-align:center !important;">
+		<p style="font-weight: 18px;"><?php echo $this->__('No orders found')?></p>
+	</div>
+<?php endif?>
+
+

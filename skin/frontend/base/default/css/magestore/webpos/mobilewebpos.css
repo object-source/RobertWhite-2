@@ -1,0 +1,270 @@
+/*--------------------------------------
+|				LAYOUT 680				|
+---------------------------------------*/
+
+@media all and (min-width: 0px) and (max-width: 680px) {
+	*{-webkit-text-size-adjust: none;}
+	.wrapper{min-width: auto;}
+	.main{width: auto;}
+	.one-step-checkout ol, .one-step-checkout li{list-style: none; padding: 0; margin: 0; clear: both;}
+	.one-step-checkout button span{background: url(../../images/onestepcheckout/place_button.png) no-repeat scroll 0 0 transparent !important; float: left;}
+	.one-step-checkout button span span{ float: left;background-position: 100% 0!important;}
+	.one-step-checkout .group-select { margin-top:0; border:0; background:none; padding:0; float: left; width: 100%;}
+
+	.one-step-checkout .address-information {
+		width:100%;
+		float:left;
+		border-top:0;
+		margin-bottom:15px;
+		/* background:url(../../images/onestepcheckout/vertical_line.gif) top right no-repeat; */
+	}
+	.one-step-checkout .order-information {
+		width:100%;
+		float:right;
+		border-top:0;
+		margin-bottom:15px;
+	}
+
+	.one-step-checkout h3.step_1,
+	.one-step-checkout h3.step_3,
+	.one-step-checkout h3.step_4,
+	.one-step-checkout h3.step_5,
+	.one-step-checkout h3.step_2{	
+		width: 70%;
+		float: left;
+	}
+	.onestepcheckout-comment textarea {
+		width: 100%;	
+	}	
+	#checkout-review-load{border-right: 0 none!important;}
+	.onestepcheckout-form-list .field {
+		float:left;
+		width: 48%;
+		padding-right: 2%;		
+	}
+	.order-review-section { width: 100%;}	
+	.one-step-checkout .address-info-3-columns {	
+		width: 100%;
+		background: none transparent;
+	}
+	
+	#onestepcheckout-login-popup {
+		width: 95%;
+		position: absolute;
+		z-index: 9999990!important;
+		/* display:none; */
+		position: fixed;
+		background: #fff;
+		border-radius: 5px;
+	}
+	#onestepcheckout-login-popup button {
+		padding: 3px 10px;
+		margin-left: 7px;
+	}
+	
+	#onestepcheckout-login-popup p.close,#onestepcheckout-toc-popup p.close{
+		right: 5px;
+		bottom: 2px;
+	}
+	#onestepcheckout-toc-popup {
+		height: auto!important;
+		width: 95%!important;
+		position: absolute;
+		z-index: 9999999!important;
+	}
+	
+	.two-fields{
+		width:100%;
+		float:left;
+	}
+	.one-field input{
+		width: 95% !important;
+	}
+
+	.two-fields input{
+		width: 95% !important;
+	}
+	.two-fields select{
+		width:100% !important;
+	}
+	.address-info-3-columns .group-select ul li .two-fields select{
+		padding-right: 0px;		
+		width: 95% !important;
+	}
+	#container_payment_method_ccsave ul,
+	#billing-new-address-form ul{
+		padding: 0 0px 20px 0;
+	}
+	.one-field select{
+		width:100% !important;
+	}
+	.address-info-3-columns .group-select ul li .one-field select{
+		width:95% !important;
+	}
+	
+	.onestepcheckout-form-list .fields{
+		width: 100% !important;
+	}	
+	.onestepcheckout-popup-footer{		
+		background-repeat: no-repeat;
+		height: 13px;
+		background: none transparent;
+	}
+	.onestepcheckout-popup-wrapper .input-text {
+		width: 100% !important;
+		color: #333333 !important;
+	}
+	#one-step-checkout-form label{
+		color: #666666;
+		font-weight: normal;	
+	}
+
+	.onestepcheckout-login-link{
+		padding-top:5px;
+	}
+
+	.one-step-checkout input, .one-step-checkout select{color: #333!important;}
+	.one-step-checkout .order-info-3-columns {
+		background: none transparent;
+	}
+
+	/* Review */
+	#one-step-checkout-form .checkout-review-load .data-table{
+		border: none !important;
+		width: 100%;
+		border-top: 1px solid #BEBCB7 !important;
+		/* border-bottom: 1px solid #BEBCB7 !important; */
+			
+	}
+	
+	
+	#control_overlay{
+		background-color: #000000;
+		z-index: 99999!important;
+	}
+	.payment-method .input-box .input-text{
+		width:100% !important;
+	}
+	.payment-method .input-box select{
+		width:100% !important;
+		padding-right: 0;
+	}
+	.payment-method .input-box select.month{
+		width:100% !important;
+	}
+	.onestepcheckout-popup-wrapper{
+		background: none transparent;
+		background-repeat: no-repeat;
+	}
+
+	#onestepcheckout-toc-popup{
+		-moz-border-radius: 15px 15px / 15px 15px;
+		border-radius: 15px 15px / 15px 15px;
+		background: #fcfcfc;
+	}
+	.one-step-checkout button{
+		cursor: pointer;
+	}
+	.one-step-checkout button:hover{
+
+	}
+	#coupon_code_onestepcheckout{
+		margin-bottom:5px;
+		width:100%;
+		color: #333;
+	}
+	.button-onestepcheckout{
+		padding-top: 20px;
+	}
+	.onestepcheckout-place{
+		background: none repeat scroll 0 0 transparent;
+		margin: 4px auto !important;
+		width: auto;
+	}
+	.dob-month{
+		float:left;
+		width:20%;
+		margin-right: 5px;
+	}
+	.dob-month input{
+		width: 90%!important;
+	}
+
+	.dob-day{
+		float:left;
+		width:20%;
+		margin-right: 5px;
+	}
+	.dob-day input{
+		width: 90%!important;
+	}
+	.dob-year{
+		float:left;
+		width:44%;
+	}
+	.dob-month label,
+	.dob-day label,
+	.dob-year label{
+		display: block;
+	}
+
+	.dob-year input{
+		width: 100%!important;
+	}
+        .one-step-checkout-div{
+            float: left; width: 100% !important;
+            padding-left: 0 !important;
+        }
+        .order-review-section {
+            padding-left: 0 !important;
+        }
+        .add-link{
+            width:100% !important;
+            margin:0 !important;
+            margin-left:0 !important;
+        }
+        .add-link img{          
+            margin:0 !important;
+            margin-left:0 !important;
+        }
+        .minus-link{
+            width:100% !important;
+            margin:0 !important;
+        }
+        
+        .minus-link img{          
+            margin:0 !important;
+            margin-left:0 !important;
+        }
+        
+        .super-wrapper{
+            width:100% !important;
+        }
+        .global-search input {
+            width: 100% !important;
+        }
+        .global-search-wrapper{
+            width:100% !important;
+        }
+        #ajaxcart-content{
+            margin: 0 !important;           
+            width: 87% !important;
+        }
+        #one-step-checkout-form .checkout-review-load .data-table tr.last th, .data-table tr.last td {
+            border-bottom: medium none !important;
+            width: 25%;
+        }
+        #one-step-checkout-form .checkout-review-load .data-table tr.last th, .data-table tr.last td.product-cart-info{
+            width: 75%;
+        }
+        #one-step-checkout-form .checkout-review-load .data-table tr.last th, .data-table tr.last td.product-cart-price{
+            width: 75%;
+        }
+        #one-step-checkout-form .checkout-review-load .data-table tr.last th, .data-table tr.last td.product-cart-actions{            
+            width: 75%;
+        }
+        .sp-methods{
+            width: 100%;
+            float:left;
+        }
+}

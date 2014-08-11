@@ -1,0 +1,7 @@
+<?php
+$orderlist_html = $this->getChildHtml('order_list');
+
+$result = array('review' => $orderlist_html);
+								
+echo Zend_Json::encode($result);
+?>

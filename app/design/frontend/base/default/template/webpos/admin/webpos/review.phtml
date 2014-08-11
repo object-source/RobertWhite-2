@@ -1,0 +1,302 @@
+<?php $_helper = Mage::helper('webpos'); ?>
+
+<div id="checkout-review-load" class="default-box checkout-review-load">
+    <?php echo $this->getChildHtml('info') ?>
+</div>
+<div style="padding:5px;">
+    <label style="float:left;"><?php echo $this->__('Cash in') ?></label>
+    <input style="float:right;width:60%;" type="text" value="<?php echo Mage::getModel('checkout/session')->getData('webpos_cashin'); ?>" name="cash-in" id="cash-in" class="input-text required-entry">
+</div>
+<div class="clear"></div>
+<div style="padding:5px;">
+    <label style="float:left;"><?php echo $this->__('Discount') ?></label>
+    <input style="float:right;width:60%;" type="text" value="<?php echo Mage::getSingleton('checkout/session')->getData('webpos_admin_discount') ?>" name="custom-discount" id="custom-discount" class="input-text">
+</div>
+<div class="clear"></div>
+<div style="margin-top:5px;background:none repeat scroll 0 0 #39A9D5;padding:5px; color:#FFFFFF;">
+    <label style="float:left; color: #FFFFFF !important; font-weight:bold;padding-left:25px;"><?php echo $this->__('Change') ?></label>
+    <div id="balance-content" class="a-right"></div>
+    <input type="hidden" id="balance" name="balance" value="" />
+</div>
+<script type="text/javascript">
+//<![CDATA[
+    function recollectTotal() {
+        var priceFormat = <?php echo json_encode(Mage::app()->getLocale()->getJsPriceFormat()); ?>;
+        var balance = 0;
+        var orderTotal = 0;
+        var cashin = 0;
+        var customDiscount = 0;
+        var currencycode = '<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>';
+        orderTotal = parseFloat($$('#checkout-review-table tr').last().down('.price').innerHTML.replace(/[<?php echo Mage::app()->getLocale()->currency(Mage::app()->getStore()->getCurrentCurrencyCode())->getSymbol(); ?>,]+/g, ""));
+
+        if (parseFloat($('cash-in').value) > 0) {
+            cashin = parseFloat($('cash-in').value);
+        }
+        if (parseFloat($('custom-discount').value) > 0) {
+            customDiscount = parseFloat($('custom-discount').value);
+        }
+        balance = cashin - orderTotal;// + customDiscount;
+        $('balance-content').innerHTML = "<span class='price'>" + formatCurrency(balance, priceFormat) + "</span>";
+        $('balance').value = balance;
+        // $('balance').value = balance;
+        orderTotal = Math.abs(orderTotal);
+    }
+    $('cash-in').observe('change', function(e) {
+        var cashin = $('cash-in').value;
+        var savecashinurl = '<?php echo $this->getUrl('webpos/index/savecashin', array('_secure' => true)); ?>' + 'cashin/' + cashin;
+        new Ajax.Request(savecashinurl, {
+            method: 'get'
+        });
+        recollectTotal();
+    });
+    $('custom-discount').observe('change', function(e) {
+        var discountUrl = '<?php echo $this->getUrl('webpos/index/reload_discount', array('_secure' => true)) ?>';
+        var options = document.getElementsByName('payment[method]');
+        if (checkPaymentMethod()) {
+            if ($(options[0].id))
+                $(options[0].id).checked = true;
+        }
+        var summary = $('checkout-review-load');
+        summary.update('<div class="ajax-loader3">&nbsp;</div>');
+        if (parseFloat($('custom-discount').value) > 0) {
+            discount = parseFloat($('custom-discount').value);
+        } else {
+            discount = 0;
+        }
+        discountUrl += 'custom-discount/' + discount;
+        new Ajax.Request(discountUrl, {
+            method: 'post',
+            parameters: '',
+            onFailure: '',
+            onSuccess: function(transport) {
+                if (transport.status == 200) {
+                    save_shipping_method(shipping_method_url, enable_update_payment);
+                    recollectTotal();
+                }
+            }
+        });
+    });
+    recollectTotal();
+//]]>
+</script>
+<!-- Begin of Discount section -->
+<?php if ($_helper->showDiscount()): ?>
+    <div class="onestepcheckout-discount">
+        <?php $_couponCode = $this->getQuote()->getCouponCode(); ?>
+        <label for="couponcode"><?php echo $this->__('Coupon code:') ?></label>
+
+        <div class="discount-form">
+            <input type="hidden" name="remove" id="remove-coupon-onestepcheckout" value="0" />
+            <div class="input-box">
+                <input class="input-text" id="coupon_code_onestepcheckout" autocomplete="off" name="coupon_code" value="<?php echo $this->htmlEscape($_couponCode) ?>" />
+                <br/>
+                <button type="button" id="add_coupon_code_button" title="<?php echo $this->__('Apply Coupon') ?>" class="button" value="<?php echo $this->__('Apply Coupon') ?>"><span><span><?php echo $this->__('Apply Coupon') ?></span></span></button>			
+                <button type="button" id="remove_coupon_code_button" title="<?php echo $this->__('Cancel Coupon') ?>" class="button" value="<?php echo $this->__('Cancel Coupon') ?>" <?php if (!strlen($_couponCode)): ?> style="display:none;"<?php endif ?>><span><span><?php echo $this->__('Cancel Coupon') ?></span></span></button>
+            </div>		
+        </div>
+    </div>
+    <script type="text/javascript">
+    //<![CDATA[
+        //document.observe('dom:loaded', function() {
+        //fix for IE9
+        Event.observe(window, 'load', function() {
+            var add_coupon_url = '<?php echo $this->getUrl('webpos/index/add_coupon', array('_secure' => true)); ?>';
+            Event.observe('add_coupon_code_button', 'click', function() {
+                var coupon_code = $('coupon_code_onestepcheckout').value;
+    <?php if (Mage::getConfig()->getModuleConfig('Magestore_RewardPointsReferFriends')->is('active', 'true') && Mage::helper('rewardpointsreferfriends')->isEnable()): ?>
+                    var coupon_code = $('coupon_code_onestepcheckout').value;
+                    if (coupon_code == '') {
+                        alert('<?php echo $this->__('Please enter coupon code.'); ?>');
+                        return;
+                    }
+                    var review = $('checkout-review-load');
+                    review.update('<div class="ajax-loader3"></div>');
+                    var customerEmail ='';
+                    if ($('guest_customer').checked) {
+                        customerEmail = $('billing:email').value;
+                    }
+                    var parameters = {coupon_code: coupon_code, customerEmail:customerEmail};
+                    var request = new Ajax.Request(add_coupon_url, {
+                        method: 'post',
+                        onFailure: '',
+                        parameters: parameters,
+                        onSuccess: function(transport) {
+                            var response = getResponseText(transport);
+        //                            alert(response.message);
+                            add_coupon_code(add_coupon_url);
+                        }
+                    });
+    <?php else: ?>
+                    if (coupon_code == '') {
+                        alert('<?php echo $this->__('Please enter coupon code.'); ?>');
+                        return;
+                    }
+                    add_coupon_code(add_coupon_url);
+    <?php endif; ?>
+
+            });
+
+            Event.observe('remove_coupon_code_button', 'click', function() {
+    <?php if (Mage::getConfig()->getModuleConfig('Magestore_RewardPointsReferFriends')->is('active', 'true') && Mage::helper('rewardpointsreferfriends')->isEnable()): ?>
+                    var coupon_code = $('coupon_code_onestepcheckout').value;
+                    var review = $('checkout-review-load');
+                    review.update('<div class="ajax-loader3"></div>');
+                    var remove = 1;
+                    var parameters = {coupon_code: coupon_code, remove: remove};
+                    var request = new Ajax.Request(add_coupon_url, {
+                        method: 'post',
+                        onFailure: '',
+                        parameters: parameters,
+                        onSuccess: function(transport) {
+                            var response = getResponseText(transport);
+        //                            alert(response.message);
+                            remove_coupon_code(add_coupon_url);
+                        }
+                    });
+    <?php else: ?>
+                    remove_coupon_code(add_coupon_url);
+    <?php endif; ?>
+
+            });
+        });
+    //]]>
+    </script>
+<?php endif; ?>
+<!-- End of discount section-->
+
+<?php //echo $this->getChildHtml('agreements') ?>
+
+<!-- Order comment -->
+<?php if ($_helper->enableOrderComment()): ?>
+    <div class="onestepcheckout-comment">
+        <label for="onestepcheckout_comment"><?php echo $this->__('Comments'); ?></label><br/>
+        <textarea id="onestepcheckout_comment" name="billing[onestepcheckout_comment]" col="15"></textarea>	
+    </div>
+<?php endif; ?>
+
+<!-- Gift message for order -->
+<?php if ($_helper->enableGiftMessage()): ?>
+    <div class="onestepcheckout-giftmessage">    
+        <?php if (!$this->getQuote()->isVirtual()): ?>
+            <?php echo Mage::helper('webpos/message')->getInline('onepage_checkout', $this->getQuote(), $this->getDontDisplayContainer()) ?>
+        <?php endif; ?>
+    </div>
+<?php endif; ?>
+
+<!-- Newsletter Subscriber -->
+<?php if ($_helper->isShowNewsletter()): ?>
+    <div class="onestepcheckout-newsletter">
+        <input type="checkbox" name="billing[newsletter_subscriber_checkbox]" id="newsletter_subscriber_checkbox" value="1" <?php if ($_helper->isSubscribeByDefault()): ?> checked="checked"<?php endif; ?>/>
+        <label for="newsletter_subscriber_checkbox"><?php echo $this->__('Sign Up for Our Newsletter'); ?></label>
+    </div>
+<?php endif; ?>
+
+<!-- Gift wrap for order -->
+<?php if ($_helper->enableGiftWrap() && !$_helper->enableGiftwrapModule()): ?>
+    <?php $giftwrapAmount = $_helper->getOrderGiftwrapAmount(); ?>
+    <?php $addGiftwrapUrl = $this->getUrl('webpos/index/add_giftwrap', array('_secure' => true)); ?>
+    <div class="onestepcheckout-giftwrap">
+        <input class="onestepcheckout_giftwrap_checkbox" type="checkbox" name="onestepcheckout_giftwrap_checkbox" 
+               id="onestepcheckout_giftwrap_checkbox" 
+               onclick="addGiftwrap('<?php echo $addGiftwrapUrl ?>');"
+               value="1" <?php if ($_helper->checkGiftwrapSession()): ?> checked="checked"<?php endif; ?> 
+               <?php if (!$giftwrapAmount || $giftwrapAmount <= 0): ?>disabled="disabled"<?php endif; ?>
+               />
+        <label for="onestepcheckout_giftwrap_checkbox"><?php echo $this->__('Gift wrap'); ?>
+            <span id="giftwrap_price"><?php echo Mage::helper('checkout')->formatPrice($giftwrapAmount); ?></span>
+        </label>
+    </div>
+
+    <script type="text/javascript">
+        function reloadGiftwrap()
+        {
+    <?php if ($_helper->enableGiftWrap() && !$_helper->enableGiftwrapModule()): ?>
+                var giftwrap_price = $('giftwrap_price');
+                var requestUrl = '<?php echo $this->getUrl('webpos/index/reloadGiftwrap', array('_secure' => true)) ?>';
+                giftwrap_price.style.display = 'none';
+                new Ajax.Updater('giftwrap_price', requestUrl, {
+                    method: 'get',
+                    onComplete: function(respone) {
+                        giftwrap_price.style.display = 'inline';
+                        reloadCheckbox();
+                    }
+                });
+    <?php endif; ?>
+        }
+        function reloadCheckbox()
+        {
+            var hidden_price = $('hidden_price');
+            var giftwrap_checkbox = $('onestepcheckout_giftwrap_checkbox');
+            if (hidden_price && hidden_price.value > 0)
+                giftwrap_checkbox.disabled = false;
+            else
+                giftwrap_checkbox.disabled = true;
+        }
+    </script>
+<?php endif; ?>
+<!-- Survey -->
+<?php if ($_helper->enableSurvey()): ?>
+    <?php
+    $selectedSurveyFields = $this->getRequest()->getPost('onestepcheckout-survey', false);
+    $surveyValues = unserialize($_helper->getSurveyValues());
+    ?>
+    <div class="onestepcheckout-survey" id="">
+        <label for="id_survey"><?php echo $_helper->getSurveyQuestion(); ?></label><br>
+        <select style="" name="billing[onestepcheckout-survey]" id="id_survey">
+            <option value=""><?php echo $this->__('Please choose'); ?></option>
+            <?php
+            foreach ($surveyValues as $value => $label):
+                $selected = (!empty($selectedSurveyFields) && $selectedSurveyFields == $value) ? ' selected' : '';
+                ?>
+                <option value="<?php echo $value ?>" <?php echo $selected; ?>><?php echo $label['value'] ?></option>
+            <?php endforeach; ?>
+            <?php
+            if ($_helper->enableFreeText()):
+                $selected = (empty($surveyValues[$selectedSurveyFields]) && $selectedSurveyFields != '') ? ' selected' : '';
+                ?>
+                <option value="freetext" <?php echo $selected; ?>><?php echo $this->__('Other'); ?></option>
+            <?php endif; ?>
+        </select>
+    </div>
+    <?php if ($_helper->enableFreeText()): ?>
+        <script type="text/javascript">
+            $('id_survey').observe('change', function(event) {
+                if (this.getValue() == 'freetext') {
+                    $('id_survey_freetext_div').show();
+                } else {
+                    $('id_survey_freetext_div').hide();
+                }
+            });
+        </script>
+        <div id='id_survey_freetext_div' class="onestepcheckout-survey-freetext"<?php echo ((!empty($selectedSurveyFields) && $selectedSurveyFields == 'freetext') ? '' : ' style="display: none;"'); ?>>
+            <label for="id_survey_freetext"><?php echo $this->__('Please specify:'); ?></label><br/>
+            <textarea id="id_survey_freetext" name="billing[onestepcheckout-survey-freetext]"><?php echo $this->getRequest()->getPost('onestepcheckout-survey-freetext', false); ?></textarea>
+        </div>
+    <?php endif; ?>
+<?php endif; ?>
+
+<div class="onestepcheckout-shipped" style="padding-top:15px;">
+    <input type="checkbox" name="billing[onestepcheckout_shipped]" id="onestepcheckout_shipped" value="1" />
+    <label for="onestepcheckout_shipped"><?php echo $this->__('Shipped'); ?></label>
+</div>
+
+<div class="button-set clearfix button-onestepcheckout">
+    <button id="onestepcheckout-button-place-order" onclick="oscPlaceOrder(this);" type="button" title="<?php echo $this->__('Place Order') ?>" class="button btn-proceed-checkout btn-checkout onestepcheckout-place">
+        <span>
+            <span>
+                <?php echo $this->__('Place order now') ?>
+            </span>
+        </span>
+    </button>
+    <?php $styleChange = Mage::getStoreConfig('webpos/style_management/style', Mage::app()->getStore(true)->getId()) ?>
+    <?php if (!$styleChange || $styleChange == 'orange'): ?>
+        <?php $styleUse = $this->getSkinUrl('images/webpos/style/orange/') ?>
+    <?php else: ?>
+        <?php $styleUse = $this->getSkinUrl('images/webpos/style/' . $styleChange . '/') ?>
+    <?php endif ?>
+    <div id="onestepcheckout-place-order-loading" style="display:none;">
+        <img style="float:left;" src="<?php echo $styleUse; ?>loading-icon.gif">
+        <p style="float:left;padding-top:5px;">&nbsp;&nbsp;<?php echo $this->__('Please wait, processing your order...') ?></p>
+    </div>
+</div>
+
