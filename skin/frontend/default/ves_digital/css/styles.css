@@ -68,7 +68,7 @@ a img {
 /* line 13, ../sass/magento/_base.scss */
 a:hover {
   text-decoration: none;
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 17, ../sass/magento/_base.scss */
 a:focus {
@@ -276,7 +276,7 @@ ul, ol {
 /* line 89, ../sass/magento/_base.scss */
 .htabs a.selected {
   background: none repeat scroll 0 0 #FFFFFF;
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 94, ../sass/magento/_base.scss */
 .htabs > a {
@@ -334,7 +334,7 @@ ul, ol {
 }
 /* line 133, ../sass/magento/_base.scss */
 .carousel-control:hover {
-  background-color: #e76d66;
+  background-color: #CC2D2D;
   color: #FFFFFF;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
@@ -365,14 +365,14 @@ ul, ol {
 
 /* line 152, ../sass/magento/_base.scss */
 .color {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /* line 155, ../sass/magento/_base.scss */
 .carousel-indicators li.active {
-  background-color: #e76d66;
-  -webkit-box-shadow: 0 0 0 2px #e76d66;
-  box-shadow: 0 0 0 2px #e76d66;
+  background-color: #CC2D2D;
+  -webkit-box-shadow: 0 0 0 2px #CC2D2D;
+  box-shadow: 0 0 0 2px #CC2D2D;
 }
 
 /******************************************************
@@ -476,7 +476,7 @@ ul, ol {
 /* line 62, ../sass/magento/_block.scss */
 .block.block-cart .block-content .subtotal .price {
   font-weight: bold;
-  color: #e76d66;
+  color: #CC2D2D;
   float: right;
   
 }
@@ -576,7 +576,7 @@ ul, ol {
 /* line 140, ../sass/magento/_block.scss */
 .block-list ul li a:hover, .block-list ol li a:hover {
   background-position: left -46px;
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 191, ../sass/magento/_mixins.scss */
 .rtl .block-list ul li a:hover, .rtl .block-list ol li a:hover {
@@ -584,7 +584,7 @@ ul, ol {
 }
 /* line 147, ../sass/magento/_block.scss */
 .block-list ul li.active > a, .block-list ol li.active > a {
-  color: #e76d66;
+  color: #CC2D2D;
   background-position: left -46px;
 }
 /* line 191, ../sass/magento/_mixins.scss */
@@ -639,7 +639,7 @@ ul, ol {
 /* line 172, ../sass/magento/_block.scss */
 .block-list ul li ul li a:hover, .block-list ul li ol li a:hover, .block-list ol li ul li a:hover, .block-list ol li ol li a:hover {
   background-position: left -38px;
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 191, ../sass/magento/_mixins.scss */
 .rtl .block-list ul li ul li a:hover, .rtl .block-list ul li ol li a:hover, .rtl .block-list ol li ul li a:hover, .rtl .block-list ol li ol li a:hover {
@@ -664,7 +664,7 @@ ul, ol {
 /* line 186, ../sass/magento/_block.scss */
 .block-list ul li ul ul li a:hover, .block-list ul li ul ol li a:hover, .block-list ul li ol ul li a:hover, .block-list ul li ol ol li a:hover, .block-list ol li ul ul li a:hover, .block-list ol li ul ol li a:hover, .block-list ol li ol ul li a:hover, .block-list ol li ol ol li a:hover {
   background-position: left -39px;
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 191, ../sass/magento/_mixins.scss */
 .rtl .block-list ul li ul ul li a:hover, .rtl .block-list ul li ul ol li a:hover, .rtl .block-list ul li ol ul li a:hover, .rtl .block-list ul li ol ol li a:hover, .rtl .block-list ol li ul ul li a:hover, .rtl .block-list ol li ul ol li a:hover, .rtl .block-list ol li ol ul li a:hover, .rtl .block-list ol li ol ol li a:hover {
@@ -717,7 +717,7 @@ ul, ol {
 /*Block: block-account*/
 /* line 229, ../sass/magento/_block.scss */
 .block-account ul li strong {
-  color: #e76d66;
+  color: #CC2D2D;
   font-weight: normal;
   background-image: url("../images/default/arrow-li.png");
   background-repeat: no-repeat;
@@ -749,7 +749,7 @@ ul, ol {
 }
 /* line 251, ../sass/magento/_block.scss */
 .block-layered-nav .currently .label {
-  color: #e76d66;
+  color: #CC2D2D;
   float: left;
   padding: 0;
   line-height: 18px;
@@ -818,7 +818,7 @@ ul, ol {
 }
 /* line 291, ../sass/magento/_block.scss */
 .block-poll ol li span.votes {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /* Block: Orders and Returns */
@@ -977,9 +977,9 @@ input, select, textarea {
 
 /* line 36, ../sass/magento/_form.scss */
 .button, input.button {
-  background-color: #e76d66;
+  background-color: #CC2D2D;
   border-radius: 3px;
-  border: 1px solid #e76d66;
+  border: 1px solid #CC2D2D;
   color: white;
   margin-top: 10px;
   padding: 0 10px;
@@ -1583,7 +1583,7 @@ body.layout-boxed-lg #page {
 }
 /* line 199, ../sass/magento/_layout.scss */
 .breadcrumbs li:last-child span {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /* FOOTER*/
@@ -1619,11 +1619,11 @@ body.layout-boxed-lg #page {
 }
 /* line 237, ../sass/magento/_layout.scss */
 #footer a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 #footer .social a {
-	color: #e76d66;
+	color: #CC2D2D;
 }
 
 /* line 242, ../sass/magento/_layout.scss */
@@ -1634,7 +1634,7 @@ body.layout-boxed-lg #page {
 }
 /* line 245, ../sass/magento/_layout.scss */
 #footer ul li:hover {
-  color: #e76d66;
+  color: #CC2D2D;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
 }
@@ -1704,11 +1704,11 @@ body.layout-boxed-lg #page {
 }
 /* line 302, ../sass/magento/_layout.scss */
 #powered a {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 304, ../sass/magento/_layout.scss */
 #powered a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
   text-decoration: underline;
 }
 
@@ -1749,8 +1749,8 @@ body.layout-boxed-lg #page {
 }
 /* line 333, ../sass/magento/_layout.scss */
 .box_quickview:hover {
-  background-color: #e76d66;
-  border: 1px solid #e76d66;
+  background-color: #CC2D2D;
+  border: 1px solid #CC2D2D;
   color: white;
   -webkit-transition: all 0.4s ease 0s;
   transition: all 0.4s ease 0s;
@@ -1797,7 +1797,7 @@ body.layout-boxed-lg #page {
 .header .links li > a:hover,
 .currency > a:hover,
 .form-language > a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 24, ../sass/magento/_magento-module.scss */
 .header .links li > a span,
@@ -1867,7 +1867,7 @@ body.layout-boxed-lg #page {
   border-top-left-radius: 0;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
-  border-top: 5px solid #e76d66;
+  border-top: 5px solid #CC2D2D;
 }
 /* line 73, ../sass/magento/_magento-module.scss */
 .currency ul li,
@@ -1889,7 +1889,7 @@ body.layout-boxed-lg #page {
 /* line 82, ../sass/magento/_magento-module.scss */
 .currency ul li a:hover,
 .form-language ul li a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
   background-color: transparent;
 }
 /* line 92, ../sass/magento/_magento-module.scss */
@@ -1938,7 +1938,7 @@ body.layout-boxed-lg #page {
 }
 /* line 114, ../sass/magento/_magento-module.scss */
 #cart .content .block-content {
-  border-top: 5px solid #e76d66;
+  border-top: 5px solid #CC2D2D;
 }
 /* line 119, ../sass/magento/_magento-module.scss */
 #cart.active .content {
@@ -1972,12 +1972,12 @@ body.layout-boxed-lg #page {
 }
 /* line 134, ../sass/magento/_magento-module.scss */
 #cart .heading .cart-inner:hover > span {
-  background: #e76d66;
-  border: 1px solid #e76d66;
+  background: #CC2D2D;
+  border: 1px solid #CC2D2D;
 }
 /* line 139, ../sass/magento/_magento-module.scss */
 #cart .heading .cart-inner:hover a {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 143, ../sass/magento/_magento-module.scss */
 #cart .heading .cart-inner a {
@@ -1985,7 +1985,7 @@ body.layout-boxed-lg #page {
 }
 /* line 145, ../sass/magento/_magento-module.scss */
 #cart .heading .cart-inner a span span {
-  color: #e76d66;
+  color: #CC2D2D;
   display: inline-block;
   margin-bottom: 0;
 }
@@ -2114,7 +2114,7 @@ body.layout-boxed-lg #page {
 }
 /* line 36, ../sass/magento/_magento-pages.scss */
 .pager .pages li > a:hover, .pager .pages li > span {
-  background-color: #e76d66;
+  background-color: #CC2D2D;
   color: white;
 }
 
@@ -2181,8 +2181,8 @@ body.layout-boxed-lg #page {
 /* line 79, ../sass/magento/_magento-pages.scss */
 .sorter .view-mode strong.grid,
 .sorter .view-mode strong.list {
-  background-color: #E76D66;
-  border: 1px solid #E76D66;
+  background-color: #CC2D2D;
+  border: 1px solid #CC2D2D;
 }
 /* line 83, ../sass/magento/_magento-pages.scss */
 .sorter .view-mode strong.grid {
@@ -3231,7 +3231,7 @@ body.layout-boxed-lg #page {
 }
 /* line 541, ../sass/magento/_magento-pages.scss */
 .opc .allow .step-title h2 {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 544, ../sass/magento/_magento-pages.scss */
 .opc .allow .step-title a {
@@ -3244,7 +3244,7 @@ body.layout-boxed-lg #page {
 }
 /* line 551, ../sass/magento/_magento-pages.scss */
 .opc .active .step-title .number {
-  background-color: #e76d66;
+  background-color: #CC2D2D;
   color: #FFFFFF;
 }
 /* line 555, ../sass/magento/_magento-pages.scss */
@@ -3343,8 +3343,8 @@ body.layout-boxed-lg #page {
 }
 /* line 612, ../sass/magento/_magento-pages.scss */
 .checkout-progress li.active {
-  border-top-color: #e76d66;
-  color: #e76d66;
+  border-top-color: #CC2D2D;
+  color: #CC2D2D;
 }
 
 /* line 618, ../sass/magento/_magento-pages.scss */
@@ -4445,7 +4445,7 @@ body.layout-boxed-lg #page {
 /* line 995, ../sass/magento/_magento-pages.scss */
 .link-reorder, .link-print {
   font-weight: bold;
-  color: #e76d66;
+  color: #CC2D2D;
   display: inline-block;
 }
 
@@ -4544,7 +4544,7 @@ body.layout-boxed-lg #page {
 
 /* line 1053, ../sass/magento/_magento-pages.scss */
 .grand_total strong {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /* line 1056, ../sass/magento/_magento-pages.scss */
@@ -4788,7 +4788,7 @@ p.required, .product-options dt label.required em, .form-list label.required em 
 #ves-mainnav .nav > li > a:before {
   width: 0%;
   height: 5px;
-  background-color: #e76d66;
+  background-color: #CC2D2D;
   bottom: 0;
   left: 0;
   right: 0;
@@ -4806,7 +4806,7 @@ p.required, .product-options dt label.required em, .form-list label.required em 
 /* line 38, ../sass/magento/_menu.scss */
 #ves-mainnav .nav > li:hover > a {
   background: none;
-  color: #e76d66 !important;
+  color: #CC2D2D !important;
 }
 /* line 41, ../sass/magento/_menu.scss */
 #ves-mainnav .nav > li:hover > a:before {
@@ -4816,8 +4816,8 @@ p.required, .product-options dt label.required em, .form-list label.required em 
 }
 /* line 45, ../sass/magento/_menu.scss */
 #ves-mainnav .nav > li:hover > a .caret {
-  border-bottom-color: #e76d66 !important;
-  border-top-color: #e76d66 !important;
+  border-bottom-color: #CC2D2D !important;
+  border-top-color: #CC2D2D !important;
 }
 /* line 51, ../sass/magento/_menu.scss */
 #ves-mainnav .nav li {
@@ -4834,11 +4834,11 @@ p.required, .product-options dt label.required em, .form-list label.required em 
 }
 /* line 56, ../sass/magento/_menu.scss */
 #ves-mainnav .nav li.over > a {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 61, ../sass/magento/_menu.scss */
 #ves-mainnav .nav li.active > a {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 67, ../sass/magento/_menu.scss */
 #ves-mainnav .nav li ul li {
@@ -4859,7 +4859,7 @@ p.required, .product-options dt label.required em, .form-list label.required em 
   padding-left: 20px;
   -webkit-transition: all 0.3s ease 0s;
   transition: all 0.3s ease 0s;
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 70, ../sass/magento/_mixins.scss */
 .rtl #ves-mainnav .nav li ul li a:hover {
@@ -4868,8 +4868,8 @@ p.required, .product-options dt label.required em, .form-list label.required em 
 }
 /* line 81, ../sass/magento/_menu.scss */
 #ves-mainnav .nav li ul li a:hover .caret {
-  border-bottom-color: #e76d66 !important;
-  border-top-color: #e76d66 !important;
+  border-bottom-color: #CC2D2D !important;
+  border-top-color: #CC2D2D !important;
 }
 /* line 91, ../sass/magento/_menu.scss */
 #ves-mainnav .nav li ul li.active a {
@@ -5029,7 +5029,7 @@ p.required, .product-options dt label.required em, .form-list label.required em 
 }
 /* line 20, ../sass/magento/_paneltool.scss */
 .paneltool.active .panelbutton {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 23, ../sass/magento/_paneltool.scss */
 .paneltool.themetool {
@@ -5348,7 +5348,7 @@ p.required, .product-options dt label.required em, .form-list label.required em 
 
 /* line 202, ../sass/magento/_paneltool.scss */
 #customize-body .nav-tabs .active a {
-  background: #e76d66;
+  background: #CC2D2D;
   border-top: none;
   border-right: none;
   border-left: none;
@@ -5420,7 +5420,7 @@ p.required, .product-options dt label.required em, .form-list label.required em 
 /* line 251, ../sass/magento/_paneltool.scss */
 .btn-small {
   border-radius: 0;
-  background-color: #e76d66;
+  background-color: #CC2D2D;
   color: #fff;
   padding: 3px 6px;
 }
@@ -5843,7 +5843,7 @@ body,
 }
 /* line 41, ../sass/magento/_product.scss */
 .product-block .product-name a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 46, ../sass/magento/_product.scss */
 .product-block .colorbox.product-zoom {
@@ -5866,7 +5866,7 @@ body,
 }
 /* line 57, ../sass/magento/_product.scss */
 .product-block .colorbox.product-zoom span {
-  background-color: #e76d66;
+  background-color: #CC2D2D;
   color: #FFFFFF;
   display: inline-block;
   font-size: 18px;
@@ -5960,7 +5960,7 @@ body,
 }
 /* line 124, ../sass/magento/_product.scss */
 .products-grid .product-block .product-name a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 129, ../sass/magento/_product.scss */
 .products-grid .product-block .add-to-links {
@@ -6007,8 +6007,8 @@ body,
 /* line 157, ../sass/magento/_product.scss */
 .product-shop .add-to-cart .btn-cart:hover,
 .products-grid .actions .btn-cart:hover {
-  background-color: #e76d66;
-  border: 1px solid #e76d66;
+  background-color: #CC2D2D;
+  border: 1px solid #CC2D2D;
   color: white;
   -webkit-transition: all 0.4s ease 0s;
   transition: all 0.4s ease 0s;
@@ -6043,8 +6043,8 @@ body,
 .product-shop .add-to-links .link-emailfriend:hover,
 .products-grid .actions .link-wishlist:hover,
 .products-grid .actions .link-compare:hover {
-  background-color: #e76d66;
-  border: 1px solid #e76d66;
+  background-color: #CC2D2D;
+  border: 1px solid #CC2D2D;
   color: white;
   -webkit-transition: all 0.4s ease 0s;
   transition: all 0.4s ease 0s;
@@ -6182,7 +6182,7 @@ body,
 }
 /* line 243, ../sass/magento/_product.scss */
 .products-list .product-name a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 252, ../sass/magento/_product.scss */
 .products-list .availability {
@@ -6491,25 +6491,25 @@ body,
 
 /* line 399, ../sass/magento/_product.scss */
 .price-box .price {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /* Regular price */
 /* line 405, ../sass/magento/_product.scss */
 .regular-price {
-  color: #e76d66;
+  color: #CC2D2D;
   font-family: proximanovalight;
 }
 /* line 408, ../sass/magento/_product.scss */
 .regular-price .price {
   font-size: 18px;
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /* line 414, ../sass/magento/_product.scss */
 .block .regular-price,
 .block .regular-price .price {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /* Old price */
@@ -6550,7 +6550,7 @@ body,
 /* line 440, ../sass/magento/_product.scss */
 .special-price .price {
   font-size: 18px;
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /* Minimal price (as low as) */
@@ -6570,7 +6570,7 @@ body,
 }
 /* line 456, ../sass/magento/_product.scss */
 .minimal-price-link .label {
-  color: #e76d66;
+  color: #CC2D2D;
   padding: 5px 5px 5px 0;
   display: inline-block;
 }
@@ -6581,7 +6581,7 @@ body,
 /* line 458, ../sass/magento/_product.scss */
 .minimal-price-link .price {
   font-weight: normal;
-  color: #e76d66;
+  color: #CC2D2D;
   padding: 5px 0;
 }
 
@@ -7366,7 +7366,7 @@ body,
 }
 /* line 806, ../sass/magento/_product.scss */
 .product-view .product-shop .availability span {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 810, ../sass/magento/_product.scss */
 .product-view .product-shop .short-description {
@@ -7633,7 +7633,7 @@ body,
 }
 /* line 963, ../sass/magento/_product.scss */
 .crosssell .product-name a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 
 /******************************************************
@@ -7720,7 +7720,7 @@ body,
   }
   /* line 56, ../sass/magento/_responsive.scss */
   .navbar-inverse .navbar-toggle:hover {
-    background-color: #e76d66;
+    background-color: #CC2D2D;
   }
   /* line 58, ../sass/magento/_responsive.scss */
   .navbar-inverse .navbar-toggle:hover .icon-bar {
@@ -7803,7 +7803,7 @@ body,
   }
   /* line 113, ../sass/magento/_responsive.scss */
   #header .quick-access:hover .quickaccess-toggle {
-    background-color: #e76d66;
+    background-color: #CC2D2D;
     color: white;
     -webkit-transition: all 0.2s ease-in-out 0s;
     transition: all 0.2s ease-in-out 0s;
@@ -7829,7 +7829,7 @@ body,
     border-top-left-radius: 0;
     border-bottom-right-radius: 3px;
     border-bottom-left-radius: 3px;
-    border-top: 5px solid #e76d66;
+    border-top: 5px solid #CC2D2D;
     z-index: -1;
   }
   /* line 163, ../sass/magento/_mixins.scss */
@@ -8186,7 +8186,7 @@ h6 {
 }
 /* line 24, ../sass/magento/_custom.scss */
 .media.block.red {
-  background: #e76d66;
+  background: #CC2D2D;
 }
 /* line 28, ../sass/magento/_custom.scss */
 .media.block.dark {
@@ -8216,7 +8216,7 @@ h6 {
 }
 /* line 46, ../sass/magento/_custom.scss */
 .media.block .readmore a {
-  color: #e76d66;
+  color: #CC2D2D;
   background-image: url(../images/default/circle-li.png);
   background-repeat: no-repeat;
   background-position: right center;
@@ -8282,7 +8282,7 @@ Social*/
 }
 /* line 94, ../sass/magento/_custom.scss */
 .social a:hover {
-  color: #e76d66;
+  color: #CC2D2D;
 }
 /* line 106, ../sass/magento/_custom.scss */
 .social p {
@@ -8323,7 +8323,7 @@ Social*/
 }
 /* line 129, ../sass/magento/_custom.scss */
 .contact-us ul li:hover span {
-  border: solid 2px #e76d66;
+  border: solid 2px #CC2D2D;
 }
 
 /* line 135, ../sass/magento/_custom.scss */
@@ -8431,19 +8431,4 @@ Social*/
 .rtl .media-list {
   padding-right: 0;
   padding-left: inherit;
-}
-
-.product-details .price {
-	position: absolute;
-	right: 29px;
-}
-
-.product-block .price .price-excluding-tax .label,
-.product-block .price .price-including-tax .label {
-	padding-left: 0em;
-}
-
-.btnMoreFilterOptions {
-	margin-bottom: 10px;
-	margin-left: 20px;
 }
