@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Promotionalgift
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+-->
+<config>
+    <tabs>
+        <magestore translate="label">
+            <label>Magestore Extension</label>
+            <sort_order>400</sort_order>
+        </magestore>
+    </tabs>
+    <sections>
+        <promotionalgift translate="label" module="promotionalgift">
+            <class>separator-top</class>
+            <label>Promotional Gift</label>
+            <tab>magestore</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>299</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <general translate="label">
+                    <label>General Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>        
+                        <enable translate="label">
+                            <label>Enable Promotional Gift</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>1</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </enable>
+                        <shoppingcarttitle translate="label">
+                            <label>Shopping cart rule title </label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[ Title of promotional campaigns created by shopping cart rules in frontend ]]>
+                            </comment>
+                        </shoppingcarttitle>
+                        <catalogtitle translate="label">
+                            <label>Catalog rule title</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>
+                                <![CDATA[ Title of promotional campaigns created by catalog rules in frontend ]]>
+                            </comment>
+                        </catalogtitle>
+                        <showfreegift translate="label">
+                            <label>Show Promotional Gift slider</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>10</sort_order>
+                            <source_model>promotionalgift/system_config_source_showfreegift</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </showfreegift>
+                        <showgiftlabel translate="label">
+                            <label>Show Promotional Gift label</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>20</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </showgiftlabel>
+                        <giftlabel translate="label">
+                            <label>Promotional Gift label</label>
+                            <frontend_type>image</frontend_type>
+                            <sort_order>30</sort_order>
+                            <backend_model>adminhtml/system_config_backend_image_pdf</backend_model>
+                            <upload_dir config="system/filesystem/media" scope_info="1">promotionalgift/giftlabel</upload_dir>
+                            <base_url type="media" scope_info="1">promotionalgift/giftlabel</base_url>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </giftlabel>
+                        <showfreegiftoncat translate="label">
+                            <label>Show promotional gifts on listing pages</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>40</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </showfreegiftoncat>
+                        <multipleshoppingcartrule translate="label">
+                            <label>Allow using multiple shopping cart rules</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>41</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </multipleshoppingcartrule>
+                        <numberofshoppingcartrule translate="label">
+                            <label>The  number of shopping cart rules allowed</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>42</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                            <validate>validate-not-negative-number</validate>
+                        </numberofshoppingcartrule>
+                        <allowproductnoinvisible translate="label">
+                            <label>Allow "not visible individually" products to be gift items</label>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>50</sort_order>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment></comment>
+                        </allowproductnoinvisible>
+                    </fields>
+                </general>
+                <report translate="label">
+                    <label>Report Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>100</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <ytd_start translate="label">
+                            <label>Year-To-Date Starts</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>adminhtml/report_config_form_field_ytdStart</frontend_model>
+                            <comment>Select the month and day to be used as the starting point for your YTD reports</comment>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </ytd_start>
+                        <mtd_start translate="label comment">
+                            <label>Current Month Starts</label>
+                            <frontend_type>select</frontend_type>
+                            <frontend_model>adminhtml/report_config_form_field_mtdStart</frontend_model>
+                            <comment>Select the day of the month to be used as the starting point for your Current Month report</comment>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>0</show_in_website>
+                            <show_in_store>0</show_in_store>
+                        </mtd_start>
+                    </fields>
+                </report>
+            </groups>
+        </promotionalgift>
+    </sections>
+</config>

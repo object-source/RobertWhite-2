@@ -1,0 +1,282 @@
+<?php 
+/**
+ * Magestore
+ * 
+ * NOTICE OF LICENSE
+ * 
+ * This source file is subject to the Magestore.com license that is
+ * available through the world-wide-web at this URL:
+ * http://www.magestore.com/license-agreement.html
+ * 
+ * DISCLAIMER
+ * 
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ * 
+ * @category    Magestore
+ * @package     Magestore_Promotionalgift
+ * @copyright   Copyright (c) 2012 Magestore (http://www.magestore.com/)
+ * @license     http://www.magestore.com/license-agreement.html
+ */
+
+/**
+ * Promotionalgift template
+ * 
+ * @see Magestore_Promotionalgift_Block_Banner
+ */
+?>
+<?php 
+	$helper = Mage::helper('promotionalgift');	
+	$rule = $this->getShoppingcartRule();		
+?>
+<?php if(($helper->showFreeGift() == 'checkout') || ($helper->showFreeGift() == 'both')):?>	
+<!-- show Promotional gift has not been add to cart -->
+	<?php 
+		$helper = Mage::helper('promotionalgift');
+		$items = array();
+		$shoppingCartBlock = Mage::getBlockSingleton('promotionalgift/shoppingcart');
+		$rule = $shoppingCartBlock->getCouponCodeRule();	
+		if(!$rule)
+			$rule = $shoppingCartBlock->getShoppingcartRule();	
+		if($rule != false){
+			$ruleId = $rule->getId();
+			if(isset($ruleId) && $ruleId > 0)
+				$items = $helper->getShoppingcartFreeGifts($ruleId);
+		}
+	?>
+	<script type="text/javascript">
+		jQuery(document).ready(function() {
+			 jQuery('#promotional-shoppingcart-table').jcarousel({
+				 start: 1,
+				 scroll: 1
+			 });
+		$('images').style.width='<?php echo count($items)*170?>px';
+		 });
+	</script>
+	<?php if(count($items)):?>
+		<?php 
+			$totalItems = $shoppingCartBlock->getTotalItem($rule);
+			$numberFreeItems = $rule->getNumberItemFree();
+			if($numberFreeItems > $totalItems)
+			$numberFreeItems = $totalItems;
+			$_helper = $this->helper('catalog/output');
+		?>
+		
+		<?php if(count($items) <= 4):?>
+			<style type="text/css">
+				.jcarousel-prev, .jcarousel-next{
+					display: none !important;
+				}
+			</style>
+		<?php endif?>
+		
+		<script>
+			function showhidepromotion(){
+				var value = $('check_show_hide').className;
+				if(value=='1'){
+					if($('show_promotional_gift_checkout')){
+						$('show_promotional_gift_checkout').hide();
+						if($('choose_gift')) $('choose_gift').hide();
+						if ($('promotional-title')){
+							$('promotional-title').removeClassName('promotional-title');
+							$('promotional-title').addClassName('promotional-title-hide');
+						}
+						$('check_show_hide').innerHTML = '<?php echo $this->__('Show'); ?>';
+						$('check_show_hide').className = '0';
+					}
+				}else{
+					if($('show_promotional_gift_checkout')){
+						$('show_promotional_gift_checkout').show();
+						if($('choose_gift')) $('choose_gift').show();
+						if ($('promotional-title')){
+							$('promotional-title').removeClassName('promotional-title-hide');
+							$('promotional-title').addClassName('promotional-title');
+						}
+						$('check_show_hide').innerHTML = '<?php echo $this->__('Hide'); ?>';
+						$('check_show_hide').className = '1';
+					}
+				}
+			}
+		</script>
+		<div class="promotional-srule" id="promotional_gift_checkout">
+			<div class="promotional-title-hide" id="promotional-title">
+				<h2 class="main-title">
+					<?php echo $this->__($rule->getName()).' '.$this->__('(%s Promotional gift(s))',$numberFreeItems) ?>
+					<a class="0" id="check_show_hide" href="#; return false" onclick="showhidepromotion()" style="float:right;"><?php echo $this->__('Show'); ?></a>
+				</h2>
+				<div style="float:left;padding-right:0px;">
+					
+				</div>
+				<?php if($totalItems>1):?>
+					<h4 class="child-title" id="choose_gift" style="display:none;"><?php echo $this->__('Please select %s promotional offers from the followings',$numberFreeItems); ?></h4>							
+				<?php endif?>
+			</div>	
+			<div id="show_promotional_gift_checkout" style="display:none;">
+				<div id="promotional-shoppingcart-table" class="jcarousel-skin-tango">																	
+					<ul id="images" style="overflow: hidden; position: relative; top: 0px; margin: 0px; padding-top: 10px; left: 0px; height:190px;">	
+						<?php foreach($items as $item):?>	
+							<?php $product = Mage::getModel('catalog/product')->load($item['product_id']);?>					
+							<li style="margin-left: 0;margin-right: 17px; height: 190px;width: 135px;float: left;list-style: none outside none;">
+								<div class="item" style="width: 98%;">						
+									<div id="promotional_image_<?php echo $product->getId();?>" class="promotional-image"> 								
+										<a class="product-img"
+										   title="<?php //echo 'Product'.$product->getId() ?>" 
+										   class="product-image">
+											<img src="<?php echo $this->helper('catalog/image')->init($product, 'small_image')->resize(100); ?>" 
+												width="100" height="100" 
+												alt="<?php echo 'Product'.$product->getId() ?>" 
+											/>
+										</a>															
+									</div>						
+									<?php $productName = $product->getName() ?>
+									<?php 
+										if(strlen($productName) >= 15){
+											$productName = substr($productName,0,14);
+											$productName = $productName.'...';
+										}
+									?>
+									<h2 class="product-name" style="text-align:center;"><?php echo $_helper->productAttribute($product, $productName, 'name') ?></h2>
+									<div class="price-box">
+										<span class="old-price">
+											<?php echo Mage::helper('core')->currency($product->getPrice()); ?>
+										</span>
+									</div>								
+									<div class="product-checkbox">
+										<input type="checkbox" 
+											   value="<?php echo $product->getId().'_'.$shoppingCartBlock->getQtyProductRule($product, $rule); ?>"  
+											   class="free_gift" name="promotionalgifts_checkbox[]" 
+											   id="sfree_gift_<?php echo $product->getId()?>" 
+											   onclick="checkItems('<?php echo $product->getId()?>')"
+											   <?php if($totalItems <= 1):?>style="display:none;" checked<?php endif?>
+											   />
+									</div>								
+								</div>	
+							</li>				
+						<?php endforeach;?>
+					</ul>					
+				</div>
+				<div class="promotional-button">
+					<button id="add-free-gift" class="button btn-cart addgift" title="Add to Cart" type="button" 
+							onclick="addPromotionalGift();">
+						<span>
+							<span><?php echo $this->__('Add To Cart')?></span>
+						</span>
+					</button>				
+				</div>
+			</div>
+		</div>
+		<?php foreach($items as $item):?>	
+			<?php $product = Mage::getModel('catalog/product')->load($item['product_id']);?>
+			<div id="sgift_information_<?php echo $product->getId()?>" class="sgift-tootip" style="visibility: visible;">				
+				<div class="stootip-title">								
+					<div class="stootip-head">									
+						<div class="stootip-head-title"><?php echo $this->__('Promotional Gift')?></div>									
+					</div>						
+				</div>			
+				<div class="stootip-content">								
+					<div class="stootip-product-name"><?php echo $product->getName()?></div>		
+					<div class="stootip-product-qty"><?php echo $this->__('Qty: %s', $this->getQtyProductRule($product, $rule))?></div>		
+					<div class="stootip-rule-name"><?php echo $rule->getName()?></div>
+				</div>
+			</div>
+			<script type="text/javascript">
+				var giftTootip_<?php echo $product->getId()?> = new Tooltip('promotional_image_<?php echo $product->getId()?>', 'sgift_information_<?php echo $product->getId()?>');
+			</script>
+		<?php endforeach;?>
+		<input type="hidden" id="number_gift_item" value=""/>
+		<?php Mage::getModel('checkout/session')->setData('back_url_promotionalgift',Mage::helper('core/url')->getCurrentUrl()) ?>
+		<script type="text/javascript">
+			function checkItems(productId)
+			{			
+				var maxItem = <?php echo $rule->getNumberItemFree()?>;
+				if($('sfree_gift_'+productId)){ 
+					if($('sfree_gift_'+productId).checked == true){							
+							$('number_gift_item').value = $('number_gift_item').value/1 + 1;					
+					}else{
+						$('number_gift_item').value = $('number_gift_item').value/1 - 1;
+					}
+				}
+				if($('number_gift_item').value >= maxItem){
+					disableGiftCheckbox();
+					if($('number_gift_item').value > maxItem){
+						disableGiftCheckbox();		
+						$('sfree_gift_'+productId).checked = false;
+						$('sfree_gift_'+productId).disabled = true;
+						$('number_gift_item').value = $('number_gift_item').value/1 - 1;
+					}
+				}else{
+					enableGiftCheckbox();
+				}
+			}
+			
+			function disableGiftCheckbox()
+			{
+				var giftsCheckboxs=$$('input[name^=promotionalgifts_checkbox]');
+				for(var i=0; i<giftsCheckboxs.length; i++){				
+					var item = giftsCheckboxs[i];
+					if(item.checked == false)
+						item.disabled = true;
+				}
+			}
+			
+			function enableGiftCheckbox()
+			{
+				var giftsCheckboxs=$$('input[name^=promotionalgifts_checkbox]');
+				for(var i=0; i<giftsCheckboxs.length; i++){
+					var item = giftsCheckboxs[i];
+					item.disabled = false;
+				}
+			}
+			
+			function addPromotionalGift()
+			{			
+				var itemIds = new Array();	
+				var ruleId = <?php echo $ruleId?>;
+				var giftsCheckboxs=$$('input[name^=promotionalgifts_checkbox]');
+				for(var i=0; i<giftsCheckboxs.length; i++){
+					var item = giftsCheckboxs[i];
+					if(item.checked == true){
+						itemIds[i] = item.value;
+					}else{
+						continue;
+					}
+				}
+				itemIds = itemIds.filter(function(){return true});			
+				if(itemIds == ''){
+					alert('<?php echo $this->__("Please select %s from %s Promotional gifts provided!",$numberFreeItems,$totalItems);?>');
+					// alert('<?php echo $this->__("Please select products!")?>');
+					return;				
+				}
+				var url = '<?php echo $this->getUrl('promotionalgift/index/addPromotionalGiftsCheckout')?>'+'items/'+itemIds+'/ruleId/'+ruleId; 
+				$('add-free-gift').disabled=true;
+				setLocation(url);
+			}
+		</script>
+	<?php endif;?>
+<!-- end show Promotional gift has not been add to cart -->
+
+	<?php $shoppingcartRules = $this->getListShoppingcartRule()?>
+	<?php if(isset($shoppingcartRules) && count($shoppingcartRules) > 0):?>
+		<script type="text/javascript">
+			jQuery(document).ready(function() {
+				jQuery('#rule-banner').jcarousel({
+					auto: 2,
+					scroll: 1,
+					visible:1,
+					buttonNextHTML: '',
+					buttonPrevHTML: '',
+					wrap: 'last' 			
+				});
+			}); 
+		</script>
+		<div class="promotional-srule-container">
+			<div id="wrap">		
+				<ul id="rule-banner" class="jcarousel-skin-tango">
+				<?php foreach($shoppingcartRules as $rule):?>
+					<li ><?php echo $this->getRuleName($rule->getName())?></li>
+				<?php endforeach;?>
+				</ul>		
+			</div>
+		</div>
+	<?php endif;?>
+<?php endif;?>
