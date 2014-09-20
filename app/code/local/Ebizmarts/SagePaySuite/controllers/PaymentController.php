@@ -220,7 +220,102 @@ class Ebizmarts_SagePaySuite_PaymentController extends Mage_Core_Controller_Fron
         //GiftCard
         Mage::dispatchEvent('checkout_controller_onepage_save_shipping_method', array('request' => $this->getRequest(), 'quote' => $this->getOnepage()->getQuote()));
     }
+private function saveBilling()
+    {
+        $billing_data = $this->getRequest()->getPost('billing', array());
+        $shipping_data = $this->getRequest()->getPost('shipping', array());
+        $customerAddressId = $this->getRequest()->getPost('billing_address_id', true);
+        $shippingAddressId = $this->getRequest()->getPost('shipping_address_id', false);
+        $quote = $this->getOnepage()->getQuote();
+        $shipping = $quote->getShippingAddress();
+        $billing = $quote->getBillingAddress();
+if(isset($billing_data['use_for_shipping']) == 1) {
+        $billingCountryId = $billing_data['country_id'];
+        $billingRegionId = $billing_data['region_id'];
+        $billingZipcode = $billing_data['postcode'];
+        $billingRegion = $billing_data['region'];
+        $billingCity = $billing_data['city'];
+        $billingFirst = $billing_data['firstname'];
+        $billingLast = $billing_data['lastname'];
+        $billingTelephone = $billing_data['telephone'];
+        $billingStreet   = $billing_data['street'][0];
+        $this->getOnepage()->getQuote()->getBillingAddress()->setCountryId($billingCountryId)->setRegionId($billingRegionId)->setPostcode($billingZipcode)->setRegion($billingRegion)->setCity($billingCity)
+                                       ->setTelephone($billingTelephone)->setStreet($billingStreet)->setFirstname($billingFirst)->setLastname($billingLast)->setCollectShippingRates(true);
+        $this->getOnepage()->getQuote()->getShippingAddress()->setCountryId($billingCountryId)->setRegionId($billingRegionId)->setPostcode($billingZipcode)->setRegion($billingRegion)
+                                       ->setCity($billingCity)->setTelephone($billingTelephone)->setStreet($billingStreet)->setFirstname($billingFirst)->setLastname($billingLast)->setCollectShippingRates(true);
+        $this->getOnepage()->getQuote()->save();
+        }
+        else{
+ $shippingCountryId = $shipping_data['country_id'];
+        $shippingRegionId = $shipping_data['region_id'];
+        $shippingZipcode = $shipping_data['postcode'];
+        $shippingRegion = $shipping_data['region'];
+        $shippingCity = $shipping_data['city'];
+        $shippingFirst = $shipping_data['firstname'];
+        $shippingLast = $shipping_data['lastname'];
+        $shippingTelephone = $shipping_data['telephone'];
+        $shippingStreet   = $shipping_data['street'][0];
+        $this->getOnepage()->getQuote()->getShippingAddress()->setCountryId($shippingCountryId)->setRegionId($shippingRegionId)->setPostcode($shippingZipcode)->setRegion($shippingRegion)
+                                       ->setCity($shippingCity)->setTelephone($shippingTelephone)->setStreet($shippingStreet)->setFirstname($shippingFirst)->setLastname($shippingLast)
+                                       ->setCollectShippingRates(true);
+        $billingCountryId = $billing_data['country_id'];
+        $billingRegionId = $billing_data['region_id'];
+        $billingZipcode = $billing_data['postcode'];
+        $billingRegion = $billing_data['region'];
+        $billingCity = $billing_data['city'];
+        $billingFirst = $billing_data['firstname'];
+        $billingLast = $billing_data['lastname'];
+        $billingTelephone = $billing_data['telephone'];
+        $billingStreet   = $billing_data['street'][0];
+        $this->getOnepage()->getQuote()->getBillingAddress()->setCountryId($billingCountryId)->setRegionId($billingRegionId)->setPostcode($billingZipcode)->setRegion($billingRegion)->setCity($billingCity)
+                                       ->setTelephone($billingTelephone)->setStreet($billingStreet)->setFirstname($billingFirst)->setLastname($billingLast)->setCollectShippingRates(true);
+        $this->getOnepage()->getQuote()->save();
+        }
+if (!empty($shippingAddressId))
+          {
+   $shippingAddress = Mage::getModel('customer/address')->load($shippingAddressId);
+                if (is_object($shippingAddress) && $shippingAddress->getCustomerId() == Mage::helper('customer')->getCustomer()->getId()) {
+                    $shipping_data = array_merge($shipping_data, $shippingAddress->getData());
+}}$config = Mage::getStoreConfig('tax/calculation/based_on');
+        $helper = Mage::helper('onestepcheckout/checkout');
+        if($config=="billing")
+        {
+              $billing_info = $helper->load_add_data($billing_data);
+              $billing_result = $this->getOnepage()->saveBilling($billing_info, $customerAddressId);
+              $shipping_result = $this->getOnepage()->saveShipping($billing_info, $customerAddressId);
+        }
+        else
+        {
+            if(!empty($billing_data['use_for_shipping']))
+             {
+               $Billingdata = $helper->load_add_data($billing_data);
+               $shipping_result = $this->getOnepage()->saveShipping($Billingdata, $customerAddressId);
+             }
+           else
+             {
+               if($this->getOnepage()->getQuote()->isVirtual())
+                {
+                   $billing_info = $helper->load_add_data($billing_data);
+                    $billing_result = $this->getOnepage()->saveBilling($billing_info, $customerAddressId);
+                }
+               else
+               {
+                   $shipping_info = $helper->load_add_data($shipping_data);
+                   $shipping_result = $this->getOnepage()->saveShipping($shipping_info, $shippingAddressId);
+        }}}
+$paymentMethod = $this->getRequest()->getPost('payment_method', false);
+    if($this->getOnepage()->getQuote()->isVirtual())
+      {
+          $this->getOnepage()->getQuote()->getBillingAddress()->setPaymentMethod(!empty($paymentMethod) ? $paymentMethod : null);
+      }
+     else
+      {
+            $this->getOnepage()->getQuote()->getShippingAddress()->setPaymentMethod(!empty($paymentMethod) ? $paymentMethod : null);
+      }
 
+        $this->loadLayout(false);
+        $this->renderLayout();
+  }
     public function sanitize_string(&$val) {
         $val = filter_var($val, FILTER_SANITIZE_STRING);
     }

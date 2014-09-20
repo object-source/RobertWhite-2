@@ -136,7 +136,15 @@ $widgets = $this->getWidgets();
                 <input type="text" name="megamenu[menu_class]" value="<?php echo $menu['menu_class']?>"/>
                 
             </td>
-        </tr>   
+        </tr> 
+        <tr>
+            <td><?php echo Mage::helper("ves_megamenu")->__('Position:');?></td>
+                
+            <td>
+                <input type="text" name="megamenu[position]" value="<?php echo isset($menu['position'])?$menu['position']:0; ?>"/>
+                
+            </td>
+        </tr>  
         <tr>
             <td><?php echo Mage::helper("ves_megamenu")->__('Show Title:');?></td>
                 

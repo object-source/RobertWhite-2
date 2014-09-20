@@ -236,6 +236,7 @@ class Mage_Checkout_Model_Type_Onepage
         }
 
         $address = $this->getQuote()->getBillingAddress();
+          
         /* @var $addressForm Mage_Customer_Model_Form */
         $addressForm = Mage::getModel('customer/form');
         $addressForm->setFormCode('customer_address_edit')
@@ -273,6 +274,7 @@ class Mage_Checkout_Model_Type_Onepage
                     $address->setData($attribute->getAttributeCode(), NULL);
                 }
             }
+
             $address->setCustomerAddressId(null);
             // Additional form data, not fetched by extractData (as it fetches only attributes)
             $address->setSaveInAddressBook(empty($data['save_in_address_book']) ? 0 : 1);
@@ -282,7 +284,15 @@ class Mage_Checkout_Model_Type_Onepage
         if (!$address->getEmail() && $this->getQuote()->getCustomerEmail()) {
             $address->setEmail($this->getQuote()->getCustomerEmail());
         }
-
+        $post_data = Mage::app()->getRequest()->getPost();
+        if (!$address->getFirstname() && isset($post_data['billing'])) {
+            $firstname = isset($post_data['billing']['firstname'])?$post_data['billing']['firstname']:"";
+            $address->setData("firstname", $firstname);
+        }
+        if (!$address->getLastname() && isset($post_data['billing'])) {
+            $lastname = isset($post_data['billing']['lastname'])?$post_data['billing']['lastname']:"";
+            $address->setData("lastname", $lastname);
+        }
         // validate billing address
         if (($validateRes = $address->validate()) !== true) {
             return array('error' => 1, 'message' => $validateRes);

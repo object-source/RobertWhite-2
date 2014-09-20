@@ -5,6 +5,9 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
     var $export_static_blocks = "static_blocks.csv";
     var $export_cms_pages = "cms_pages.csv";
     var $export_ves_tempcp = "ves_tempcp.csv";
+    var $export_websites = "websites.csv";
+    var $export_store_groups = "store_groups.csv";
+    var $export_stores = "stores.csv";
 
     public function checkModuleInstalled( $module_name = "") {
         $modules = Mage::getConfig()->getNode('modules')->children();
@@ -35,6 +38,7 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
     public function writeSampleDataFile($importDir, $file_name, $content = "") {
         $file = new Varien_Io_File();
         //Create import_ready folder
+        $error = false;
         if(!file_exists($importDir)) {
             $importReadyDirResult = $file->mkdir($importDir);
             $error = false;
@@ -43,6 +47,8 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
                 $error = true;
                 Mage::getSingleton('adminhtml/session')->addError(Mage::helper('ves_tempcp')->__('Can not create folder "%s".', $importDir));
             }
+        } else {
+            $file->open(array('path' => $importDir));
         }
 
         if (!$file->write($importDir.$file_name, $content)) {
@@ -57,19 +63,24 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
 
         return !$error;
     }
+   
     /**
     *
     *Read config.xml in skin folder of the theme to get export information before export sample data
     **/
-	public function readExportInfo( $theme_name = "", $section = "default" ) {
-		$theme_path = Mage::getBaseDir('skin') . '/frontend/'.$section.'/'.$theme_name;
-		$config_xml = $theme_path.'/config.xml';
-		$result = array();
-		/*get config from xml file*/
-		if( file_exists($config_xml) ){
-			$info = simplexml_load_file( $config_xml, 'SimpleXMLElement', LIBXML_NOCDATA );
-			/*get Export Sample Data*/
-			if(isset($info->export)){
+    public function readExportInfo( $theme_name = "", $section = "default" ) {
+        $tmp_theme = explode("/", $theme_name);
+        if(count($tmp_theme) == 1) {
+            $theme_name = $section."/".$theme_name;
+        }
+        $theme_path = Mage::getBaseDir('skin') . '/frontend/'.$theme_name;
+        $config_xml = $theme_path.'/config.xml';
+        $result = array();
+        /*get config from xml file*/
+        if( file_exists($config_xml) ){
+            $info = simplexml_load_file( $config_xml, 'SimpleXMLElement', LIBXML_NOCDATA );
+            /*get Export Sample Data*/
+            if(isset($info->export)){
                 if(isset($info->export->theme)) {
                     $result['theme'] = (string)$info->export->theme;
                 }
@@ -110,27 +121,31 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
                     }
                     
                 }
-				
-			}
-		}
-		return $result;
-	}
+                
+            }
+        }
+        return $result;
+    }
 
-	public function export($theme_name = "", $export_mode = "full", $section = "default") {
-		if($theme_name) {
-			$export_list = $this->readExportInfo( $theme_name, $section );
-            $importDir = Mage::getBaseDir('skin') . '/frontend/'.$section.'/'.$theme_name.'/import/';
+    public function export($theme_name = "", $export_mode = "full") {
+        if($theme_name) {
+            $tmp_theme = explode("/", $theme_name);
+            if(count($tmp_theme) == 1) {
+                $theme_name = $section."/".$theme_name;
+            }
+            $export_list = $this->readExportInfo( $theme_name );
+            $importDir = Mage::getBaseDir('skin') . '/frontend/'.$theme_name.'/import/';
+
             $module_import_dir = $importDir.'modules/';
             $cms_import_dir = $importDir.'cms/';
 
             if($export_mode == "setting") {
-                $importDir = Mage::getBaseDir('cache') ."/backup_".$theme_name.'/';
+                $importDir = Mage::getBaseDir('cache') ."/backup_".str_replace( "/", "_", $theme_name).'/';
                 $module_import_dir = $importDir;
             }
             
             
-            
-			/*Export modules*/
+            /*Export modules*/
             if(isset($export_list['modules'])) {
                 foreach($export_list['modules'] as $key => $module) {
                     if($module) {
@@ -146,7 +161,7 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
                             }
                             $tables = $tmp;
                         }
-
+                        
                         if( $module_sample_data = $this->exportSample( $key, $tables, $type, $export_mode ) ) {
                             $this->writeSampleDataFile( $module_import_dir, $key.".".$type, $module_sample_data);
                         }
@@ -154,8 +169,21 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
                 }
             }
             if($export_mode == "full") {
-    			/*Export cms pages*/
-                if(isset($export_list['cms_page'])) {
+                /*Export static blocks*/
+                //if(isset($export_list['stores'])) {
+                    $content    = Mage::app()->getLayout()->createBlock('ves_tempcp/adminhtml_cms_enhanced_store_grid')->getCsvFile($this->export_stores);
+                    
+                    $store_content = "";
+                    if(!empty($content) && isset($content['value']) && file_exists($content['value'])) {
+                        $store_content = file_get_contents($content['value']);
+                    }
+                    if($store_content) {
+                        $this->writeSampleDataFile( $importDir, $this->export_stores, $store_content);
+                    }
+
+                //}
+                /*Export cms pages*/
+                //if(isset($export_list['cms_page'])) {
 
                     $content    = Mage::app()->getLayout()->createBlock('ves_tempcp/adminhtml_cms_enhanced_page_grid')->getCsvFile($this->export_cms_pages);
                     $cms_content = "";
@@ -165,11 +193,11 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
                     if($cms_content) {
                         $this->writeSampleDataFile( $cms_import_dir, $this->export_cms_pages, $cms_content);
                     }
-                }
-    			/*Export static blocks*/
-                if(isset($export_list['static_block'])) {
+                //}
+                /*Export static blocks*/
+                //if(isset($export_list['static_block'])) {
 
-                    $content    = $content    = Mage::app()->getLayout()->createBlock('ves_tempcp/adminhtml_cms_enhanced_block_grid')->getCsvFile($this->export_static_blocks);
+                    $content  = Mage::app()->getLayout()->createBlock('ves_tempcp/adminhtml_cms_enhanced_block_grid')->getCsvFile($this->export_static_blocks);
 
                     $static_content = "";
                     if(!empty($content) && isset($content['value']) && file_exists($content['value'])) {
@@ -179,9 +207,9 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
                         $this->writeSampleDataFile( $cms_import_dir, $this->export_static_blocks, $static_content);
                     }
 
-                }
-    			/*Export theme setting*/
-                if(isset($export_list['theme'])) {
+                //}
+                /*Export theme setting*/
+                //if(isset($export_list['theme'])) {
 
                     $content    = Mage::app()->getLayout()->createBlock('ves_tempcp/adminhtml_cms_enhanced_theme_grid')->getCsvFile( $this->export_ves_tempcp );
 
@@ -195,11 +223,11 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
                         $this->writeSampleDataFile( $importDir, $this->export_ves_tempcp, $theme_content);
                     }
 
-                }
+                //}
             }
-		}
-	}
-	/**
+        }
+    }
+    /**
     * Export module sample data: support CSV and JSON
     * @module: Name of module which you want export data (for example: ves_megamenu)
     * @tables: List table name which you want export sample (for example a table name: ves_megamenu/megamenu)
@@ -213,12 +241,12 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
 
         $result = "";
         switch ($type) {
-        	case 'csv' :
-        	
-        	break;
-        	case 'sql' :
-        		
-        	break;
+            case 'csv' :
+            
+            break;
+            case 'sql' :
+                
+            break;
             case 'json' :
             default:
                 $data = array();
@@ -242,23 +270,47 @@ class Ves_Tempcp_Helper_ExportSample extends Mage_Core_Helper_Abstract {
                             /**
                              * Execute the query and store the results in $results
                              */
-                            $megamenus = $readConnection->fetchAll($query);
+                            $module_table = $readConnection->fetchAll($query);
 
-                            $data[ $table_name ] = $megamenus;  
+                            $data[ $table_name ] = $module_table;  
                         }
                     }
                 }
                 $module = strtolower($module);
 
-                $config = Mage::getStoreConfig($module); //array
+                $stores = $this->getListStores();
+                if($stores) {
+                    $config = array();
+                    $config[0] = Mage::getStoreConfig($module); //array 
+                    foreach($stores as $store_id) {
+                       $config[$store_id] = Mage::getStoreConfig($module, $store_id); //array 
+                    }
+                    $data['config'] = $config;
+                    
+                } else {
+                    $config = Mage::getStoreConfig($module); //array
 
-                $data['config'] = $config;
+                    $data['config'] = $config;
+                }
+                
                 
                 $result = Mage::helper('core')->jsonEncode($data);
 
                 break;
         }
         
+        return $result;
+    }
+
+    public function getListStores() {
+        $result = array();
+        $stores = Mage::app()->getStores();
+        if(count($stores) > 1){
+
+            foreach($stores as $store) {
+                $result[] = $store->getId();
+            }
+        }
         return $result;
     }
 }

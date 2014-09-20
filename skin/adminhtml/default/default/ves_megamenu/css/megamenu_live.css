@@ -172,3 +172,33 @@ min-width:200px;
   background-image: none!important;
 }
  
+
+ 
+.aligned-center .dropdown-menu{
+  left: 50%;
+  transform: translate(-50%);
+  -webkit-transform: translate(-50%);
+  -moz-transform: translate(-50%);
+  -ms-transform: translate(-50%);
+  -o-transform: translate(-50%);
+}
+
+
+
+.aligned-right .dropdown-menu{
+    left: auto;
+    right: 0;
+}
+.aligned-left .dropdown-menu{
+
+}
+
+.megamenu .aligned-fullwidth {
+  position: inherit!important;
+}
+
+.aligned-fullwidth .dropdown-menu{
+  width: 100%!important;
+  left: 0;
+}
+

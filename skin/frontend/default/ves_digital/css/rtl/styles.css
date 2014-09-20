@@ -1,21 +1,17 @@
-/* line 1, ../../sass/rtl/styles.scss */
 #ves-accordion span.head a {
   float: left!important;
 }
 
-/* line 4, ../../sass/rtl/styles.scss */
 .language .form-language a, .language .form-language a a {
   background-position: 92% center;
 }
 
-/* line 10, ../../sass/rtl/styles.scss */
 #header .topLinks .links li > a,
 #footer ul.links li a,
 #ves-mainnav .nav li ul li a,
 .currency ul li a {
   background-position: 110% 12px;
 }
-/* line 12, ../../sass/rtl/styles.scss */
 #header .topLinks .links li > a:hover,
 #footer ul.links li a:hover,
 #ves-mainnav .nav li ul li a:hover,
@@ -23,7 +19,6 @@
   background-position: 96% 12px;
 }
 
-/* line 18, ../../sass/rtl/styles.scss */
 .currency ul, .form-language ul,
 .navbar-nav > li > .dropdown-menu {
   -webkit-transform: translate(20%, 0);
@@ -31,55 +26,46 @@
   transform: translate(20%, 0);
 }
 
-/* line 24, ../../sass/rtl/styles.scss */
 .widget-product-list .image {
   float: right!important;
   margin-right: 0!important;
   margin-left: 10px;
 }
 
-/* line 29, ../../sass/rtl/styles.scss */
 .zoomContainer .zoomWindow {
   float: right!important;
   right: 335px!important;
   left: inherit;
 }
 
-/* line 35, ../../sass/rtl/styles.scss */
 .offcanvas-effect-3.offcanvas-menu-open .offcanvas-pusher {
   -webkit-transform: translate3d(-280px, 0, 0) !important;
   transform: translate3d(-280px, 0, 0) !important;
 }
 
-/* line 40, ../../sass/rtl/styles.scss */
 .offcanvas-effect-3.offcanvas-menu {
   -webkit-transform: translate3d(100%, 0, 0) !important;
   transform: translate3d(100%, 0, 0) !important;
 }
 
-/* line 44, ../../sass/rtl/styles.scss */
 .offcanvas-effect-3.offcanvas-menu-open .offcanvas-effect-3.offcanvas-menu {
   -webkit-transform: translate3d(0, 0, 0) !important;
   transform: translate3d(0, 0, 0) !important;
 }
 
-/* line 52, ../../sass/rtl/styles.scss */
 .vescontentslider .ves-caption {
   text-align: left;
 }
 
-/* line 56, ../../sass/rtl/styles.scss */
 #footer .block-subscribe input.input-text {
   border-radius: 0 7px 7px 0;
 }
 
-/* line 59, ../../sass/rtl/styles.scss */
 #footer .block-subscribe .button {
   border-radius: 7px 0 0 7px;
 }
 
 @media only screen and (max-width: 990px) {
-  /* line 64, ../../sass/rtl/styles.scss */
   #header .quick-access .inner-toggle {
     -webkit-transform: translate(20%, 0);
     -ms-transform: translate(20%, 0);

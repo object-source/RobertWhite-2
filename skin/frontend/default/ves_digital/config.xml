@@ -27,12 +27,40 @@
 
 	</positions>
 
-	<skins>
-		<skin>default</skin>		
-		<skin>green</skin>		
-		<skin>blue</skin>
-		<skin>pink</skin>
-	</skins>
+<!-- Export data sample: theme, modules, static_block, cms_page -->
+	<export>
+		<!-- export type for (theme, cms_page, static_block): only support CSV file -->
+		<theme>csv</theme>
+		<cms_page>csv</cms_page>
+		<static_block>csv</static_block>
+
+		<!-- there modules will delete all current data in tables of following modules then inserting new sampledata -->
+		<modules_query section="community"><!-- community = app/code/community-->
+			<module>Ves_Megamenu</module>
+			<module>Ves_Brand</module>
+			<module>Ves_Contentslider</module>
+		</modules_query>
+
+		<!-- Input modules of theme and module's table names (Install or Override)-->
+		<modules section="community"><!-- community = app/code/community-->
+			<module name="Ves_Megamenu">
+				megamenu
+				megamenu_store
+				megamenu_widget
+			</module>
+			<module name="Ves_Brand">
+				brand
+				brand_store
+			</module>
+			<module name="Ves_Contentslider">
+				banner
+				banner_store
+			</module>
+			<module name="Ves_TreeMenu"></module>
+			<module name="Ves_Tabs"></module>
+		</modules>
+		
+	</export>
 
 	<fontsizes>
 				<option>9</option>

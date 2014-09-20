@@ -6,8 +6,7 @@
  * @copyright	Copyright (C) Feb 2013 VenusThemes.com <@emai:venusthemes@gmail.com>.All rights reserved.
  * @license		GNU General Public License version 2
 *******************************************************/
-class Ves_Tempcp_Block_Adminhtml_Cms_Enhanced_Page_Grid 
-	extends Ves_Tempcp_Block_Adminhtml_Cms_Enhanced_Abstract_Grid
+class Ves_Tempcp_Block_Adminhtml_Cms_Enhanced_Page_Grid extends Ves_Tempcp_Block_Adminhtml_Cms_Enhanced_Abstract_Grid
 {
 
 	protected $_isExport = true;

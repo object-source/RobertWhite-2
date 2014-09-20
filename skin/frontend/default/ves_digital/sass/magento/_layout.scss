@@ -6,7 +6,6 @@
  * @license   GNU General Public License version 2
 *******************************************************/
 /* Layout ================================================================================ */
-.wrapper {}
 #page {
 	margin: 0 auto;
 }
@@ -15,6 +14,8 @@
 .page-popup { background:#fff; padding:25px 30px; text-align:left; }
 .main-container { }
 .main {}
+.wrapper {}
+
 body{
     &.layout-boxed-md{
         background: url("#{$image-theme-path-base}pattern/pattern14.png");
@@ -26,7 +27,27 @@ body{
 
     }
     &.fullwidth{ }
- } 
+ }
+
+//keep header when srolling 
+
+#header.navbar-fixed-top {
+    position: relative;
+}
+
+#header.hide-bar {
+    top: -41px;
+    z-index: 9999 !important;
+    position:fixed;
+    transition: all 0.3s ease 0s;
+}
+
+#header {
+    border: medium none;
+    margin: 0 auto;
+    transition: all 0.3s ease 0s;
+    z-index: 999;
+}
  
  /*
  * TOPBAR 
@@ -82,7 +103,7 @@ body{
  */
  #header-main {
   background: $header-main-bg;
-    @include  box-shadow ( 0 0 2px rgba(194, 194, 194, 0.6));
+    @include box-shadow ( 0 0 2px rgba(194, 194, 194, 0.6));
     border-top: 1px solid #e7e7e7;
     border-bottom: 1px solid #e7e7e7;
     margin-bottom: 20px;
@@ -106,13 +127,14 @@ body{
 .top-search .form-search {
 	position: relative;
     margin: 25px 0 ;
-        width: 200px;
+    width: 200px;
     input {
         @include rtl-padding-right (25px);
         @include rtl-padding-left (8px);
-		@include border-left-radius ( 5px );
-		@include border-right-radius ( 5px );
+		@include border-left-radius (5px);
+		@include border-right-radius (5px);
         border: $theme-border;
+        line-height: 20px;
     }
     button.button-search {
         color: #FFFFFF;

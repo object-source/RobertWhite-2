@@ -54,6 +54,18 @@
 						 <input type="text" name="menu_subwidth" class="menu_subwidth"> 
 					</td>
 				</tr>
+				<tr>
+					<td><?php echo Mage::helper("ves_megamenu")->__('Alignment' ); ?></td>
+					<td>
+						<div class="btn-group button-alignments">
+						  <button type="button" class="btn btn-default" data-option="aligned-left"><span class="fa fa-align-left"></span></button>
+						  <button type="button" class="btn btn-default" data-option="aligned-center"><span class="fa fa-align-center"></span></button>
+						  <button type="button" class="btn btn-default" data-option="aligned-right"><span class="fa fa-align-right"></span></button>
+						  <button type="button" class="btn btn-default" data-option="aligned-fullwidth"><span class="fa fa-align-justify"></span></button>
+						</div>
+
+					</td>
+				</tr>
 					<tr>
 					<td colspan="2">
 						<button type="button" class="add-row btn btn-success btn-sm"><?php echo Mage::helper("ves_megamenu")->__('add row');?></button>
@@ -117,7 +129,8 @@
 								<option value="1"><?php echo Mage::helper("ves_megamenu")->__('Yes');?></option>
 							</select>
 						</td>
-					</tr>	  
+					</tr>
+
 				</table>
 			</form>
 		</div>

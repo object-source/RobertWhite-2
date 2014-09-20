@@ -15,14 +15,6 @@ class Ves_Tempcp_Block_List extends Mage_Catalog_Block_Product_Abstract {
         
         
         $config = $this->_config;
-        //$responsive = (empty($config['responsive'])) ? 0 : $config['responsive'];
-        //if($responsive == 1){
-        //    $mediaHelper->addMediaFile("skin_css", "ves_tempcp/responsive.css");
-
-        $show = (isset($config['show']) && $config['show'] !="")?$config['show']:1;
-        if($show) {
-           $mediaHelper->addMediaFile("skin_css", "venustheme/ves_tempcp/style.css");  
-        }
         
         parent::__construct();
     }

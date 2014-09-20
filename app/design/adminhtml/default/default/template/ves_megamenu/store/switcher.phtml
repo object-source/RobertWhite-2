@@ -92,10 +92,13 @@ megamenuStore.prototype = {
         if ($(this.storeSwitcher)) {
             this.options = $$('#'+this.containerId+' option');
             for (var option=0; option<=this.options.length; option++) {
-                var id = this.options[option].value*1;
-                this.storesGroup[id] = this.options[option].getAttribute('group');
-                if($(this.options[option]).value == this.lastViewedStore)
-                    $(this.options[option]).setAttribute('selected', 'selected');
+                if(typeof(this.options[option]) != "undefined") {
+                    var id = this.options[option].value*1;
+                    this.storesGroup[id] = this.options[option].getAttribute('group');
+                    if($(this.options[option]).value == this.lastViewedStore)
+                        $(this.options[option]).setAttribute('selected', 'selected');
+                }
+                
             }
             Event.observe(this.storeSwitcher, 'change', this.selectorOnChange);
         }

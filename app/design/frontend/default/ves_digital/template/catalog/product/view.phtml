@@ -31,6 +31,28 @@
  * @see Mage_Review_Block_Product_View
  */
 ?>
+<?php 
+
+$route = Mage::app()->getRequest()->getRouteName(); 
+
+$media_cols = array("md" => 5,
+                    "sm" => 12,
+                    "xs" => 12);
+
+$product_cols = array("md" => 5,
+                    "sm" => 12,
+                    "xs" => 12);
+/*If quickview popup are openning don't change column number of media block and product information block*/
+if($route == "tempcp") {
+    $media_cols = array("md" => 5,
+                    "sm" => 5,
+                    "xs" => 5);
+
+    $product_cols = array("md" => 7,
+                    "sm" => 7,
+                    "xs" => 7);
+}
+?>
 <?php
     $theme = Mage::helper("ves_tempcp/framework")->getFramework( );
     $themeConfig = $theme->getConfig();
@@ -50,10 +72,10 @@
             <input type="hidden" name="related_product" id="related-products-field" value="" />
         </div>
         <div class="row">
-                 <div class="col-lg-5 col-sm-5 col-xs-12 product-img-box">
+                 <div class="col-lg-5 col-md-<?php echo $media_cols['md'];?> col-sm-<?php echo $media_cols['sm'];?> col-xs-<?php echo $media_cols['xs'];?> product-img-box">
                     <?php echo $this->getChildHtml('media') ?>
                 </div>
-                <div class="col-lg-7 col-sm-5 col-xs-12 product-shop">
+                <div class="col-lg-7 col-md-<?php echo $product_cols['md'];?> col-sm-<?php echo $product_cols['sm'];?> col-xs-<?php echo $product_cols['xs'];?> product-shop">
                     <div class="product-name">
                         <h1><?php echo $_helper->productAttribute($_product, $_product->getName(), 'name') ?></h1>
                     </div>
@@ -66,11 +88,8 @@
                     <?php echo $this->getTierPriceHtml() ?>
                     <?php echo $this->getChildHtml('extrahint') ?>
 
-                    <div class="product-brand" STYLE="margin-bottom: 20px;">
-                        <strong STYLE="margin-right: 56px;">SKU</strong>
-                        RW # <?php echo $_helper->productAttribute($_product, nl2br($_product->getSku()), 'sku') . "<span STYLE='margin-left: 20px;'>Mfr. # " . $_helper->productAttribute($_product, nl2br($_product->getManufacturersku()), 'manufacturer sku') . "</span>";?>
-                    </div>
                     
+
                     <?php if ($_product->getShortDescription()):?>
                         <div class="short-description">
                             <h2><?php echo $this->__('Quick Overview') ?></h2>
@@ -78,9 +97,9 @@
                         </div>
                     <?php endif;?>
 
-                    <?php //if ($this->canEmailToFriend()): ?>	<!-- MOVED TO view/addto.phtml NEXT TO WISHLIST AND COMPARE BUTTONS -->
-                        <!--div class="email-friend"><a href="<?php // echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><span class="fa fa-envelope"></span><?php //echo $this->__('Email to a Friend') ?></a></div-->
-                    <?php //endif; ?>
+                    <?php if ($this->canEmailToFriend()): ?>
+                        <div class="email-friend"><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><span class="fa fa-envelope"></span><?php echo $this->__('Email to a Friend') ?></a></div>
+                    <?php endif; ?>
 
                     <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
 
@@ -187,52 +206,34 @@
     <?php
      $tmp_html = "";
     ?>
-<?php 
-		foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html) {
-			if ('additional' === $alias) {
-				$TabTitle = 'Specifications';
-			} elseif ($title = $this->getChildData($alias, 'title')) {
-				$TabTitle = $this->escapeHtml($title);
-			} else {
-				$TabTitle = $this->escapeHtml(ucfirst($alias));
-			}
-
-        	$tmp_html .= "<div id=\"tab-{$alias}\" class=\"tab-content box-{$alias}\">";
-        	$tmp_html .= $html;
-        	$tmp_html .= '<br class="clear clr"/>';
-        	$tmp_html .= "</div>";
-
-        	echo '<a href="#tab-'.$alias.'">' . $TabTitle . '</a>';
-     	};?>
+<?php foreach ($this->getChildGroup('detailed_info', 'getChildHtml') as $alias => $html){
+        $tmp_html .= "<div id=\"tab-{$alias}\" class=\"tab-content box-{$alias}\">";
+        $tmp_html .= $html;
+        $tmp_html .= '<br class="clear clr"/>';
+        $tmp_html .= "</div>";
+        if ($title = $this->getChildData($alias, 'title')){
+            echo '<a href="#tab-'.$alias.'">'.$this->escapeHtml($title).'</a>';
+        }else{
+            $title = $this->__($alias);
+            echo '<a href="#tab-'.$alias.'">'.$this->escapeHtml(ucfirst($title)).'</a>';
+        }
+     };?>
 <?php
     $route = Mage::app()->getRequest()->getRouteName();
 ?>
     <?php if($route != "review" && $route !="tempcp") { ?>
-         <?php //if($product_additional_data = $this->getChildHtml('product_additional_data')): ?>
-             <!--a href="#tab-tags"><?php echo Mage::helper('ves_tempcp')->__("Product Tags");?></a-->
-               <?php //$product_additional_data = '<div id="tab-tags" class="tab-content">'.$product_additional_data.'<br class="clear clr"/></div>'; ?>
-            <?php //endif; ?>
+         <?php if($product_additional_data = $this->getChildHtml('product_additional_data')): ?>
+             <a href="#tab-tags"><?php echo Mage::helper('ves_tempcp')->__("Product Tags");?></a>
+               <?php $product_additional_data = '<div id="tab-tags" class="tab-content">'.$product_additional_data.'<br class="clear clr"/></div>'; ?>
+            <?php endif; ?>
     <?php } ?>
 
-	<?php 
-		$VideoUrl = $_helper->productAttribute($_product, $_product->getProduct_video(), 'video');
-	
-		if (0 !== strlen($VideoUrl)) {
-			$videoHTML =  '<p class="text-center">Content of video may not represent the actual product or contents and is for information/educational/illustrative purposes only.</p>
-<div class="hidden-xs" style="width: 520px; margin-left: auto; margin-right: auto;"><iframe style="margin: 0 auto;" src="//www.youtube.com/embed/' . $VideoUrl . '?showinfo=0" frameborder="0" width="520" height="315"></iframe></div>
-<p class="visible-xs"><iframe style="margin: 0 auto;" src="//www.youtube.com/embed/' . $VideoUrl . '?showinfo=0&controls=0" frameborder="0" width="270" height="169"></iframe></p>';
-		} else {
-			$videoHTML = 'There is no video for this product.';
-		}	
- 
+    <?php 
             $product_customtab = "";
             if($themeConfig->get("enable_product_customtab", 0)){ 
                 echo '<a href="#tab-custom">'.$themeConfig->get("product_customtab_name","").'</a>';
                 $product_customtab = "<div id=\"tab-custom\" class=\"tab-content box-custom\">";
-                //$product_customtab .= $themeConfig->get("product_customtab_content","",true);
-                // CUSTOM CODE TO GENERATE RESPONSIVE VIDEO IFRAMES 
-                $product_customtab .= $videoHTML;
-                //
+                $product_customtab .= $themeConfig->get("product_customtab_content","",true);
                 $product_customtab .= '<br class="clear clr"/>';
                 $product_customtab .= '</div>';
             } ?>

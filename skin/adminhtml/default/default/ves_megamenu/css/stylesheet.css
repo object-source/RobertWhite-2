@@ -275,7 +275,8 @@ body > #container {
 	font-size: 15px;
 	font-weight: bold;
 	padding-bottom: 3px;
-	border-bottom: 1px dotted #000000;	
+	border-bottom: 1px dotted #000000;
+	width: 100%;
 }
 .box > .content {
 	padding: 10px;

@@ -261,7 +261,7 @@
 		.wishlist,.compare {
 			padding: 3px 0;
 			span {
-				margin-right: 8px;
+				@include rtl-margin-right(8px);
 			}
 		}
 	}
@@ -271,7 +271,6 @@
 	}
 }
 /* ======================================================================================= */
-
 
 /* Product View ========================================================================== */
 /* Rating */
@@ -283,7 +282,8 @@
 		@include rtl-float-left(); 
 		@include rtl-margin(1px, 3px, 0, 0); }
 	.rating-links { 
-		margin:0; 
+		margin:0;
+		line-height: 16px;
 		.separator { 
 			margin:0 2px; 
 		}
@@ -302,8 +302,8 @@
 	}
 }
 .ratings-table {
-	border: none;
-	th,td { font-size:11px; line-height:1.15; padding:3px 0; border: none }
+	border: none !important;
+	th,td { font-size:11px; line-height:1.15; padding:3px 0; border: none !important }
 	th { font-weight:bold; @include rtl-padding-right(8px); }
 }
 
@@ -764,7 +764,6 @@
 		.carousel-inner .product-image-zoom { 
 			position:relative;  overflow:hidden;
 			padding: 0 3px;
-			width: 100%;
 			img { position:absolute; @include rtl-left(0); top:0; cursor:move; }
 		}
 		.zoom-notice { font-size:11px; margin:0 0 5px; text-align:center; }

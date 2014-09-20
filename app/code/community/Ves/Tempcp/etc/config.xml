@@ -4,7 +4,7 @@
         <Ves_Tempcp> 
             <active>true</active>
             <codePool>community</codePool>
-            <version>1.1.0</version>  
+            <version>1.2.0</version>  
         </Ves_Tempcp>  
     </modules>
     <admin>
@@ -64,8 +64,17 @@
                 </tempcp>
             </updates>
         </layout>
-
+        
         <events>
+            <controller_action_predispatch>
+                <observers>
+                    <ves_tempcp_observer>
+                        <type>singleton</type>
+                        <class>Ves_Tempcp_Model_Observer</class>
+                        <method>initControllerPredispatch</method>
+                    </ves_tempcp_observer>
+                </observers>
+            </controller_action_predispatch>
             <controller_action_layout_load_before>
                 <observers>
                     <ves_tempcp_observer>
@@ -84,6 +93,11 @@
             <ves_tempcp>
                 <class>Ves_Tempcp_Block</class>
             </ves_tempcp>
+            <page>
+                  <rewrite>
+                      <html_header>Ves_Tempcp_Block_Html_Header</html_header>
+                  </rewrite>
+            </page>
         </blocks>
         <models>
             <ves_tempcp>
@@ -99,6 +113,9 @@
                     <theme_store>
                         <table>ves_tempcp_theme_store</table>
                     </theme_store>
+                    <module>
+                        <table>ves_tempcp_module</table>
+                    </module>
                 </entities>
             </ves_tempcp_mysql4>
         </models>

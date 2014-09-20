@@ -6,15 +6,15 @@
  	$siteURL = $this->getSiteURL();
  	$default_theme = $themecontrol->get("default_theme");
 
- 	$themePath = Mage::getBaseDir('skin')."/frontend/default/".$default_theme."/" ;
+ 	$themePath = Mage::getBaseDir('skin')."/frontend/".$default_theme."/" ;
 
  	$themeCustomizePath = $themePath.'css/customize/';
 
- 	$backgroundImageURL = $siteURL."skin/frontend/default/".$default_theme.'/images/pattern/';
+ 	$backgroundImageURL = $siteURL."skin/frontend/".$default_theme.'/images/pattern/';
 
  	$files = $this->getFileList( $themeCustomizePath , '.css' );
 
- 	$themeConfig = Mage::helper('ves_tempcp/theme')->getCurrentTheme();
+ 	$themeConfig = Mage::helper('ves_tempcp/theme')->getCurrentTheme($default_theme);
  	$helper = Mage::helper("ves_tempcp/framework")->initFramework( $default_theme, $themeConfig );
 
  	$themeConfig = $helper->getConfig();
@@ -34,10 +34,10 @@
 <style type="text/css">
 
 </style>
-<link href="<?php echo $siteURL; ?>skin/frontend/default/<?php echo $default_theme; ?>/css/bootstrap.css" rel="stylesheet" />
+<link href="<?php echo $siteURL; ?>skin/frontend/<?php echo $default_theme; ?>/css/bootstrap.css" rel="stylesheet" />
 <link href="<?php echo $siteURL; ?>skin/adminhtml/default/default/venustheme/ves_tempcp/css/customizetheme.css" rel="stylesheet" />
 
-<link rel="stylesheet" type="text/css" href="<?php echo $siteURL; ?>skin/frontend/default/<?php echo $default_theme; ?>/css/font-awesome.min.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $siteURL; ?>skin/frontend/<?php echo $default_theme; ?>/css/font-awesome.min.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo $siteURL; ?>js/venustheme/ves_tempcp/jquery/colorpicker/css/colorpicker.css" />
 
 <script type="text/javascript" src="<?php echo $siteURL; ?>js/venustheme/ves_tempcp/jquery/jquery.min.js"></script>
@@ -47,7 +47,9 @@
 
 
 
-
+<script type="text/javascript">
+ $ = jQuery;
+</script>
 
 <!--[if lt IE 9]>
 <script src="<?php echo $siteURL; ?>js/venustheme/ves_tempcp/html5.js"></script>
@@ -124,7 +126,7 @@
 												<input value="" type="hidden" name="customize[<?php echo $group['match'];?>][]" data-match="<?php echo $group['match'];?>" type="text" class="input-setting" data-selector="<?php echo $item['selector']?>" data-attrs="background-image">
 
 												<div class="clearfix"></div>
-												 <p><em style="font-size:10px">Those Images in folder skin/frontend/default/YOURTHEME/images/patterns/</em></p>
+												 <p><em style="font-size:10px">Those Images in folder skin/frontend/default package/YOURTHEME/images/patterns/</em></p>
 												<div class="bi-wrapper clearfix">
 												<?php foreach ( $patterns as $pattern ){ ?>
 												<div style="background:url('<?php echo $backgroundImageURL.$pattern;?>') no-repeat center center;" class="pull-left" data-image="<?php echo $backgroundImageURL.$pattern;?>" data-val="../../images/pattern/<?php echo $pattern; ?>">
@@ -179,42 +181,42 @@
 </div>
 
 <script type="text/javascript">
-$("#custom-accordion .accordion-group:first .accordion-body").addClass('in');
+jQuery("#custom-accordion .accordion-group:first .accordion-body").addClass('in');
 
 /**
  * BACKGROUND-IMAGE SELECTION
  */
-$(".background-images").each( function(){
+jQuery(".background-images").each( function(){
 	var $parent = this;
-	var $input  = $(".input-setting", $parent ); 
+	var $input  = jQuery(".input-setting", $parent ); 
 
 
 
-	$(".bi-wrapper > div",this).click( function(){
+	jQuery(".bi-wrapper > div",this).click( function(){
 
-		 $input.val( $(this).data('val') ); 
-		 $('.bi-wrapper > div', $parent).removeClass('active');
-		 $(this).addClass('active');
+		 $input.val( jQuery(this).data('val') ); 
+		 jQuery('.bi-wrapper > div', $parent).removeClass('active');
+		 jQuery(this).addClass('active');
 
 		 if( $input.data('selector') ){  
-			$($input.data('selector'),$("#main-preview iframe").contents()).css( $input.data('attrs'),'url('+ $(this).data('image') +')' );
+			jQuery($input.data('selector'),jQuery("#main-preview iframe").contents()).css( $input.data('attrs'),'url('+ jQuery(this).data('image') +')' );
 		 }
 	} );
 } ); 
 
-$(".clear-bg").click( function(){
+jQuery(".clear-bg").click( function(){
 
-	var $parent = $(this).parent();
-	var $input  = $(".input-setting", $parent ); 
+	var $parent = jQuery(this).parent();
+	var $input  = jQuery(".input-setting", $parent ); 
 	
 	if( $input.val('') ) {
 		if( $parent.hasClass("background-images") ) {
-			$('.bi-wrapper > div',$parent).removeClass('active');	
-			$($input.data('selector'),$("#main-preview iframe").contents()).css( $input.data('attrs'),'none' );
+			jQuery('.bi-wrapper > div',$parent).removeClass('active');	
+			$($input.data('selector'),jQuery("#main-preview iframe").contents()).css( $input.data('attrs'),'none' );
 		}else {
 			$input.attr( 'style','' )	
 		}
-		$($input.data('selector'),$("#main-preview iframe").contents()).css( $input.data('attrs'),'inherit' );
+		jQuery($input.data('selector'),jQuery("#main-preview iframe").contents()).css( $input.data('attrs'),'inherit' );
 
 	}	
 	$input.val('');
@@ -224,84 +226,84 @@ $(".clear-bg").click( function(){
 /**
  *  FORM SUBMIT
  */
- $( "#form" ).submit( function(){ 
-	$('.input-setting').each( function(){
-		if( $(this).data("match") ) {
-			var val = $(this).data('selector')+"|"+$(this).data('attrs');
-			$(this).parent().append('<input type="hidden" name="customize_match['+$(this).data("match")+'][]" value="'+val+'"/>');
+ jQuery( "#form" ).submit( function(){ 
+	jQuery('.input-setting').each( function(){
+		if( jQuery(this).data("match") ) {
+			var val = jQuery(this).data('selector')+"|"+jQuery(this).data('attrs');
+			jQuery(this).parent().append('<input type="hidden" name="customize_match['+jQuery(this).data("match")+'][]" value="'+val+'"/>');
 		}	 
 	} );
 	return true; 
 } );
-$("#main-preview iframe").ready(function(){  
-	 $('.accordion-group input.input-setting').each( function(){
+jQuery("#main-preview iframe").ready(function(){  
+	 jQuery('.accordion-group input.input-setting').each( function(){
 	 	 var input = this;
-	 	 $(input).attr('readonly','readonly');
-	 	 $(input).ColorPicker({
+	 	 jQuery(input).attr('readonly','readonly');
+	 	 jQuery(input).ColorPicker({
 	 	 	onChange:function (hsb, hex, rgb) {
-	 	 		$(input).css('backgroundColor', '#' + hex);
-	 	 		$(input).val( hex );
-	 	 		if( $(input).data('selector') ){   
-					$("#main-preview iframe").contents().find($(input).data('selector')).css( $(input).data('attrs'),"#"+$(input).val() )
+	 	 		jQuery(input).css('backgroundColor', '#' + hex);
+	 	 		jQuery(input).val( hex );
+	 	 		if( jQuery(input).data('selector') ){   
+					jQuery("#main-preview iframe").contents().find(jQuery(input).data('selector')).css( jQuery(input).data('attrs'),"#"+jQuery(input).val() )
 				}
 	 	 	}
 	 	 });
  	} );
-	 $('.accordion-group select.input-setting').change( function(){
+	 jQuery('.accordion-group select.input-setting').change( function(){
 		var input = this; 
-			if( $(input).data('selector') ){  
-			var ex = $(input).data('attrs')=='font-size'?'px':"";	
-			$("#main-preview iframe").contents().find($(input).data('selector')).css( $(input).data('attrs'), $(input).val() + ex);
+			if( jQuery(input).data('selector') ){  
+			var ex = jQuery(input).data('attrs')=='font-size'?'px':"";	
+			jQuery("#main-preview iframe").contents().find(jQuery(input).data('selector')).css( jQuery(input).data('attrs'), jQuery(input).val() + ex);
 		}
 	 } );
 })
  
-$('#myTab a').click(function (e) {
+jQuery('#myTab a').click(function (e) {
   e.preventDefault();
-  $(this).tab('show');
+  jQuery(this).tab('show');
 })
 	
-$('#myTab a:first').tab('show'); 
+jQuery('#myTab a:first').tab('show'); 
 
- $('#myCollapsible').collapse({
+ jQuery('#myCollapsible').collapse({
   toggle: false
 })
 
-$("#pav-customize .btn-show").click( function(){
+jQuery("#pav-customize .btn-show").click( function(){
 
-	$("body").toggleClass("off-customize");
+	jQuery("body").toggleClass("off-customize");
 } );
  
-$(".show-for-existed").hide();
-$("#saved-files").change( function() {
+jQuery(".show-for-existed").hide();
+jQuery("#saved-files").change( function() {
 
-	if( $(this).val() ){  
-		$(".show-for-notexisted").hide();
-		$(".show-for-existed").show();
+	if( jQuery(this).val() ){  
+		jQuery(".show-for-notexisted").hide();
+		jQuery(".show-for-existed").show();
 	}else {
-		$(".show-for-notexisted").show();
-		$(".show-for-existed").hide();
+		jQuery(".show-for-notexisted").show();
+		jQuery(".show-for-existed").hide();
 	}
 
-	var url  = '<?php echo $this->getCustomizeFolderURL(); ?>'+$(this).val()+".json?rand"+Math.random();
+	var url  = '<?php echo $this->getCustomizeFolderURL(); ?>'+jQuery(this).val()+".json?rand"+Math.random();
 
-	$.getJSON( url, function(data) {
+	jQuery.getJSON( url, function(data) {
 		var items = data;
 			if( items ){
-				$('#customize-body .accordion-group').each( function(){
+				jQuery('#customize-body .accordion-group').each( function(){
 					var i = 0;
-					$("input, select", this).each( function(){
-						if( $(this).data('match') ){ 
-							if( items[$(this).data('match')] && items[$(this).data('match')][i] ){ 
-								var el = items[$(this).data('match')][i];
-							 	$(this).val( el.val );
+					jQuery("input, select", this).each( function(){
+						if( jQuery(this).data('match') ){ 
+							if( items[jQuery(this).data('match')] && items[jQuery(this).data('match')][i] ){ 
+								var el = items[jQuery(this).data('match')][i];
+							 	jQuery(this).val( el.val );
 							 	if( el.val== '') {
-							 		$(this).css('background',"inherit");
+							 		jQuery(this).css('background',"inherit");
 							 	}
 							 	else { 
-							 		$(this).css('background',"#"+el.val);
+							 		jQuery(this).css('background',"#"+el.val);
 							 	}
-							 	$(this).ColorPickerSetColor(el.val );
+							 	jQuery(this).ColorPickerSetColor(el.val );
 							}
 							i++;
 						}
@@ -311,11 +313,11 @@ $("#saved-files").change( function() {
 			}
 		});
 
-	$("#main-preview iframe").contents().find("#customize-theme").remove();
-	if( $(this).val() ){
-		var _link = $('<link rel="stylesheet" href="" id="customize-theme">');
-		_link.attr('href', '<?php echo $this->getCustomizeFolderURL(); ?>'+$(this).val()+".css?rand="+Math.random() );
-		$("#main-preview iframe").contents().find("head").append( _link );
+	jQuery("#main-preview iframe").contents().find("#customize-theme").remove();
+	if( jQuery(this).val() ){
+		var _link = jQuery('<link rel="stylesheet" href="" id="customize-theme">');
+		_link.attr('href', '<?php echo $this->getCustomizeFolderURL(); ?>'+jQuery(this).val()+".css?rand="+Math.random() );
+		jQuery("#main-preview iframe").contents().find("head").append( _link );
 	}
 });
 </script>

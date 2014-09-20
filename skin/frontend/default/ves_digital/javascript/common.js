@@ -10,7 +10,6 @@
             var updateTopbar = function(){
                  var pos = $(window).scrollTop();
                  if( pos >= hideheight ){
-                    $("#page").css( "padding-top", hh );
                     $("#header").addClass('hide-bar');
                     $("#header").addClass( "navbar navbar-fixed-top" );
                   

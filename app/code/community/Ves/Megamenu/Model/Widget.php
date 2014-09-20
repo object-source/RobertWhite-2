@@ -8,12 +8,10 @@
 *******************************************************/
 ?>
 <?php
-if(!class_exists("Ves_Megamenu_Model_Abtract")) {
-	require_once("Abstract.php");
-}
 
-class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
+class Ves_Megamenu_Model_Widget extends Mage_Core_Model_Abstract
 {
+	const DEFAULT_STORE_ID = 0;
 	private $widgets = array();
 
     public function _construct()
@@ -112,6 +110,30 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
 		return $output;
 	}
 
+	public function checkModuleInstalled( $module_name = "") {
+        $modules = Mage::getConfig()->getNode('modules')->children();
+        $modulesArray = (array)$modules;
+        if($modulesArray) {
+            $tmp = array();
+            foreach($modulesArray as $key=>$value) {
+                $tmp[$key] = $value;
+            }
+            $modulesArray = $tmp;
+        }
+
+        if(isset($modulesArray[$module_name])) {
+
+            if((string)$modulesArray[$module_name]->active == "true") {
+                return true;
+            } else {
+                return false;
+            }
+            
+        } else {
+            return false;
+        }
+    }
+
 	public function isAdmin()
     {
         if(Mage::app()->getStore()->isAdmin()) {
@@ -122,6 +144,55 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
             return true;
         }
         return false;
+    }
+
+    public function inArray($source, $target) {
+		for($i = 0; $i < sizeof ( $source ); $i ++) {
+			if (in_array ( $source [$i], $target )) {
+			return true;
+			}
+		}
+    }
+
+    public function getStoreCategories() {
+    	$store_id =  Mage::app()->getStore()->getId();
+
+		if(!$store_id) {
+			$store_id = Mage::app()
+						    ->getWebsite()
+						    ->getDefaultGroup()
+						    ->getDefaultStoreId();
+		}
+
+		$catsid = array();
+		$category_model = Mage::getModel('catalog/category');
+		$rootCategoryId = Mage::app()->getStore($store_id)->getRootCategoryId();
+		$_category = $category_model->load($rootCategoryId);
+		$all_child_categories = $category_model->getResource()->getAllChildren($_category);
+		foreach($all_child_categories as $storecategories){
+			$catsid[] = $storecategories;
+		}
+
+		return $catsid;
+    }
+    public function getProductByCategory($arr_catsid = array()){
+        $return = array(); 
+        $pids = array();
+        $products = Mage::getResourceModel ( 'catalog/product_collection' );
+
+        foreach ($products->getItems() as $key => $_product){
+            $arr_categoryids[$key] = $_product->getCategoryIds();
+            if($arr_catsid){
+                $return[$key] = $this->inArray($arr_catsid, $arr_categoryids[$key]);
+
+            }
+        }
+
+        foreach ($return as $k => $v){ 
+            if($v==1) $pids[] = $k;
+        }    
+
+        return $pids;   
     }
 
 	/**********/
@@ -148,7 +219,7 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
 			if(!$this->isAdmin()){
 				$collection = $this->_addProductAttributesAndPrices( $collection );
 			}
-			
+
 	        $result = $collection->getFirstItem();
 
 	  		$data = array( "widget_name" 	=> $widget_name,
@@ -175,6 +246,8 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
 		);
 
 		$setting = array_merge( $t, $setting );
+		
+
 		$image = "";
         if ($setting['image_path']) {
             $image = Mage::helper("ves_megamenu")->resizeImage($setting['image_path'], (int)$setting['image_width'], (int)$setting['image_height']);
@@ -195,6 +268,41 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
 	/**
 	 *
 	 */
+	public function renderWidgetVes_brandContent(  $args, $setting, $widget_name= "" ){
+		$t  = array(
+			'show_name'=> '1',
+			'limit'   => '5',
+			'image_width'=>'200',
+			'image_height' =>'200'
+		);
+		$setting = array_merge( $t, $setting );
+
+		$output = "";
+		
+		if($this->checkModuleInstalled("Ves_Brand")) {
+			$collection = Mage::getModel( 'ves_brand/brand' )
+						->getCollection();
+		
+			$collection->setOrder( 'position', 'ASC' );
+			
+			$collection->setPageSize( (int)$setting['limit'] )->setCurPage( 1 );
+
+			$data = array("widget_name" 	=> $widget_name,
+						   "show_name" 		=> $setting['show_name'],
+						   "image_width"	=> $setting['image_width'],
+					   	   "image_height"	=> $setting['image_height'],
+						   "brands" 		=> $collection);
+
+			$output = $this->renderLayoutHtml( "brands", $data );
+		}
+		
+
+  		return $output;
+	}
+
+	/**
+	 *
+	 */
 	public function renderWidgetVes_blogContent(  $args, $setting, $widget_name= "" ){
 		$t  = array(
 			'show_name'=> '1',
@@ -202,22 +310,28 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
 		);
 		$setting = array_merge( $t, $setting );
 
-		$collection = Mage::getModel( 'ves_blog/post' )
+		$output = "";
+		
+		if($this->checkModuleInstalled("Ves_Blog")) {
+			$collection = Mage::getModel( 'ves_blog/post' )
 						->getCollection()
 						->addCategoriesFilter(0);
 		
-		$collection ->setOrder( 'created', 'DESC' );
+			$collection ->setOrder( 'created', 'DESC' );
+			
+			$collection->setPageSize( (int)$setting['limit'] )->setCurPage( 1 );
+
+			$data = array("widget_name" 	=> $widget_name,
+						   "show_name" 		=> $setting['show_name'],
+						   "blogs" 			=> $collection);
+
+			$output = $this->renderLayoutHtml( "blogs", $data );
+		}
 		
-		$collection->setPageSize( (int)$setting['limit'] )->setCurPage( 1 );
-
-		$data = array("widget_name" 	=> $widget_name,
-					   "show_name" 		=> $setting['show_name'],
-					   "blogs" 			=> $collection);
-
-		$output = $this->renderLayoutHtml( "blogs", $data );
 
   		return $output;
 	}
+
 
 	/**
 	 *
@@ -307,7 +421,10 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
 		$setting = array_merge( $t, $setting );
 		$storeId    = Mage::app()->getStore()->getId();
 		if( $setting['list_type'] == 'bestseller' ) {
-			 $products = Mage::getResourceModel('reports/product_collection')
+			$catsid = $this->getStoreCategories();
+			$productIds = $this->getProductByCategory($catsid);
+
+			$products = Mage::getResourceModel('reports/product_collection')
 							    ->addOrderedQty()
 							    ->addAttributeToSelect('*')
 							    ->addMinimalPrice()
@@ -316,12 +433,17 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
 							    ->addAttributeToSelect(array('name', 'price', 'small_image')) //edit to suit tastes
 							    ->setStoreId($storeId)
 							    ->addStoreFilter($storeId)
+							    ->addIdFilter($productIds)
 							    ->setOrder ("ordered_qty", "DESC");
 
 		} else if( $setting['list_type'] == 'special' ) {
+			$catsid = $this->getStoreCategories();
+			$productIds = $this->getProductByCategory($catsid);
+
 			$todayDate  = Mage::app()->getLocale()->date()->toString(Varien_Date::DATETIME_INTERNAL_FORMAT);
 			$products= Mage::getResourceModel('reports/product_collection')
 							->addAttributeToSelect('*')
+							->addIdFilter($productIds)
 							->addAttributeToFilter('visibility', array('neq'=>1))
 							->addAttributeToFilter('special_price', array('neq'=>''))
 							->addAttributeToFilter('special_from_date', array('date' => true, 'to' => $todayDate))
@@ -331,20 +453,25 @@ class Ves_Megamenu_Model_Widget extends Ves_Megamenu_Model_Abtract
 								   ), 'left')
 							->addAttributeToSort('special_from_date', 'DESC');
 
-		} else {
-			$products = Mage::getResourceModel('catalog/product_collection')
+		} else {	
+
+			$catsid = $this->getStoreCategories();
+
+			$productIds = $this->getProductByCategory($catsid);
+
+			$products = Mage::getModel('catalog/product')->getCollection()
 							    ->addAttributeToSelect('*')
 							    ->addMinimalPrice()
 							    ->addFinalPrice()
 							    ->addStoreFilter()
+							    ->addIdFilter($productIds)
 							    ->addUrlRewrite()
 							    ->addTaxPercents()
 							    ->setOrder ("updated_at", "DESC");
-
     	}
-
 		Mage::getSingleton('catalog/product_status')->addVisibleFilterToCollection($products);
         Mage::getSingleton('catalog/product_visibility')->addVisibleInCatalogFilterToCollection($products);
+
 
         $products->setPage(1, (int)$setting['limit']);
 

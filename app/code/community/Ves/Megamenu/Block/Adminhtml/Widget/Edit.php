@@ -15,10 +15,10 @@ class Ves_Megamenu_Block_Adminhtml_Widget_Edit extends Mage_Adminhtml_Block_Widg
     var $widget_selected = "";
     public function __construct()
     {
-	    $this->_blockGroup  = 'ves_megamenu_widget';
+	    $this->_blockGroup  = 'ves_megamenu';
         $this->_objectId    = 'ves_megamenu_id';
-        $this->_controller  = 'adminhtml_megamenu';
-        $this->_mode        = 'edit'; 
+        $this->_controller  = 'adminhtml_widget';
+
         $this->setTemplate('ves_megamenu/widget/edit.phtml');
         $mediaHelper = Mage::helper('ves_megamenu/media');
         $mediaHelper->loadMedia();
@@ -32,6 +32,7 @@ class Ves_Megamenu_Block_Adminhtml_Widget_Edit extends Mage_Adminhtml_Block_Widg
             $widget_params =  unserialize(base64_decode($widget_params));
 
         }
+
         if( $wtype ) {
             $this->widget_selected =  trim(strtolower($wtype));
             $this->form = Mage::helper('ves_megamenu')->getForm( $this->widget_selected, $widget_params);
@@ -43,7 +44,7 @@ class Ves_Megamenu_Block_Adminhtml_Widget_Edit extends Mage_Adminhtml_Block_Widg
     public function getDataForm(){
         return $this->form;
     }
-    public function getData(){
+    public function getSampleData(){
         return $this->data;
     }
     public function getWidgetAction(){
@@ -64,7 +65,8 @@ class Ves_Megamenu_Block_Adminhtml_Widget_Edit extends Mage_Adminhtml_Block_Widg
             'video_code'        => Mage::helper("ves_megamenu")->__( 'Video code' ),
             'image'             => Mage::helper("ves_megamenu")->__( 'Image' ),
             'feed'              => Mage::helper("ves_megamenu")->__( 'Feed' ),
-            'ves_blog'          => Mage::helper("ves_megamenu")->__( 'Last Venus Blog' )
+            'ves_blog'          => Mage::helper("ves_megamenu")->__( 'Last Venus Blog' ),
+            'ves_brand'         => Mage::helper("ves_megamenu")->__( 'Shop By Brands' )
         );
     }
 }

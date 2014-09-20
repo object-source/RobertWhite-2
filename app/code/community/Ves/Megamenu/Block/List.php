@@ -20,10 +20,6 @@ class Ves_Megamenu_Block_List extends Mage_Catalog_Block_Product_Abstract {
         $this->_config = $helper->get($attributes);
         
         /* End init meida files */
-        $mediaHelper = Mage::helper('ves_megamenu/media');
-        $this->_theme = $this->getConfig("topTheme","black");
-        
-        $mediaHelper->addMediaFile("skin_css", "ves_megamenu/style.css");
         parent::__construct();
     }
 

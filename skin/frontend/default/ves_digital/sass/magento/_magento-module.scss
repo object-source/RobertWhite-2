@@ -169,17 +169,20 @@
 }
 /*block-subscribe*/
 #footer .block-subscribe {
+	.form-subscribe-header {
+		span { font-size: 120%}
+	}
 	input.input-text {
 	    background: none repeat scroll 0 0 #FFFFFF;
-	    border: none;
-	    
+	    border: none;	    
 	    @include border-left-radius (7px);
 	    @include border-right-radius (0);
 	    @include rtl-float-left();
 	    padding: 5px 10px;
-	    width: 162px;
+	    width: 81%;
 	    height:  35px;
-	    line-height: 35px;
+	    line-height: 30px;
+
 	}
 	.button {
 	    @include border-left-radius (0);
@@ -189,6 +192,7 @@
 	    line-height: 35px;
 	    @include rtl-padding(0, 15px, 0, 15px);
 	    margin-top: 0;
+	    @include rtl-float-left();
 	}
 	.validation-advice {
 		top: 45px;

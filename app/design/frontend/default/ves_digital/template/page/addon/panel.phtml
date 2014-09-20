@@ -9,16 +9,38 @@
 
 $helper = Mage::helper("ves_tempcp/framework")->getFramework( );
 $themeConfig = $helper->getConfig();
+
 $themeName =  Mage::getDesign()->getTheme('frontend');
  
 $patterns =  $themeConfig->getPattern( );
 
+$header_layouts = $themeConfig->get("header_layouts", array());
+
 $backgroundImageURL = $helper->getThemeURL().'/images/pattern/';
+$backgroundImageURL_default = $helper->getThemeDefaultURL().'/images/pattern/';
 $directories = glob( $helper->getThemeSassDir() . 'skins/*' );
+$directories_default = glob( $helper->getThemeDefaultSassDir() . 'skins/*' );
+
+$directions = array("ltr" => "Left To Right",
+ 						"rtl" => "Right To Left");
+
+$skins = array();
+foreach( $directories_default as $skin) {
+	$skin = basename($skin) ; 
+	$skins[$skin] = str_replace(".scss", "", $skin);
+}
+foreach( $directories as $skin) {
+	$skin = basename($skin) ;
+	if(!isset($skins[$skin]) && $skin) {
+		$skins[$skin] = str_replace(".scss", "", $skin);
+	}
+	
+}
 
 $layouts = array( 'fullwidth' => 'Full Width', 'boxed-lg' => 'Boxed Desktop Large', 'boxed-md'=>'Boxed Desktop Mediumn' );
  
 ?>
+
 <script type="text/javascript">
 jQuery(document).ready( function (){
 	jQuery(".paneltool .panelbutton").click( function(){	
@@ -28,7 +50,7 @@ jQuery(document).ready( function (){
 
 </script>
 
-<div id="ves-paneltool" class="hidden-sm hidden-xs">
+<div id="ves-paneltool" class="hidden-md hidden-sm hidden-xs">
 <div class="paneltool themetool">
 	<div class="panelbutton">
 		<i class="glyphicon glyphicon-cog"></i>
@@ -36,26 +58,49 @@ jQuery(document).ready( function (){
 	<div class="panelcontent ">
 		<div class="panelinner">
 			<h4><?php echo Mage::helper("ves_tempcp")->__("Panel Tool");?></h4>
-			<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post" class="clearfix" id="paneltool_form">
+			<form action="<?php echo Mage::getBaseUrl(); ?>" method="post" class="clearfix" id="paneltool_form">
+				<?php if(isset($store_switcher)): ?>
 				<div class="group-input">
-					<label>Theme</label>
+					<?php echo $store_switcher; ?>
+				</div>
+				<?php endif; ?>
+				<p class="group-input">
+					<label>Theme Skins</label>
 					<select name="userparams[skin]">
 						<option value=""><?php echo Mage::helper("ves_tempcp")->__('default');?></option>
-						<?php foreach( $directories as $skin ) {  $skin = basename($skin) ; $skin = str_replace(".scss", "", $skin); ?>
+						<?php foreach( $skins as $skin ) { ?>
 						<option value="<?php echo ($skin);?>" <?php if( $helper->getParam('skin') == $skin ) { ?> selected="selected" <?php } ?>><?php echo ($skin);?></option>
 						<?php } ?>
-					</select>					
-				</div>
+					</select>
+				</p>
+				<p class="group-input">
+					<label>Direction</label>
+					<select name="userparams[direction]">
+						<?php foreach( $directions as $k=>$direction ) {  $direction = basename($direction) ; ?>
+						<option value="<?php echo ($k);?>" <?php if( $helper->getParam('direction') == $k ) { ?> selected="selected" <?php } ?>><?php echo ($direction);?></option>
+						<?php } ?>
+					</select>
+				</p>
 				<p class="group-input">
 					<label>Layout</label>
 					<select name="userparams[layout]">
-						<?php foreach( $layouts as $k=>$skin ) {  $skin = basename($skin) ; ?>
-						<option value="<?php echo ($k);?>" <?php if( $helper->getParam('layout') == $k ) { ?> selected="selected" <?php } ?>><?php echo ($skin);?></option>
+						<?php foreach( $layouts as $k=>$layout ) {  $layout = basename($layout) ; ?>
+						<option value="<?php echo ($k);?>" <?php if( $helper->getParam('layout') == $k ) { ?> selected="selected" <?php } ?>><?php echo ($layout);?></option>
 						<?php } ?>
-					</select>					
+					</select>
 				</p>
-				<p>
-					<input type="hidden" value="0" id="vesreset" name="vesreset" />
+				<?php if($header_layouts) { ?>
+				<p class="group-input">
+					<label>Header Layout</label>
+					<select name="userparams[header_layout]">
+						<?php foreach( $header_layouts as $k=>$layout ) {  $layout = basename($layout) ; ?>
+						<option value="<?php echo ($k);?>" <?php if( $helper->getParam('header_layout') == $k ) { ?> selected="selected" <?php } ?>><?php echo ($layout);?></option>
+						<?php } ?>
+					</select>
+				</p>
+				<?php } ?>
+				<p style="clear:both">
+					<input type="hidden" value="0" id="vesreset" name="vesreset"/>
 					<button value="Apply" class="btn btn-small" name="btn-save" type="submit">Apply</button>
 					<a class="btn btn-small" href="javascript:;" onclick="jQuery('#vesreset').val(1);jQuery('#paneltool_form').submit() "><span>Reset</span></a>
 				</p>
@@ -82,11 +127,11 @@ jQuery(document).ready( function (){
 						<?php foreach( $xmlselectors as $for => $output ) { ?>
 						<div class="tab-pane" id="tab-<?php echo $for; ?>">
 							<?php if( !empty( $output) ){?>
-							<div class="accordion" id="custom-accordion<?php echo $for; ?>">
+							<div class="accordion">
 							<?php $i=0; foreach ( $output as $group ) { ?>
 							   <div class="accordion-group  panel panel-default clearfix">
 									<div class="accordion-heading panel-heading">
-										<a class="accordion-toggle" data-toggle="collapse" data-parent="#custom-accordion<?php echo $for; ?>" href="#collapse<?php echo $group['match'];?>">
+										<a class="accordion-toggle" data-toggle="collapse" data-parent="#custom-accordion" href="#collapse<?php echo $group['match'];?>">
 											<?php echo $group['header']; ?>	 
 										</a>
 									</div>
@@ -97,14 +142,13 @@ jQuery(document).ready( function (){
 											<?php  if (isset($item['type'])&&$item['type']=="image") { ?>
 											<div class="form-group background-images"> 
 												<label><?php echo $item['label']?></label>
-												<a class="clear-bg button" href="#">Clear</a>
-												<input value="" type="hidden" name="customize[<?php echo $group['match'];?>][]" data-match="<?php echo $group['match'];?>" class="input-setting" data-selector="<?php echo $item['selector']?>" data-attrs="background-image" />
+												<a class="clear-bg label label-success" href="#">Clear</a>
+												<input value="" name="customize[<?php echo $group['match'];?>][]" data-match="<?php echo $group['match'];?>" type="text" class="input-setting" data-selector="<?php echo $item['selector']?>" data-attrs="background-image">
 												<div class="clearfix"></div>
 												<p><em style="font-size:10px">Those Images in folder YOURTHEME/images/patterns/</em></p>
 												<div class="bi-wrapper clearfix">
 													<?php foreach ( $patterns as $pattern ){ ?>
-													<div style="background:url('<?php echo $backgroundImageURL.$pattern;?>') no-repeat center center;" class="pull-left" data-image="<?php echo $backgroundImageURL.$pattern;?>" data-val="../../img/patterns/<?php echo $pattern; ?>">
-													</div>
+													<div style="background:url('<?php echo $backgroundImageURL.$pattern;?>') no-repeat center center;" class="pull-left" data-image="<?php echo $backgroundImageURL.$pattern;?>" data-val="../../img/patterns/<?php echo $pattern; ?>"></div>
 													<?php } ?>
 												</div>
 											</div>
@@ -112,7 +156,7 @@ jQuery(document).ready( function (){
 											<?php } elseif( $item['type'] == "fontsize" ) { ?>
 											<div class="form-group">
 												<label><?php echo $item['label']?></label>
-												<select name="customize[<?php echo $group['match'];?>][]" data-match="<?php echo $group['match']?>" class="input-setting" data-selector="<?php echo $item['selector']?>" data-attrs="<?php echo $item['attrs']?>">
+												<select name="customize[<?php echo $group['match'];?>][]" data-match="<?php echo $group['match']?>" type="text" class="input-setting" data-selector="<?php echo $item['selector']?>" data-attrs="<?php echo $item['attrs']?>">
 													<option value="">Inherit</option>
 
 
@@ -120,13 +164,13 @@ jQuery(document).ready( function (){
 													<option value="<?php echo $fs; ?>"><?php echo $fs; ?></option>
 													<?php } ?>
 												</select>	
-												<a href="#" class="clear-bg button">Clear</a>
+												<a href="#" class="clear-bg label label-success">Clear</a>
 											</div>
 										  
 											<?php } else { ?>
 											<div class="form-group">
 												<label><?php echo $item['label']?></label>
-												<input value="" size="10" name="customize[<?php echo $group['match']?>][]" data-match="<?php echo $group['match']?>" type="text" class="input-setting" data-selector="<?php echo $item['selector']?>" data-attrs="<?php echo $item['attrs']?>" /><a href="#" class="clear-bg button">Clear</a>
+												<input value="" size="10" name="customize[<?php echo $group['match']?>][]" data-match="<?php echo $group['match']?>" type="text" class="input-setting" data-selector="<?php echo $item['selector']?>" data-attrs="<?php echo $item['attrs']?>"><a href="#" class="clear-bg label label-success">Clear</a>
 											</div>
 											<?php } ?>
 
@@ -143,7 +187,7 @@ jQuery(document).ready( function (){
 				</div>    
 			</div>			
 	</div>
-	<!--<div class="panelbutton label-customize"></div>-->
+	<div class="panelbutton label-customize"></div>
 </div>
 
 </div> 

@@ -39,6 +39,11 @@
 				}
 				 $('[name='+input.name+']',"#menu-form").val(  val );	
 			});
+
+			if( activeMenu.data("align") ){
+				$(".button-alignments button").removeClass("active");
+				$( '[data-option="'+activeMenu.data("align") +'"]').addClass("active");
+			}
 		}
 
 		/**
@@ -349,6 +354,35 @@
 	    	 	 }
 	    	 }); 
 
+ 			 $(".button-alignments button").click( function(){
+ 				if( activeMenu ){
+	 				$(".button-alignments button").removeClass( "active");
+	 				$(this).addClass( 'active' );
+
+	 				$(activeMenu).data( 'align', $(this).data("option") );
+	 			 	var cls = $( activeMenu ).attr("class").replace(/aligned-\w+/,"");	
+	 			  	$( activeMenu ).attr( 'class', cls );
+	 				$( activeMenu ).addClass( $(this).data("option") );
+ 				}
+ 			} );
+
+		}
+
+		function recalculateColsWidth(){
+			if( activeMenu ){   	 
+				var childnum = $( "#mainmenutop .row.active" ).children(".mega-col").length;
+
+				var dcol = Math.floor( 12/childnum );
+				var a = 12%childnum;
+				$( "#mainmenutop .row.active" ).children(".mega-col").each( function(i, col ) {
+					if( a > 0 && (i == childnum-1) ){
+			 			dcol = dcol+a;
+					}
+		 			var cls = $(this).attr('class').replace(/col-md-\d+/,'');
+		 			$(this).attr('class', cls + ' col-md-' + dcol );
+					$(this).data( 'colwidth', dcol );
+				});
+			}
 		}
 
 	 	/**

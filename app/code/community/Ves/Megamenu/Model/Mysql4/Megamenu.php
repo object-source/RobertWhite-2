@@ -3,8 +3,8 @@
  * @package Ves Megamenu module for Magento 1.4.x.x and Magento 1.7.x.x
  * @version 1.0.0.1
  * @author http://landofcoder.com
- * @copyright	Copyright (C) December 2010 LandOfCoder.com <@emai:landofcoder@gmail.com>.All rights reserved.
- * @license		GNU General Public License version 2
+ * @copyright   Copyright (C) December 2010 LandOfCoder.com <@emai:landofcoder@gmail.com>.All rights reserved.
+ * @license     GNU General Public License version 2
 *******************************************************/
 ?>
 <?php
@@ -51,6 +51,7 @@ class Ves_Megamenu_Model_Mysql4_Megamenu extends Mage_Core_Model_Mysql4_Abstract
             $storeArray = array ();
             $storeArray['megamenu_id'] = $object->getId();
             $storeArray['store_id'] = $object->getStoreId();
+            $storeArray['store_id'] = is_array($storeArray['store_id'])?(int)$storeArray['store_id'][0]:(int)$storeArray['store_id'];
             $this->_getWriteAdapter()->insert(
                     $this->getTable('ves_megamenu/megamenu_store'), $storeArray);
             
@@ -95,9 +96,17 @@ class Ves_Megamenu_Model_Mysql4_Megamenu extends Mage_Core_Model_Mysql4_Abstract
         if ($data = $this->_getReadAdapter()->fetchAll($select)) {
             $storesArray = array ();
             foreach ($data as $row) {
-                $storesArray[] = $row['store_id'];
+                if(isset($row['store_id']) && $row['store_id']) {
+                    $storesArray[] = $row['store_id'];
+                }
+                
             }
-            $object->setData('store_id', $storesArray);
+            if($storesArray) {
+                $object->setData('store_id', $storesArray);
+            } else {
+                $object->setData('store_id', 0);
+            }
+            
         }
         
         return parent::_afterLoad($object);

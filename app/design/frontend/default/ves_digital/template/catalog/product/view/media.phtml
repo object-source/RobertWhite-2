@@ -72,7 +72,7 @@
           }
         }
       ?>
-    <a href="<?php echo $this->helper('catalog/image')->init($_product, 'image'); ?>" title="<?php echo $heading_title; ?>" class="colorbox">
+    <a href="<?php echo $this->helper('catalog/image')->init($_product, 'image'); ?>" title="<?php echo $heading_title; ?>" class="colorbox1">
         <?php
         $_img = '<img id="image" src="'.$this->helper('catalog/image')->init($_product, 'image')->resize($main_image_width, $main_image_height).'" alt="'.$this->escapeHtml($this->getImageLabel()).'" title="'.$this->escapeHtml($this->getImageLabel()).'" data-zoom-image="'.$this->helper('catalog/image')->init($_product, 'image').'" class="product-image-zoom"/>';
         echo $_helper->productAttribute($_product, $_img, 'image');

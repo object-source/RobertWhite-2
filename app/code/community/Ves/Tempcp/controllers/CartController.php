@@ -63,8 +63,14 @@ class Ves_Tempcp_CartController extends Mage_Checkout_CartController{
 
 				if (!$this->_getSession()->getNoCartRedirect(true)) {
 				 	if (!$cart->getQuote()->getHasError()){ 
-				 		$message = $this->__('%s was added to your shopping cart.', Mage::helper('core')->htmlEscape($product->getName())); 
-				 		$response['status'] = 'SUCCESS'; 
+				 		$message = Mage::app()->getLayout()
+				            ->createBlock("page/html")
+				            ->assign("product", $product)
+				            ->setTemplate('venustheme/tempcp/cart_success.phtml')
+				            ->toHtml();
+
+				 		//$message = $this->__('%s was added to your shopping cart.', Mage::helper('core')->htmlEscape($product->getName())); 
+				 		$response['status'] = 'SUCCESS';
 				 		$response['message'] = $message; 
 				 	} 
 				 } 

@@ -25,6 +25,9 @@
 	}
 	.actions { 
 		overflow:  hidden;
+		padding-top:15px;
+		clear: both;
+		width: 100%;
 		a { 	
 			@include rtl-float-right();  
 			line-height: 30px;

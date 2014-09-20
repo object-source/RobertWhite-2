@@ -82,7 +82,7 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Tree extends Mage_Adminhtml_Block_Te
     }
 
     protected function _getDefaultStoreId() {
-        return Ves_Megamenu_Model_Abtract::DEFAULT_STORE_ID;
+        return Ves_Megamenu_Model_Megamenu::DEFAULT_STORE_ID;
     }
 
     public function getMegamenuCollection($id = null) {
@@ -142,9 +142,13 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Tree extends Mage_Adminhtml_Block_Te
     public function getTreeHtml($id=null) {
         $storeId = $this->getStore();
         $storeId = empty($storeId) ? 0 : $storeId;
+
         $childs = $this->getMegamenuCollection( $id );
         foreach($childs as $child ){
-            $this->children[$child->getParentId()][] = $child;    
+            if((int)$child->getParentId() > 0) {
+                $this->children[$child->getParentId()][] = $child;
+            }
+            
         }
 
         $parent = 1 ;

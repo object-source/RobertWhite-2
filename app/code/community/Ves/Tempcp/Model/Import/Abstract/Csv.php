@@ -15,7 +15,7 @@ class Ves_Tempcp_Model_Import_Abstract_Csv extends Mage_Core_Model_Abstract {
 
 	private function openFile($filepath) {
 		$handle = null;
-
+		
 		if (($handle = fopen($filepath, "r")) !== FALSE) {
 			return $handle;
 		} else {
@@ -24,7 +24,21 @@ class Ves_Tempcp_Model_Import_Abstract_Csv extends Mage_Core_Model_Abstract {
 
 	} // end
 
+	public function restoreArray($default_array = array(), $import_array = array()) {
+		if(!empty($import_array)) {
+			$tmp = array();
+			foreach($import_array as $k=>$v) {
+				if(in_array($v, $default_array) || $v == 0) {
+					$tmp[] = $v;
+				}
+			}
+		}
+		if(empty($tmp)) {
+			$tmp = array(0);
+		}
+		return $tmp;
 
+	}
 	public function process($filepath, $stores = array()) {
 
 		$handle = $this->openFile($filepath);
@@ -45,17 +59,22 @@ class Ves_Tempcp_Model_Import_Abstract_Csv extends Mage_Core_Model_Abstract {
 				// make sure we have a reset model object
 				//$staticblock = Mage::getSingleton($this->_modelname)->clearInstance();
 				$staticblock = Mage::getModel($this->_modelname);
-				
+				$identifier = "";
 				// get the identifier column for this row
-				$identifier = $data[$this->getIdentifierColumnIndex()];
+				if( $id_key = $this->getIdentifierColumnIndex() ) {
+					$identifier = $data[$id_key];
 
-				// if a static block already exists for this identifier - load the data
-				$staticblock->load($identifier);
+					// if a static block already exists for this identifier - load the data
+					$staticblock->load($identifier);
+				} else {
+					$staticblock->load(0);
+				}
+
 
 				// loop through each column
 				foreach ($this->header_columns as $index => $keyname) {
 					$keyname = strtolower($keyname);
-
+					$import_stores = $stores;
 					// switch statement incase we need to do logic depending on the column name
 					switch ($keyname) {
 
@@ -63,8 +82,9 @@ class Ves_Tempcp_Model_Import_Abstract_Csv extends Mage_Core_Model_Abstract {
 							// stores are separated with ";" when they're exported
 							$tmp_stores = $data[$index];
 							$stores_array = explode(';', $tmp_stores);
-							$staticblock->setData($keyname, $stores_array);
-							$staticblock->setData('store_id', $stores_array);
+							$import_stores = $this->restoreArray($stores, $stores_array);
+							//$staticblock->setData("stores", $stores);
+							//$staticblock->setData('store_id', $stores);
 						break;
 
 						case "block_id":
@@ -81,9 +101,9 @@ class Ves_Tempcp_Model_Import_Abstract_Csv extends Mage_Core_Model_Abstract {
 					} // end switch
 				} // end for
 
-				if(!empty($stores)) {
-					$staticblock->setData('store_id', $stores);
-					$staticblock->setData('stores', $stores);
+				if(!empty($import_stores)) {
+					$staticblock->setData('store_id', $import_stores);
+					$staticblock->setData('stores', $import_stores);
 				}
 				
 				// save our block

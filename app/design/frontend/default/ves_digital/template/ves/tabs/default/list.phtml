@@ -9,6 +9,7 @@
 
 	$popup_quickview_width = $themeConfig->get("popup_quickview_width", "60%");
 	$popup_quickview_height = $themeConfig->get("popup_quickview_height", "80%");
+	$ajax_cart = $themeConfig->get("enable_ajaxcart", 0);
 
 	/*end get setting*/
 
@@ -89,6 +90,7 @@
 								<?php if( $i%$cols == 1 ) { ?>
 								  <div class="row products-grid">
 								<?php } ?>
+									<?php $productId = $_product->getId(); ?>
 									  <div class="vescol-lg-<?php echo $cols;?> col-md-<?php echo $span;?> col-sm-6 col-xs-12"><div class="product-block">
 									  	<?php
 				                            $swap_class = "";
@@ -106,18 +108,20 @@
 			                                <?php } ?>
 											<?php if( $this->getConfig("show_pzoom") ) { ?>
 											<?php
-					                            $productId = $_product->getId();
 					                            $_product = Mage::getModel('catalog/product')->load($productId);
 					                        ?>
 					                        <a href="<?php echo $this->helper('catalog/image')->init($_product, 'image')->resize(800);?>" class="colorbox product-zoom cboxElement" title="<?php echo $this->htmlEscape($_product->getName()) ?>"><span class="fa fa-search-plus"></span></a>
 												<?php } ?>
 			 				<?php 
+			 					if(!isset($_product)) {
+			 						$_product = Mage::getModel('catalog/product')->load($productId);
+			 					}
                                 // Get the Special Price
-                                $specialprice = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialPrice(); 
+                                $specialprice = $_product->getSpecialPrice(); 
                                 // Get the Special Price FROM date
-                                $specialPriceFromDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialFromDate();
+                                $specialPriceFromDate = $_product->getSpecialFromDate();
                                 // Get the Special Price TO date
-                                $specialPriceToDate = Mage::getModel('catalog/product')->load($_product->getId())->getSpecialToDate();
+                                $specialPriceToDate = $_product->getSpecialToDate();
                                 // Get Current date
                                 $today =  time();
                              
@@ -161,20 +165,13 @@
 
 										<?php if ($this->getConfig('show_btn',1) ) { ?>
 											<div class="actions">
-<?php 											if($_product->isSaleable()) { 
-												
-													if ('Yes' === $_product->getAttributeText('special_order')) {
-    					                    			$BtnText = 'Special Order Only';
-	                    					    	} else {
-					    	                    		$BtnText = 'Add to Cart';
-        	        					        	}
-?>
-												<button type="button" title="<?php echo $BtnText ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $BtnText ?></span></span></button>
-<?php 												} else { ?>
+												<?php if($_product->isSaleable()) { ?>
+												<button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
+												<?php } else { ?>
 												<p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
 												<?php } ?>
 												<?php if ($this->getConfig('detail') ) { ?>
-												<button type="button" title="<?php echo $this->__('Detail') ?>" class="button btn-detail" onclick="setLocation('<?php echo $_product->getProductUrl() ?>')"><span><span><?php echo $this->__('Detail') ?></span></span></button>
+												<button type="button" title="<?php echo $this->__('Detail') ?>" class="button btn-detail" onclick="onclick="<?php if($ajax_cart) { ?>addToCart('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } else { ?>setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } ?>""><span><span><?php echo $this->__('Detail') ?></span></span></button>
 												<?php } ?>
 												<?php if( $this->getConfig("show_wc", 1) ) { ?>		
 											<!-- Add to links -->

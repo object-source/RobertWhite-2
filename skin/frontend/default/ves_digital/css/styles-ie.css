@@ -23,12 +23,10 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 /* IE 6 only */
-/* line 27, ../sass/styles-ie.scss */
 * html .validation-advice {
   height: 13px;
 }
 
-/* line 31, ../sass/styles-ie.scss */
 * html .error-msg,
 * html .success-msg,
 * html .note-msg,
@@ -36,31 +34,26 @@
   height: 24px;
 }
 
-/* line 32, ../sass/styles-ie.scss */
 * html .main {
   height: 400px;
 }
 
-/* line 33, ../sass/styles-ie.scss */
 * html .account-login .content {
   height: 240px;
 }
 
-/* line 36, ../sass/styles-ie.scss */
 .block li.item,
 .block-poll li,
 .opc li.section {
   vertical-align: top;
 }
 
-/* line 37, ../sass/styles-ie.scss */
 * html .window-overlay {
   background: #ccc;
   filter: alpha(opacity=50);
 }
 
 /* Doubled Margin Fixes */
-/* line 42, ../sass/styles-ie.scss */
 .product-view .product-img-box .more-views li,
 .product-view .box-tags .form-add .input-box,
 .sp-methods select.month {
@@ -68,103 +61,85 @@
 }
 
 /********** < Navigation styles */
-/* line 46, ../sass/styles-ie.scss */
 #nav li,
 #nav li a {
   zoom: 1;
 }
 
-/* line 47, ../sass/styles-ie.scss */
 #nav li {
   vertical-align: top;
 }
 
 /********** < Navigation styles */
-/* line 50, ../sass/styles-ie.scss */
 select {
   margin-bottom: 1px;
 }
 
-/* line 51, ../sass/styles-ie.scss */
 input.radio {
   width: 13px;
   height: 13px;
 }
 
-/* line 52, ../sass/styles-ie.scss */
 input.checkbox {
   width: 13px;
   height: 13px;
 }
 
-/* line 53, ../sass/styles-ie.scss */
 button.button {
   height: 21px;
 }
 
-/* line 54, ../sass/styles-ie.scss */
 button.button span {
   position: relative;
 }
 
-/* line 55, ../sass/styles-ie.scss */
 button.btn-checkout {
   height: 40px;
 }
 
-/* line 56, ../sass/styles-ie.scss */
 #opc-review .sp-methods .input-box {
   float: left;
 }
 
-/* line 57, ../sass/styles-ie.scss */
 .form-list label {
   position: relative;
   z-index: 0;
 }
 
-/* line 58, ../sass/styles-ie.scss */
 .form-list label.required em {
   position: absolute;
   top: 0;
   right: -8px;
 }
 
-/* line 60, ../sass/styles-ie.scss */
 table {
   scrollbar-face-color: expression(runtimeStyle.scrollbarFaceColor = '#fff', cellSpacing = 0);
 }
 
-/* line 62, ../sass/styles-ie.scss */
 .product-view .product-img-box .zoom.disabled {
   filter: alpha(opacity=30);
 }
 
-/* line 64, ../sass/styles-ie.scss */
 .gift-messages-form {
   position: relative;
   zoom: 1;
 }
 
-/* line 66, ../sass/styles-ie.scss */
 .tool-tip .btn-close a {
   margin: 0;
 }
 
-/* line 69, ../sass/styles-ie.scss */
 .product-view .box-tags .product-tags li,
 .footer li {
   padding: 0 4px 0 7px;
 }
 
-/* line 71, ../sass/styles-ie.scss */
 .product-options dd .time-picker select {
   margin: 0;
   padding: 0;
 }
 
 /* Clearer */
-/* line 74, ../sass/styles-ie.scss */
 .clearer {
   display: block;
   clear: both;
@@ -175,7 +150,6 @@ table {
 }
 
 /* Clears and hasLayout fixes */
-/* line 146, ../sass/styles-ie.scss */
 .header-container,
 .header-container .top-container,
 .header,
@@ -250,7 +224,6 @@ table {
 }
 
 /* Hover Fix */
-/* line 149, ../sass/styles-ie.scss */
 iframe.hover-fix {
   position: absolute;
   left: -1px;

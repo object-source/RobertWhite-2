@@ -3,8 +3,8 @@
  * @package Ves Megamenu module for Magento 1.4.x.x and Magento 1.7.x.x
  * @version 1.0.0.1
  * @author http://landofcoder.com
- * @copyright	Copyright (C) December 2010 LandOfCoder.com <@emai:landofcoder@gmail.com>.All rights reserved.
- * @license		GNU General Public License version 2
+ * @copyright   Copyright (C) December 2010 LandOfCoder.com <@emai:landofcoder@gmail.com>.All rights reserved.
+ * @license     GNU General Public License version 2
 *******************************************************/
 ?>
 <?php
@@ -37,7 +37,7 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Ajaxgenmenu extends Mage_Adminhtml_B
 
     public function __construct()
     {
-	    $this->_blockGroup  = 'ves_megamenu';
+        $this->_blockGroup  = 'ves_megamenu';
         $this->_objectId    = 'ves_megamenu_id';
         $this->_controller  = 'adminhtml_megamenu';
         $this->_mode        = 'ajaxgenmenu';
@@ -101,11 +101,12 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Ajaxgenmenu extends Mage_Adminhtml_B
         foreach($childs as $child ) {
             $megaconfig = $this->hasMegaMenuConfig( $child );
             
-            $child->setData("megaconfig", $megaconfig);
-            if( isset($megaconfig->group) && $megaconfig->group) {
-                $child->setData( "is_group", $megaconfig->group );
-            } 
-
+            if( isset($megaconfig->submenu) && $megaconfig->submenu != 0) {
+                $child->setData("megaconfig", $megaconfig);
+                if( isset($megaconfig->group) && $megaconfig->group) {
+                    $child->setData( "is_group", $megaconfig->group );
+                } 
+            }
             if( isset($megaconfig->submenu) && $megaconfig->submenu == 0) {
                 $menu_class = $child->getData("menu_class");
                 $child->setData("menu_class", $menu_class .' disable-menu');
@@ -120,9 +121,12 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Ajaxgenmenu extends Mage_Adminhtml_B
             // render menu at level 0
             $output = '<ul class="nav navbar-nav megamenu">';
             foreach( $data as $menu ) {
- 
+                $menu_class = $menu->getMenuClass();
+                if( isset($menu->getMegaconfig()->align) ){
+                    $menu_class .= ' '.$menu->getMegaconfig()->align;
+                }
                 if( $this->hasChild($menu->getId()) || $menu->getTypeSubmenu() == 'html' || $menu->getTypeSubmenu() == 'widget') {
-                    $output .= '<li class="parent dropdown '.$menu->getMenuClass().'" '.$this->renderAttrs($menu).'>
+                    $output .= '<li class="parent dropdown'.$menu_class.'" '.$this->renderAttrs($menu).'>
                     <a class="dropdown-toggle" data-toggle="dropdown" href="'.$this->getLink( $menu ).'">';
                     
                     if( $menu->getImage()) { $output .= '<span class="menu-icon" style="background:url(\''.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$menu->getImage().'\') no-repeat;">';   }
@@ -140,7 +144,7 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Ajaxgenmenu extends Mage_Adminhtml_B
                 } else if ( !$this->hasChild($menu->getId()) && isset($menu->getMegaconfig()->rows) && $menu->getMegaconfig()->rows) {
                     $output .= $this->genMegaMenuByConfig( $menu->getId(), 1, $menu );
                 } elseif($menu->getType() == 'html') {
-                    $output .= '<li class="'.$menu->getMenuClass().'" '.$this->renderAttrs($menu).'>';
+                    $output .= '<li class="'.$menu_class.'" '.$this->renderAttrs($menu).'>';
                     
                     if( $menu['image']){ $output .= '<span class="menu-icon" style="background:url(\''.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$menu->getImage().'\') no-repeat;">';    }
                     
@@ -156,7 +160,7 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Ajaxgenmenu extends Mage_Adminhtml_B
                     if( $menu->getImage()){ $output .= '</span>';   }
                     $output .= '</li>';
                 } else {
-                    $output .= '<li class="'.$menu->getMenuClass().'" '.$this->renderAttrs($menu).'>
+                    $output .= '<li class="'.$menu_class.'" '.$this->renderAttrs($menu).'>
                     <a href="'.$this->getLink( $menu ).'">';
                     
                     if( $menu->getImage()) { $output .= '<span class="menu-icon" style="background:url(\''.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$menu->getImage().'\') no-repeat;">';   }
@@ -172,7 +176,6 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Ajaxgenmenu extends Mage_Adminhtml_B
             $output .= '</ul>';
             
         }
-
          return $output;
     
     }
@@ -187,6 +190,7 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Ajaxgenmenu extends Mage_Adminhtml_B
                 $t .= ' data-subwidth="'.$menu->getMegaconfig()->subwidth.'" ';
             }
             $t .= ' data-submenu="'.(isset($menu->getMegaconfig()->submenu)?$menu->getMegaconfig()->submenu:$this->hasChild($menu->getId())).'"'; 
+            $t .= ' data-align="'.(isset($menu->getMegaconfig()->align)?$menu->getMegaconfig()->align:"aligned-left").'"';
         }   
         return $t;
     }   
@@ -466,6 +470,10 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Ajaxgenmenu extends Mage_Adminhtml_B
      
         $attrw = '';
         $class = $level > 1 ? "dropdown-submenu":"dropdown";
+        if( isset($menu->getMegaconfig()->align) ){
+            $class .= ' '.$menu->getMegaconfig()->align;
+        }
+
         $output = '<li class="'.$menu->getMenuClass().' parent '.$class.' " '.$this->renderAttrs($menu).'>
                     <a href="'.$this->getLink( $menu ).'" class="dropdown-toggle" data-toggle="dropdown">';
                     

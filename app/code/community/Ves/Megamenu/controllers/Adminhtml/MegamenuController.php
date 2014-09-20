@@ -123,11 +123,9 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
                 ->addItem('js', 'mage/adminhtml/browser.js')
                 ;
         }
-
         $this->_addContent($this->getLayout()->createBlock('ves_megamenu/adminhtml_widget_edit'));
         $this->renderLayout();
 
-        return;
     }
     public function delwidgetAction(){
 
@@ -212,7 +210,7 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
             }
             $this->_redirect('*/*/addwidget', array("done"=>1,"id"=>$widget->getId(),"wtype"=>$widget->getType()));
         }
-        $this->_forward('addwidget');
+         $this->_forward('addwidget');
     }
     
     private function _updateStore($menu_id = 0){
@@ -243,7 +241,7 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
         $store_id = !empty($store_id)?$store_id:0;
         $stores = !empty($store_id)?array($store_id):array(0);
         $parentCategoryId = $category->getParentId();
-        $parentMegamenu = Mage::getModel('ves_megamenu/megamenu')->loadByCategoryId($parentCategoryId, $store_id);
+        $parentMegamenu = Mage::getModel('ves_megamenu/megamenu')->loadByCategoryId($parentCategoryId, $store_id, true);
         $p = $parentMegamenu->getId()>0?$parentMegamenu->getId():0;
 
         if(!$p){
@@ -267,7 +265,7 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
 
         $megamenu = Mage::getModel('ves_megamenu/megamenu')->load(null);
         $data = array("title" => $name,
-                      "description" => $category->getDescription(),
+                      "description" => "",
                       "level" => ($category->getLevel() - 1),
                       "show_title" => 1,
                       "published" => 1,
@@ -337,7 +335,7 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
                 ->getCollection()
                 ->addFieldToFilter('type', 'category');
         if($store_id){
-            $existsCategory =  $existsCategory->addStoreToFilter($store_id);
+            $existsCategory =  $existsCategory->addStoreFilter($store_id);
         }
 
         foreach ($existsCategory as $menu) {
@@ -375,6 +373,7 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
                 $i++;
             }
         }
+
        
         //Populate Resultarray
         $result = array("count"=>$i);
@@ -397,6 +396,41 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
         if ($data = $this->getRequest()->getPost()) {
             $data['store_id'] = !isset($data['store_switcher'])?0:$data['store_switcher'];
             $store_id = $data['store_id'];
+            $megamenu = isset($data['megamenu'])?$data['megamenu']:array();
+            if(!$megamenu) {
+                if($store_id) {
+                   $result['redirect'] = $this->getUrl('*/*/index', array('store_id' => $store_id));
+                } else {
+                    $result['redirect'] = $this->getUrl('*/*/index');
+                }
+                Mage::getSingleton('adminhtml/session')
+                    ->addWarning(Mage::helper('ves_megamenu')
+                    ->__('Please input menu title and choose other menu parent (not ROOT)'));
+                $this->getResponse()->setBody(
+                        '<script type="text/javascript">parent.window.location.href = "' . $result['redirect'] . '";</script>'
+                );
+                return;
+            }
+            $check_exist = false;
+            if(!$this->getRequest()->getParam('id') && (!isset($megamenu['title']) || !$megamenu['title']) && (!$megamenu['parent_id'] || $megamenu['parent_id'] == 1)) {
+                $check_exist = Mage::getModel('ves_megamenu/megamenu')->checkExistMenuRoot(1, $store_id);
+            }
+
+            if($check_exist) {
+               if($store_id) {
+                   $result['redirect'] = $this->getUrl('*/*/index', array('store_id' => $store_id));
+                } else {
+                    $result['redirect'] = $this->getUrl('*/*/index');
+                }
+                Mage::getSingleton('adminhtml/session')
+                    ->addWarning(Mage::helper('ves_megamenu')
+                    ->__('Please input menu title and choose other menu parent (not ROOT)'));
+                $this->getResponse()->setBody(
+                        '<script type="text/javascript">parent.window.location.href = "' . $result['redirect'] . '";</script>'
+                );
+                return;
+            }
+              
 
             $save_mode = $this->getRequest()->getParam('save_mode');
             $id = 0;
@@ -481,6 +515,7 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
                 $data['megamenu']['level'] = 0;
             }
             $data['megamenu']['stores'] = !empty($data['store_id'])?array($data['store_id']):array(0);
+            $data['megamenu']['position'] = isset($data['megamenu']['position'])?$data['megamenu']['position']:0;
 
             $data_megamenu = array("title" => $data['megamenu']['title'],
                       "description" => $data['megamenu']['description'],
@@ -500,6 +535,7 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
                       "item" => $data['megamenu']['item'],
                       "url" => $data['megamenu']['url'],
                       "width" => $data['megamenu']['width'],
+                      "position" => $data['megamenu']['position'],
                       "parent_id" => $data['megamenu']['parent_id'],
                       "store_id" => $data['store_id'],
                       "stores" => $data['megamenu']['stores']);
@@ -557,21 +593,20 @@ class Ves_Megamenu_Adminhtml_MegamenuController extends Mage_Adminhtml_Controlle
             try {
 
                 $model = Mage::getModel('ves_megamenu/megamenu');
-                $test = $model->load($menuid)->hasChild();
-                $title = $model->load($menuid)->getTitle();
-
-                if ($model->load($menuid)->hasChild()) {
-                    $childs = $model->load($menuid)->getChildItem();
+                $model = $model->load($menuid);
+                $test = $model->hasChild();
+                $title = $model->getTitle();
+                
+                if ($model->hasChild()) {
+                    $childs = $model->getChildItem();
                     foreach ($childs as $child) {
                         $this->deleteAction($child->getId());
                     }
                 } else {
-                    $model->load($menuid)
-                            ->delete();
+                    $model->delete();
                 }
-                $model->load($menuid)
-                        ->delete();
-
+                $model->delete();
+                
                 Mage::getSingleton('adminhtml/session')
                     ->addSuccess(Mage::helper('adminhtml')
                     ->__('Item was deleted successfully'));

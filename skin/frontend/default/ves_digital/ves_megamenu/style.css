@@ -61,6 +61,7 @@
 }
 .widget-product-list .name a {
   font-weight: bold;
+  line-height: normal !important;
 }
 .widget-product-list .price {
   margin-bottom: 0 ;
@@ -86,9 +87,54 @@
 #mainmenutop .dropdown:hover > .dropdown-menu, #mainmenutop .dropdown-submenu:hover > .dropdown-menu {
   display: block;
 }
+
+#ves-mainnav .nav > li.active > a:before {
+  width: 100%;
+  -webkit-transition: all 0.4s ease-out 0s;
+  transition: all 0.4s ease-out 0s;
+}
+#ves-mainnav .nav > li.active > a {
+    background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+    color: #e76d66 !important;
+}
+#ves-mainnav .nav > li.active > a .caret {
+    border-bottom-color: #e76d66 !important;
+    border-top-color: #e76d66 !important;
+}
+
 .ves-megamenu .nav li.fullwidth {
   position: static!important;
 }
 .ves-megamenu .nav li.fullwidth .level1{
  width: 100%!important;
 }
+
+
+.ves-megamenu .aligned-center .dropdown-menu{
+  left: 50%;
+  transform: translate(-50%);
+  -webkit-transform: translate(-50%);
+  -moz-transform: translate(-50%);
+  -ms-transform: translate(-50%);
+  -o-transform: translate(-50%);
+}
+
+
+
+.ves-megamenu .aligned-right .dropdown-menu{
+    left: auto;
+    right: 0;
+}
+.ves-megamenu .aligned-left .dropdown-menu{
+
+}
+
+.ves-megamenu .megamenu .aligned-fullwidth {
+  position: inherit!important;
+}
+
+.ves-megamenu .aligned-fullwidth .dropdown-menu{
+  width: 100%!important;
+  left: 0;
+}
+

@@ -32,9 +32,10 @@
             <action method="addJs">
                 <script>magestore/promotionalgift/tooltip/tooltip.js</script>
             </action> 
+            <!--
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery-1.4.2.min.js</script>
-            </action> 
+            </action> -->
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery.jcarousel.min.js</script>
             </action> 
@@ -193,9 +194,10 @@
             <action method="addJs">
                 <script>magestore/promotionalgift/tooltip/tooltip.js</script>
             </action> 
+            <!--
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery-1.4.2.min.js</script>
-            </action> 
+            </action> -->
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery.jcarousel.min.js</script>
             </action> 
@@ -251,9 +253,10 @@
             <action method="addJs">
                 <script>magestore/promotionalgift/tooltip/tooltip.js</script>
             </action> 
+            <!--
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery-1.4.2.min.js</script>
-            </action> 
+            </action> -->
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery.jcarousel.min.js</script>
             </action> 				
@@ -559,9 +562,10 @@
             <action method="addJs">
                 <script>magestore/promotionalcartpage.js</script>
             </action> 
+            <!--
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery-1.4.2.min.js</script>
-            </action> 
+            </action> -->
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery.jcarousel.min.js</script>
             </action> 				
@@ -588,9 +592,10 @@
             <action method="addJs">
                 <script>magestore/promotionalcartpage.js</script>
             </action> 
+            <!--
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery-1.4.2.min.js</script>
-            </action> 
+            </action> -->
             <action method="addJs">
                 <script>magestore/promotionalgift/jcarousel/jquery.jcarousel.min.js</script>
             </action> 				

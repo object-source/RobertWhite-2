@@ -12,7 +12,9 @@ class Ves_Tempcp_Helper_Element extends Mage_Core_Helper_Abstract {
 
     }
     public function getElementStores($name, $element_name, $value = array(), $attr = ""){
-    	
+    	if(!is_array($value)) {
+    		$value = array();
+    	}
     	$html = '<select multiple="multiple" class="select multiselect" size="10" title="Store View" name="'.$element_name.'" id="'.$name.'"'.$attr.'>';
     	if(empty($value) || in_array(0,$value)){
     		$html .= '<option value="0" selected="selected">'.Mage::helper("ves_tempcp")->__("All Store Views").'</option>';

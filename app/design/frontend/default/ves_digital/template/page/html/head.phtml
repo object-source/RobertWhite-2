@@ -24,17 +24,27 @@
  * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
  */
 $current_controller = Mage::app()->getRequest()->getControllerName(); 
-
 $themeName =  Mage::getDesign()->getTheme('frontend');
-$themeConfig = Mage::helper('ves_tempcp/theme')->getCurrentTheme();
-$google_analytics = "";
 
-$helper = Mage::helper("ves_tempcp/framework")->initFramework( $themeName, $themeConfig );
+$helper = Mage::helper("ves_tempcp/framework")->getFramework( );
+
+if(!$helper || !is_object($helper)) {
+
+	$themeConfig = Mage::helper('ves_tempcp/theme')->getCurrentTheme();
+	$helper = Mage::helper("ves_tempcp/framework")->initFramework( $themeName, $themeConfig );
+
+} else {
+
+	$themeConfig = $helper->getConfig();
+	
+}
+
 $helper->setCacheUri($this->getSkinUrl("cache", array('_secure'=>true)));
 $jsbaseURL = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS);
 $skinbaseURL = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_SKIN);
 
 $enable_colorbox = $themeConfig->get("enable_colorbox", 1);
+$google_analytics = $themeConfig->get("google_analytics", "");
 $controller = Mage::app()->getFrontController()->getRequest()->getControllerName();
 if($controller == "product"){
 	$enable_colorbox = 1;
@@ -46,27 +56,24 @@ if(!empty($assets)){
 	$this->setData("items", $assets);
 }
 
-/*End add framework scripts*/
 
-$helper->addScript( $jsbaseURL.'venustheme/ves_tempcp/common.js' );
-$helper->addScript( $this->getSkinUrl('javascript/common.js',array('_secure'=>true)) );
+/*End add framework scripts*/
 
 $helper->addCss('js_css','venustheme/ves_tempcp/jquery/ui/themes/ui-lightness/jquery-ui-1.8.16.custom.css', 'media="all"' );
 
 
 if($enable_colorbox){
-	$helper->addScript( $jsbaseURL.'venustheme/ves_tempcp/jquery/colorbox/jquery.colorbox-min.js' );
 	$helper->addCss('js_css','venustheme/ves_tempcp/jquery/colorbox/colorbox.css', 'media="all"' );
 }
-$helper->addScript( $jsbaseURL.'venustheme/ves_tempcp/jquery/tabs.js' );
 
 if( $customize_theme = $themeConfig->get('customize_theme') ) {
 	$helper->addCss( 'skin_css', 'css/customize/'.$customize_theme.'.css', 'media="all"' );
 }
 
 $helper->addCss( 'skin_css', 'css/font-awesome.min.css', 'media="all"' );
+
 /*load local font*/
-if(file_exists(Mage::getBaseDir('skin')."/frontend/default/".$themeName."/css/font.css")) {
+if(file_exists($helper->getThemeDir()."/css/font.css")) {
 	$helper->addCss( 'skin_css', 'css/font.css', 'media="all"' );
 }
 
@@ -79,8 +86,6 @@ if($custom_fonts) {
 		}
 	}
 }
-	
-
 
 if($css_files = $helper->getCssLinks()){
 
@@ -97,6 +102,18 @@ if($css_files = $helper->getCssLinks()){
 	}
 }
 
+if($enable_colorbox){
+	$this->addItem( "js", "venustheme/ves_tempcp/jquery/colorbox/jquery.colorbox-min.js");
+}
+
+if($enable_lazyload = $themeConfig->get("enable_lazyload", 0)){
+	$this->addItem( "js", "venustheme/ves_tempcp/jquery/jquery.lazyload.js");
+}
+
+$this->addItem( "js", "venustheme/ves_tempcp/common.js");
+$this->addItem( "js", "venustheme/ves_tempcp/jquery/tabs.js");
+$this->addItem( "skin_js", "javascript/common.js");
+
 $layoutMode = $helper->getParam( 'layout' );
 $assets = $this->getData("items");
 
@@ -110,14 +127,13 @@ if (!$session->getParamsMemorizeDisabled()) {
 }
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $helper->getLang() ?>" dir="<?php echo $helper->getDirection(); ?>" class="<?php echo $helper->getDirection(); ?>" lang="<?php echo $helper->getLang() ?>">
+<!DOCTYPE html>
+<html dir="<?php echo $helper->getDirection(); ?>" class="<?php echo $helper->getDirection(); ?>" lang="<?php echo $helper->getLang() ?>">
 <head>
 <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <!-- Mobile viewport optimized: h5bp.com/viewport -->
-<meta name="viewport" content="width=device-width">
-<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>" />
 <title><?php echo $this->getTitle() ?></title>
 <meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
@@ -145,17 +161,12 @@ if (!$session->getParamsMemorizeDisabled()) {
 <?php echo $this->getCssJsHtml() ?>
 <?php echo $this->getChildHtml() ?>
 
-
-<?php foreach( $helper->getScriptFiles() as $script )  { ?>
-<script type="text/javascript" src="<?php echo $script; ?>"></script>
-<?php } ?>
-
 <?php if( $custom_javascript = $themeConfig->get('custom_javascript') ){ ?>
-	<script type="text/javascript"><!--
+	<script type="text/javascript">
 		jQuery(document).ready(function() {
 			<?php echo html_entity_decode(trim( $custom_javascript) ); ?>
 		});
-//--></script>
+	</script>
 <?php }	?>
 
 <?php echo $this->helper('core/js')->getTranslatorScript() ?>
@@ -164,7 +175,7 @@ if (!$session->getParamsMemorizeDisabled()) {
 
 
 <?php if( $themeConfig->get('theme_width') &&  $themeConfig->get('theme_width') != 'auto' ) { ?>
-			<style type="text/css"> #page-container .container{max-width:<?php echo $themeConfig->get('theme_width');?>; width:auto}</style>
+			<style type="text/css"> #page .container{max-width:<?php echo $themeConfig->get('theme_width');?>; width:auto}</style>
 	<?php } ?>
 	
 	<?php if( $themeConfig->get('use_custombg') ) {	?>
@@ -196,7 +207,7 @@ if (!$session->getParamsMemorizeDisabled()) {
 	<?php echo implode("\r\n",$css);?>
 </style>
 <?php } else { ?>
-<link href='http://fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+<link href='//fonts.googleapis.com/css?family=Lora:400,400italic,700,700italic' rel='stylesheet' type='text/css'/>
 <?php } ?>
 
 <?php if($themeConfig->get('enable_paneltool') ){  ?>
@@ -205,6 +216,7 @@ if (!$session->getParamsMemorizeDisabled()) {
 <script type="text/javascript" src="<?php echo $helper->getJs("colorpicker/js/colorpicker.js");?>"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo $helper->getJs("colorpicker/css/colorpicker.css");?>" />
 
+<!--link href='//fonts.googleapis.com/css?family=Roboto:400,300,100italic,100,300italic,400italic,500,500italic,700,700italic' rel='stylesheet' type='text/css'-->
 <?php } ?>
 
 <!--[if lt IE 9]>
@@ -215,8 +227,7 @@ if (!$session->getParamsMemorizeDisabled()) {
 <?php } ?>
 <script src="<?php echo $this->helper('core/js')->getJsUrl('venustheme/ves_tempcp/respond.min.js');?>"></script>
 <![endif]-->
-<?php 
-
+<?php
 if($current_controller == "quickview") { 
 ?>
 <base target="_parent" />

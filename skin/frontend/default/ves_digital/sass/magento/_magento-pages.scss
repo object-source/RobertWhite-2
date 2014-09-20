@@ -482,6 +482,7 @@
 		p.required {
 		    margin: 0;
 		    padding: 0 0 10px;
+
 		}
 		&.disabled button.button {
 		    display: none;
@@ -573,7 +574,6 @@
 	}
 }
 #opc-review {
-
 	.step {
 	    padding: 0;
 	}
@@ -586,7 +586,7 @@
 	}
 	.buttons-set p {
 	    line-height: 28px;
-	    @include rtl-margin (0, 20px, 0, 0);
+	    @include rtl-margin(0, 20px, 0, 0);
 	}
 	.buttons-set .please-wait {
 	    height: 28px;
@@ -605,10 +605,17 @@
 }
 /* Multiple Addresses Checkout */
 .checkout-progress { 
-	padding:0 90px; margin:0 0 20px; 
+	width:100%; margin:0 0 20px; 
+	@include rtl-float-left();
 	li { 
-		display: inline-block; width:19%;
-		@include rtl-margin(0, 3px, 0, 0); border-top:10px solid #999; padding:2px 0 0; font-weight:bold; text-align:center; color:#abb5ba;
+		display:inline-block; 
+		width:20%; 
+		@include rtl-float-left();
+		border-top:10px solid #999; 
+		padding:2px 0 0; 
+		font-weight:bold; 
+		text-align:center; 
+		color:#abb5ba;
 		&.active { border-top-color:$theme-color-hover; color:$theme-color-hover; }
 	}
 }
@@ -638,11 +645,11 @@
 			@include rtl-float-right(); 
 			@include rtl-padding(27px, 7px, 0, 0); }
 		.grand-total { 
-			@include rtl-float-right(); height:71px; font-size:1.5em;
-			@include rtl-padding(0, 0, 0, 21px); background:url(../images/bkg_grand-total.gif) 0 0 no-repeat; overflow:hidden; 
+			@include rtl-float-right();font-size:1.5em;
+			@include rtl-padding(0, 0, 0, 21px); overflow:hidden; 
 			.inner { 
-				@include rtl-float-left(); height:57px; 
-				@include rtl-padding(14px, 21px, 0, 0); background:url(../images/bkg_grand-total.gif) 100% 0 no-repeat;
+				@include rtl-float-left();  
+				@include rtl-padding(14px, 21px, 0, 0);
 				div { display:inline; }
 			}
 			big { display:inline; 
@@ -693,8 +700,63 @@
 .checkout-multishipping-billing .multiple-checkout { position:relative; }
 /* ======================================================================================= */
 
+.multiple-checkout #checkout-review-submit + .buttons-set{
+	.back-link { line-height:59px;}
+}
+
 
 /* Account Login/Create Pages ============================================================ */
+/* Custommer */
+
+.form-list{
+    li {
+        overflow: hidden;
+        padding:5px 0;
+    }
+    label { 
+        margin-bottom: 2px;  
+    }
+}
+
+.content h2{ color: #333;}
+.buttons-set #send2{ @include rtl-float-left();}
+.form-list .input-text{ width: 98%; min-height: 32px;}
+
+.account-login,
+.account-create {
+	
+    margin:  0 0 40px;
+    background:$white;
+    .page-title {
+        padding:0;
+    }
+    
+    .content,
+    .buttons-set {
+        padding: 20px;
+    }
+    .buttons-set {
+        border-top:1px solid #ececec;
+    }
+}
+
+.account-create {
+    .buttons-set {
+        margin-top: 40px;
+    }
+}
+
+.customer-account-login {
+    .new-users,
+    .registered-users {
+        .content {
+            min-height: 300px;
+        }
+    }
+
+}
+
+
 
 /* Captcha ================================================================================ */
 .captcha-note      { clear:left; padding-top:5px; }
@@ -810,7 +872,7 @@
 /* Order Print Pages */
 .page-print {
 	.print-head { margin:0 0 15px; }
-	.print-head .logo { @include rtl-float-left(); }
+	.print-head .logo { @include rtl-float-left(); margin: 0 20px 0 0;}
 	.print-head address { @include rtl-float-left(); @include rtl-margin-left(15px); }
 	.order-date { background:url(../images/bkg_divider1.gif) 0 100% repeat-x; padding:0 0 10px; margin:0 0 10px; }
 /* Price Rewrites */
@@ -1128,7 +1190,7 @@
 		 .number {
 		    @include rtl-float-left();
 		    font-size: 12px;
-		    line-height: 25px;
+		    line-height: 30px;
 		    padding: 0 10px;
 		}
 		.details {
@@ -1136,6 +1198,7 @@
 		}
 		li.item {
 		    margin: 0 0 7px;
+		    clear:both;
 		    &.last {
 			    margin: 0;
 			}
@@ -1156,11 +1219,16 @@
 	}
 
 }
+
+.box-account {
+    clear: both;
+    margin-bottom: 40px;
+}
 /********** Dashboard > */
 
 p.required, .product-options dt label.required em, .form-list label.required em {
     color: #EE001C;
-    margin: 0 3px;
+    @include rtl-padding-right(10px);
 }
 .v-fix {
 	@include rtl-float-left();

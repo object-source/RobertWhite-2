@@ -3,12 +3,12 @@
 	$id = 0;
 	$widget_params = array();
 	$show_name = 1;
-	$widget_data = $this->getData();
+	$widget_data = $this->getSampleData();
 	if($widget_data && $widget_data->getId()){
 		$disabled = true;
 		$id = $widget_data->getId();
 		$widget_params =  $this->data->getParams();
-        $widget_params = unserialize($widget_params);
+        $widget_params = unserialize(base64_decode($widget_params));
         $show_name = isset($widget_params['show_name'])?$widget_params['show_name']:1;
 	}
 	$types = $this->getTypes();

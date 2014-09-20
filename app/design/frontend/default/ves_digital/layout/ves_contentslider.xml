@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <layout version="0.1.0">
+	<default>
+        <reference name="head">
+            <action method="addItem"><type>skin_css</type><name>ves_contentslider/style.css</name></action>
+        </reference>
+	</default>
 	<cms_index_index translate="label">
 		<reference name="slideshowTop">
 			<!-- example to add more product carousel 

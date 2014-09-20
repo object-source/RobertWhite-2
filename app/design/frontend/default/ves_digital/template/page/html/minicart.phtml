@@ -29,8 +29,7 @@
 
 $cart_summary_qty = Mage::getSingleton('checkout/cart')->getSummaryQty();
 $cart_summary_qty = !empty($cart_summary_qty)?$cart_summary_qty:0;
-$cart_subtotal = Mage::helper('checkout/cart')->getQuote()->getSubtotal();
-$cart_subtotal = Mage::helper('checkout')->formatPrice( $cart_subtotal );
+$cart_subtotal = Mage::helper('ves_tempcp')->getCartSubtotal();
 
 $cart_total = Mage::helper("ves_tempcp")->__("%s item(s) - %s");
 $cart_total = sprintf($cart_total, $cart_summary_qty, $cart_subtotal);
@@ -50,5 +49,5 @@ $cart_total = sprintf($cart_total, $cart_summary_qty, $cart_subtotal);
 </div>
 <script type="text/javascript">
  text_confirm_delete_item = "<?php echo $this->__('Are you sure you would like to remove this item from the shopping cart?'); ?>";
- var text_cart_total = "%total% item(s) - %price%";
+ text_cart_total = "%total% <?php echo $this->__('item(s)');?> - %price%";
 </script>

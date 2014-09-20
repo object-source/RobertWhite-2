@@ -67,7 +67,12 @@ class Ves_Tempcp_Block_Adminhtml_Theme_Customize extends Mage_Adminhtml_Block_Wi
     }
     public function getCustomizeFolderURL() {
         $group = Mage::registry('theme_data')->get('group');
-        return $this->getSiteURL()."skin/frontend/default/".$group."/css/customize/";
+        $tmp_theme = explode("/", $group);
+        if(count($tmp_theme) == 1) {
+            $group = "default/".$group;
+        }
+
+        return $this->getSiteURL()."skin/frontend/".$group."/css/customize/";
     }
     public function getSiteURL() {
         return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB);

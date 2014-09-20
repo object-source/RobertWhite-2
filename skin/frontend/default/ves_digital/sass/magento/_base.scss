@@ -103,6 +103,13 @@ ul li , ol li {
     & .box-tags {
        h2{ display: none;} 
     }
+    .amount {@include rtl-float-left();}
+    .limiter { @include rtl-float-right();}
+    .box-reviews {
+        div.row {
+            padding: 10px 0;
+        }
+    }
 }
 
 /* carousel */
@@ -155,4 +162,11 @@ ul li , ol li {
 .carousel-indicators li.active {   
     background-color: $theme-color-hover;
     @include box-shadow (0 0 0 2px $theme-color-hover);
+}
+
+.cart-cell {
+    text-align: center;
+    .add-to-cart-alt {
+        padding-bottom:10px;
+    }
 }

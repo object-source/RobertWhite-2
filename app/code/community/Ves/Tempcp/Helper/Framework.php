@@ -10,7 +10,7 @@
  * ThemeControlHelper Class 
  * 
  */
-define( "VES_CSS_CACHE", Mage::getSingleton('core/design_package')->getSkinBaseDir()."/cache/ves-asset/" );
+define( "VES_CSS_CACHE", Mage::getSingleton('core/design_package')->getSkinBaseDir()."/cache/" );
 define( "VES_SUB_PATH", '/ves-asset/' );
 
 class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
@@ -79,12 +79,16 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 		 */
 		private $_themeDir = '';
 
+		private $_themeDefaultDir = '';
+
 		/**
 		 * @var String $_the_themeSassDirmeLessDir
 		 * 
 		 * @access private
 		 */
 		private $_themeSassDir = '';
+
+		private $_themeDefaultSassDir = '';
 
 		private $_spans = array();
  
@@ -94,6 +98,8 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 		 * @access private
 		 */
 		private $_themeURL = '';
+
+		public $themeDefaultURL = "";
 
 		/**
 		 * @var String $_lessDevURL
@@ -131,6 +137,7 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 				$framework->setThemeObject( $theme_object );
 				Mage::unregister('framework_data');
 				Mage::register('framework_data', $framework);
+				
 				return $framework;
 
 			}elseif($framework =  Mage::registry('framework_data')){
@@ -183,9 +190,20 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 					$direction = $tmp_direction;
 				}
 
+				$package = $this->getPackageName();
+
+				$themeName =  Mage::getDesign()->getTheme('frontend');
+
 				$theme_dir = $config->get("theme_path","");
 
-				$theme_dir = !empty($theme_dir)?$theme_dir: Mage::getBaseDir('skin') . '/frontend/default/'.$theme;
+				$tmp_theme = explode("/", $theme);
+				if(count($tmp_theme) == 1) {
+					$theme = "default/".$theme;
+				}
+
+				$theme_dir = !empty($theme_dir)?$theme_dir: Mage::getBaseDir('skin') . '/frontend/'.$theme;
+
+				$this->_themeDefaultDir =  Mage::getBaseDir('skin') . '/frontend/'.$package."/default" ; 
 
 				$this->setTheme( $theme );
 			 
@@ -199,13 +217,16 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 
 				$this->themeURL =  $config->get("theme_url","");
 
-				$this->themeURL = !empty($this->themeURL)?$this->themeURL: Mage::getBaseUrl(). 'skin/frontend/default/'.$this->get("theme");
+				$this->themeURL = !empty($this->themeURL)?$this->themeURL: Mage::getBaseUrl(). 'skin/frontend/'.$this->get("theme");
+
+				$this->themeDefaultURL = Mage::getBaseUrl(). 'skin/frontend/'.$package."/default" ; 
 
 				$this->themeCssURL = $this->themeURL.'/css/';
 
 
+
 				$this->setDirection( $direction );
-				$params = array('layout', 'body_pattern','skin') ;
+				$params = array('layout', 'body_pattern', 'skin', 'header_layout', 'direction', 'footer_layout', 'default_list_layout', 'default_view_layout') ;
 				if( $config->get('enable_paneltool',0) ){
 					$vesreset = Mage::getSingleton('core/app')->getRequest()->getParam('vesreset');
 					if( $vesreset && $config->get('enable_development_mode') ){
@@ -230,6 +251,7 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 				$this->loadLocalThemeCss();
 				$this->_internal_modules = $this->loadInternalModules();
 				if($registry){
+					 Mage::unregister('framework_data');
 					 Mage::register('framework_data', $this);
 				}
 			return $this;
@@ -273,14 +295,18 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 		}
 
 		public function getDirection(){
-			return $this->_direction;
+			return $this->getParam("direction", $this->_direction);
 		}
 		/**
 		 * set base path and less path of current theme. 
 		 */
 		public function setThemeDir( $dir ){
 			$this->_themeDir = $dir; 
-			$this->_themeSassDir = $dir.'/sass/';
+			$this->_themeSassDir = $dir.DS.'sass'.DS;
+			$this->_themeDefaultSassDir = $this->getThemeDefaultDir().DS.'sass'.DS;
+		}
+		public function getThemeDefaultDir() {
+			return $this->_themeDefaultDir;
 		}
 		public function getThemeDir(){
 			return $this->_themeDir;
@@ -289,7 +315,12 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 		public function getThemeURL(){
 			return $this->themeURL;
 		}
-
+		public function getThemeDefaultURL(){
+			return $this->themeDefaultURL;
+		}
+		public function getThemeDefaultSassDir() {
+			return $this->_themeDefaultSassDir;
+		}
 		public function getThemeSassDir(){
 			return $this->_themeSassDir;
 		}
@@ -301,6 +332,9 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 			return $this;
 		}
 		
+		public function getPackageName() {
+			return Mage::getSingleton('core/design_package')->getPackageName();
+		}
 		/**
 		 *  add script files to collection.
 		 */
@@ -318,6 +352,254 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 
 		public function getJs($path = "", $folder = "jquery"){
 			return Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_JS).'venustheme/ves_tempcp/'.$folder.'/'.$path;
+		}
+
+		public function getSkinJs($path = "") {
+			$package = $this->getPackageName();
+
+			$default_skin_dir = Mage::getBaseDir("skin")."/frontend/".$package."/default/";
+			$base_skin_dir = Mage::getBaseDir("skin")."/frontend/base/default/";
+			
+			$default_skin_url = Mage::getBaseUrl('skin')."frontend/".$package."/default/";
+			$base_skin_url = Mage::getBaseUrl('skin')."frontend/base/default/";
+
+			if(file_exists($default_skin_dir.$path)) {
+				return array("dir" => $default_skin_dir.$path,
+							 "url" => $default_skin_url.$path);
+			} elseif(file_exists($base_skin_dir.$path)) {
+				return array("dir" => $base_skin_dir.$path,
+							 "url" => $base_skin_url.$path);
+			}
+
+			return false;
+		}
+		
+		public function compressJsCss( $assets = array()) {
+
+			$enable_compress_css = $this->getConfig()->get("enable_compress_css");
+			$enable_compress_js = $this->getConfig()->get("enable_compress_js");
+
+			$tmp_css = array();
+			$tmp_js = array();
+			$tmp_assets = array();
+			$js_excludes = $excludes = array();
+
+			if($enable_compress_js) {
+				$exclude_js_files = $this->getConfig()->get("exclude_js_files");
+				$exclude_js_files = trim($exclude_js_files);
+				$js_excludes = explode( ",", $exclude_js_files );
+				if(!empty($js_excludes)) {
+					foreach($js_excludes as $k=>$item) {
+						$js_excludes[$k] = trim($item);
+					}
+				}
+			}
+			
+			if($enable_compress_css) {
+				$exclude_css_files = $this->getConfig()->get("exclude_css_files");
+				$exclude_css_files = trim($exclude_css_files);
+				$excludes = explode( ",", $exclude_css_files );
+				if(!empty($excludes)) {
+					foreach($excludes as $k=>$item) {
+						$excludes[$k] = trim($item);
+					}
+				}
+			}
+
+			foreach ($assets as $key => $item) {
+			  if (!isset($item['name'])) {
+			      continue;
+			   }
+			  $if     = !empty($item['if']) ? $item['if'] : '';
+			  $params = !empty($item['params']) ? $item['params'] : '';
+
+			  switch ($item['type']) {
+			      case 'js':        // js/*.js
+			      	if($enable_compress_js) {
+			      		if(!in_array("js/".$item['name'], $js_excludes) ) {
+			      			$tmp_js[] = array("dir" => Mage::getBaseDir()."/js/".$item['name'],
+			      							"url" => Mage::getBaseUrl('js').$item['name']) ;
+				      	} else {
+				      		$tmp_assets[] = $item;
+				      	}
+			      	} else {
+			      		$tmp_assets[] = $item;
+			      	}
+			      	
+			      	break;
+			      case 'skin_js':   // skin/*/*.js
+				      if($enable_compress_js) {
+					      	if(!in_array("skin_js/".$item['name'], $js_excludes)) {
+					      		if(file_exists($this->getThemeDir()."/".$item['name'])) {
+						      		$tmp_js[] = array("dir" => $this->getThemeDir()."/".$item['name'],
+						      							"url" => $this->getThemeURL()."/".$item['name']) ;
+						      	} elseif($skin_js = $this->getSkinJs($item['name'])) {
+						      		$tmp_js[] = array("dir" => $skin_js['dir'],
+						      							"url" => $skin_js['url']) ;
+						      	}
+					      	} else {
+					      		$tmp_assets[] = $item;
+					      	}
+				      } else {
+				      		$tmp_assets[] = $item;
+				      }
+			        break;
+			      case 'skin_css':
+			      	if($enable_compress_css) {
+				      	if(!in_array("skin_css/".$item['name'], $excludes) && (!$item['params'] || $item['params'] == 'media="all"') && file_exists($this->getThemeDir()."/".$item['name']) ) {
+				      		$tmp_css[] = array("dir" => $this->getThemeDir()."/".$item['name'],
+				      							"url" => $this->getThemeURL()."/".$item['name']) ;
+				      	} else {
+				      		$tmp_assets[] = $item;
+				      	}
+		      		} else {
+		      			$tmp_assets[] = $item;
+		      		}
+		      		break;
+		      	  case 'js_css':
+			      	if($enable_compress_css) {
+			      	  	if(!in_array("js_css/".$item['name'], $excludes) && (!$item['params'] || $item['params'] == 'media="all"')) {
+			      			$tmp_css[] = array("dir" => Mage::getBaseDir()."/js/".$item['name'],
+				      							"url" => Mage::getBaseUrl('js').$item['name']) ;
+			      		} else {
+			      			$tmp_assets[] = $item;
+			      		}
+			      	} else {
+			      		$tmp_assets[] = $item;
+			      	}
+		      		break;
+			      default:
+			        break;
+			  }
+			}
+
+			/*Compress Js*/
+			if(!empty($tmp_js) && trim($enable_compress_js)) {
+				$pcache = new VesTempcp_Cache();
+				$pcache->setExtension( 'js' );
+
+				if($enable_compress_js == 'compress-merge') {
+					$all = '';
+					$aKey = md5(serialize($tmp_js).serialize($js_excludes).Mage::getBaseUrl());
+					
+					if( !$pcache->isExisted( $aKey ) ){
+						foreach( $tmp_js as $key => $file ){
+							
+							if(is_array($file)){
+							 	$content = $pcache->read( $file['dir'] );
+							 	if(!empty($content)) {
+							 		$content = VesTempcp_JSMin::minify($content);
+									$all .= ";".$content;
+							 	}
+										
+							}
+								
+						}
+						$pcache->set( $aKey, $all );
+					}
+
+					$tmp_assets["skin_js/cache/".md5($key).".js"] = array("type" => "skin_js",
+							 														"name" => "cache/".$aKey.".js",
+							 														"params" => '',
+							 														"if" => "",
+							 														"cond" => "");
+
+				} else {
+					
+					foreach( $tmp_js as $key => $file ){
+						if(is_array($file)){
+							$check_existed = false;
+							if( !$pcache->isExisted( md5($key) ) ){
+							 	$content = $pcache->read( $file['dir'] );
+							 	if( !empty($content)  ){
+									$content = VesTempcp_JSMin::minify($content);
+									$pcache->set( md5($key), $content );
+									$check_existed = true;
+								}
+							} else 
+								$check_existed = true;
+
+							if($check_existed) {
+								$tmp_assets["skin_js/cache/".md5($key).".css"] = array("type" => "skin_js",
+							 														"name" => "cache/".md5($key).".js",
+							 														"params" => '',
+							 														"if" => "",
+							 														"cond" => "");
+							}
+							
+						}
+					}
+				}
+
+			}
+			/*Compress css*/
+			
+			if(!empty($tmp_css) && trim($enable_compress_css)) {
+				$pcache = new VesTempcp_Cache();
+				$pcache->setExtension( 'css' );
+
+				if($enable_compress_css == 'compress-merge') {
+					$all = '';
+					$aKey = md5(serialize($tmp_css).serialize($excludes).Mage::getBaseUrl());
+					
+					if( !$pcache->isExisted( $aKey ) ){
+						foreach( $tmp_css as $key => $file ){
+							
+							if(is_array($file)){
+							 	$content = $pcache->read( $file['dir'] );
+							 	if(!empty($content)) {
+							 		$content  = VesTempcp_Csscompressor::process( $content, $file['url'] ); 
+									$all .= $content;
+							 	}
+										
+							}
+								
+						}
+						$pcache->set( $aKey, $all );
+					}
+
+					$tmp_assets["skin_css/cache/".md5($key).".css"] = array("type" => "skin_css",
+							 														"name" => "cache/".$aKey.".css",
+							 														"params" => 'media="all"',
+							 														"if" => "",
+							 														"cond" => "");
+
+				} else {
+					
+					foreach( $tmp_css as $key => $file ){
+						if(is_array($file)){
+							$check_existed = false;
+							if( !$pcache->isExisted( md5($key) ) ){
+							 	$content = $pcache->read( $file['dir'] );
+							 	if( !empty($content)  ){
+									$content  = VesTempcp_Csscompressor::process( $content, $file['url'] ); 
+									$pcache->set( md5($key), $content );
+									$check_existed = true;
+								}
+							} else 
+								$check_existed = true;
+
+							if($check_existed) {
+								$tmp_assets["skin_css/cache/".md5($key).".css"] = array("type" => "skin_css",
+							 														"name" => "cache/".md5($key).".css",
+							 														"params" => 'media="all"',
+							 														"if" => "",
+							 														"cond" => "");
+							}
+							
+						}
+					}
+				}
+
+				
+
+			}
+
+			if(!empty($tmp_assets)) {
+				return $tmp_assets;
+			}
+
+			return $assets;
 		}
 		/*
 		Set framework scripts to list asset of magento 
@@ -450,16 +732,61 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 
 			/* load global and defaul stylesheets file */
 			$files = glob( $this->_themeSassDir . '*.scss');
+			$loaded_style = false;
 			if( $this->getDirection() == 'rtl' && file_exists($this->_themeSassDir.'rtl'.DS.'bootstrap.scss')) {
 				$this->addCss( 'skin_css', 'css/rtl/bootstrap.css', 'media="all"' );
+				$loaded_style = true;
 			} else if(file_exists($this->_themeSassDir . 'bootstrap.scss')) {
 				$this->addCss( 'skin_css', 'css/bootstrap.css', 'media="all"' );
+				$loaded_style = true;
+			}
+
+			if(!$loaded_style) {
+				if( $this->getDirection() == 'rtl' && file_exists($this->_themeDefaultSassDir.'rtl'.DS.'bootstrap.scss')) {
+					$this->addCss( 'skin_css', 'css/rtl/bootstrap.css', 'media="all"' );
+					$loaded_style = true;
+				} else if(file_exists($this->_themeDefaultSassDir . 'bootstrap.scss')) {
+					$this->addCss( 'skin_css', 'css/bootstrap.css', 'media="all"' );
+					$loaded_style = true;
+				}
+				$loaded_style = false;
 			}
 			/* add stylesheets for actived skin files */
 			if( $this->skin && file_exists($this->_themeSassDir.'skins/'.$this->skin.'/styles.scss')){
 				$this->addCss( 'skin_css', 'css/skins/'.$this->skin.'/styles.css', 'media="all"' );
+				$loaded_style = true;
 			}elseif($this->skin == 'default' || empty($this->skin)){
 				$this->addCss( 'skin_css', 'css/styles.css', 'media="all"' );
+				$loaded_style = true;
+			}
+
+			if(!$loaded_style) {
+				if( $this->skin && file_exists($this->_themeDefaultSassDir.'skins/'.$this->skin.'/styles.scss')){
+					$this->addCss( 'skin_css', 'css/skins/'.$this->skin.'/styles.css', 'media="all"' );
+					$loaded_style = true;
+				}elseif($this->skin == 'default' || empty($this->skin)){
+					$this->addCss( 'skin_css', 'css/styles.css', 'media="all"' );
+					$loaded_style = true;
+				}
+				$loaded_style = false;
+			}
+
+			$default_files = glob( $this->_themeDefaultSassDir . '*.scss');
+
+			if ($default_files) {
+
+				foreach ($default_files as $file) {
+					$file = trim($file);
+					if( !preg_match("#bootstrap\.#", $file) ) {
+						if( $this->skin && preg_match("#styles\.#", $file)) { 
+							continue;
+						} elseif ( substr($file, 0, 1) != "_" && file_exists($this->_themeDir.DS.'css'.DS.str_replace(".scss", ".css", basename($file)))) {
+								$this->addCss( 'skin_css', 'css/'.str_replace(".scss", ".css", basename($file)) );
+						} elseif ( substr($file, 0, 1) != "_" && file_exists($this->_themeDefaultDir.DS.'css'.DS.str_replace(".scss", ".css", basename($file)))) {
+								$this->addCss( 'skin_css', 'css/'.str_replace(".scss", ".css", basename($file)) );
+						}
+					}
+				}
 			}
 
 			if ($files) {
@@ -479,7 +806,10 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 			/* if current language is rtl */
 		 	if( $this->getDirection() == 'rtl' && file_exists($this->_themeSassDir .'rtl'.DS .'styles.scss')){
 		 		$this->addCss('skin_css', 'css/rtl/styles.css');
+		 	} elseif($this->getDirection() == 'rtl' && file_exists($this->_themeDefaultSassDir .'rtl'.DS .'styles.scss')){
+		 		$this->addCss('skin_css', 'css/rtl/styles.css');
 		 	}
+		 	
 
 		}
 
@@ -531,7 +861,6 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 				}
 
 			}
-			
 
 			if( !empty($userparams) || !empty($vesreset) ){  
 				Mage::app()->getResponse()->setRedirect(Mage::getBaseUrl());
@@ -591,38 +920,116 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 			$page = Mage::app()->getFrontController()->getRequest()->getRouteName();
 			 
 			if ($page == 'cms'){
-			    $ishome = (Mage::getSingleton('cms/page')->getIdentifier()=='home') ? true :false;
+				$storeId    = Mage::app()->getStore()->getId();
+				if($storeId) {
+					$homepage_identifier = Mage::getStoreConfig("web/default/cms_home_page", $storeId);
+				} else {
+					$homepage_identifier = Mage::getStoreConfig("web/default/cms_home_page");
+				}
+			    $ishome = (Mage::getSingleton('cms/page')->getIdentifier() == $homepage_identifier) ? true :false;
 			}
 			return $ishome;
 		}
 
 		public function loadInternalModules(){
-			//echo Mage::app()->getFrontController()->getRequest()->getRouteName();die();
+
 			if(empty($this->_internal_modules)){
 					$internal_modules = $this->getConfig()->get("internal_modules", array());
+					$_module_collection = Mage::getModel('ves_tempcp/module')->getModulesByTheme($this->getConfig()->get("theme_id", 0), 1);
+					$modules = array();
+					$list_exists_modules = array();
+
+					if(is_object($_module_collection) && $_module_collection->getSize() > 0) {
+						foreach($_module_collection as $module ) {
+							$position = $module->getPosition();
+							$position = trim($position);
+							if(!isset($internal_modules[$position]) && !isset($modules[$position])) {
+								$modules[$position] = array();
+								$modules[$position][] = $module;
+
+							} elseif(isset($modules[$position])) {
+								$modules[$position][] = $module;
+							} else {
+								if(!isset($list_exists_modules[$position])) {
+									$list_exists_modules[$position] = array();
+								}
+								$list_exists_modules[$position][] = $module;
+							}
+						}
+					}
 					if(!empty($internal_modules)){
 						if($internal_modules){
 							foreach($internal_modules as $key=>$val){
 								$this->_internal_modules[ $key ] = array();
-									if(!empty($val) && is_array($val)){
-										foreach($val as $k=>$module){
-											
-											if(!empty($module)){
-												$status = $this->getConfig()->get("widget_".$k."_status");
-												if($status == 1) {
-													$static_block_id = $this->getConfig()->get("widget_".$k."_block_id");
-													$this->_internal_modules[ $key ][$k]['title'] = $this->getConfig()->get("widget_".$k."_name");
-													$this->_internal_modules[ $key ][$k]['layout'] = $this->getConfig()->get("widget_".$k."_layout");
-													if(!empty($static_block_id)){
-														$this->_internal_modules[ $key ][$k]['content'] = Mage::getSingleton('core/layout')->createBlock('cms/block')->setBlockId($static_block_id)->toHtml();
-													}else{
-														$this->_internal_modules[ $key ][$k]['content'] = $this->getConfig()->get("widget_".$k."_data","", true);
-													}
+								if(!empty($val) && is_array($val)){
+									foreach($val as $k=>$module){
+										
+										if(!empty($module)){
+											$status = $this->getConfig()->get("widget_".$k."_status");
+											if($status == 1) {
+												$static_block_id = $this->getConfig()->get("widget_".$k."_block_id");
+												$this->_internal_modules[ $key ][$k]['order'] = $this->getConfig()->get("widget_".$k."_order", 0);
+												$this->_internal_modules[ $key ][$k]['title'] = $this->getConfig()->get("widget_".$k."_name");
+												$this->_internal_modules[ $key ][$k]['layout'] = $this->getConfig()->get("widget_".$k."_layout");
+												if(!empty($static_block_id)){
+													$this->_internal_modules[ $key ][$k]['content'] = Mage::getSingleton('core/layout')->createBlock('cms/block')->setBlockId($static_block_id)->toHtml();
+												}else{
+													$this->_internal_modules[ $key ][$k]['content'] = $this->getConfig()->get("widget_".$k."_data","", true);
 												}
 											}
 										}
 									}
+								}
+								if(isset($list_exists_modules[ $key ]) && $list_exists_modules[ $key ]) {
+									foreach($list_exists_modules[ $key ] as $module) {
+										if($module){
+											$static_block_id = $module->getBlockId();
+											$module_name = $module->getModuleName();
+											$module_data = $module->getModuleData();
+											$tmp_module = array();
+											$tmp_module['order'] = $module->getSortOrder();
+											$tmp_module['title'] = $module->getModuleTitle();
+											$tmp_module['layout'] = $module->getLayout();
+											$tmp_module['layout'] = explode(",", $tmp_module['layout']);
+											if(!empty($static_block_id)){
+												$tmp_module['content'] = Mage::getSingleton('core/layout')->createBlock('cms/block')->setBlockId($static_block_id)->toHtml();
+											}else{
+												$tmp_module['content'] = $this->getConfig()->get("widget_".$module_name."_data", $module_data , true);
+											}
+
+											$this->_internal_modules[ $key ][] = $tmp_module;
+										}
+									}
+								}
+
 							}
+						}
+					}
+
+					if($modules) {
+						foreach($modules as $key => $tmpModules) {
+							$this->_internal_modules[ $key ] = array();
+							if($tmpModules) {
+								foreach($tmpModules as $module) {
+									if($module){
+										$static_block_id = $module->getBlockId();
+										$module_name = $module->getModuleName();
+										$module_data = $module->getModuleData();
+										$tmp_module = array();
+										$tmp_module['order'] = $module->getSortOrder();
+										$tmp_module['title'] = $module->getModuleTitle();
+										$tmp_module['layout'] = $module->getLayout();
+										$tmp_module['layout'] = explode(",", $tmp_module['layout']);
+										if(!empty($static_block_id)){
+											$tmp_module['content'] = Mage::getSingleton('core/layout')->createBlock('cms/block')->setBlockId($static_block_id)->toHtml();
+										}else{
+											$tmp_module['content'] = $this->getConfig()->get("widget_".$module_name."_data", $module_data , true);
+										}
+										$this->_internal_modules[ $key ][] = $tmp_module;
+									}
+								}
+							}
+							
 						}
 					}
 			}
@@ -632,7 +1039,6 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 
 		public function loadInternalModule( $position = "", $col = ""){
 			$modules = isset($this->_internal_modules[$position])?$this->_internal_modules[$position]:array();
-
 			if($modules){
 				$html = '';
 				foreach($this->_internal_modules[$position] as $key => $module){
@@ -783,7 +1189,11 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 		 * 
 		 */
 		public function renderAddon( $addon ) {
-			$output = Mage::getSingleton('core/layout')->createBlock('ves_tempcp/list', $addon)->setTemplate('page/addon/'.$addon.'.phtml')->toHtml();
+			$store_switcher = Mage::getSingleton('core/layout')->createBlock('page/switch', "store_switcher")->setTemplate('page/switch/stores.phtml')->toHtml();
+
+			$output = Mage::getSingleton('core/layout')->createBlock('ves_tempcp/list', $addon)
+						->assign("store_switcher", $store_switcher)
+						->setTemplate('page/addon/'.$addon.'.phtml')->toHtml();
 			return $output;
 		}
 
@@ -835,14 +1245,16 @@ class Ves_Tempcp_Helper_Framework extends Mage_Core_Helper_Abstract {
 			return;
 		}
 
-		public function getLayoutPath($filepath = "", $params = array()) {
-			$current_catalog_product_path = Mage::getSingleton('core/design_package')->getBaseDir(array('_area' => 'frontend'));
-			$current_catalog_product_path .= "template/common/";
+		public function getLayoutPath($filepath = "", $default_path = "") {
+			$current_catalog_product_path = Mage::getSingleton('core/design_package')->getBaseDir(array('_area' => 'frontend', '_type'=>'template'));
+			$current_catalog_product_path .= "/common/";
 
 			$load_file_path = $current_catalog_product_path.$filepath;
 
 			if(file_exists($load_file_path)) {
 				return $load_file_path;
+			} elseif(file_exists($current_catalog_product_path.$default_path)) {
+				return $current_catalog_product_path.$default_path;
 			}
 			return false;
 		}
