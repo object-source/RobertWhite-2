@@ -1383,7 +1383,7 @@ body.layout-boxed-lg #page {
 }
 #footer a {
   text-decoration: none;
-  color: gray;
+  color: grey;
   -webkit-transition: padding 0.5s ease 0s;
   transition: padding 0.5s ease 0s;
 }
@@ -7344,4 +7344,24 @@ Social*/
 .rtl .media-list {
   padding-right: 0;
   padding-left: inherit;
+}
+
+
+.product-details .price {
+	position: absolute;
+	right: 29px;
+}
+
+.product-block .price .price-excluding-tax .label,
+.product-block .price .price-including-tax .label {
+	padding-left: 0em;
+}
+
+.btnMoreFilterOptions {
+	margin-bottom: 10px;
+	margin-left: 20px;
+}
+
+.social #footer a {
+	colour: #e76d66;
 }

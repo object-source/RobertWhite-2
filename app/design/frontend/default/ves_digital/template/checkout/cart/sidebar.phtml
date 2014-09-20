@@ -64,7 +64,9 @@
                 <?php else: ?>
                     <span class="subtotal-title"><?php echo $this->__('Cart Subtotal:') ?></span> <?php echo Mage::helper('checkout')->formatPrice($this->getSubtotal()) ?>
                     <?php if ($_subtotalInclTax = $this->getSubtotalInclTax()): ?>
-                        <br />(<?php echo Mage::helper('checkout')->formatPrice($_subtotalInclTax) ?> <?php echo Mage::helper('tax')->getIncExcText(true) ?>)
+                        <br />
+                        <SPAN CLASS="subtotal-title">Incl. VAT:<?php //echo Mage::helper('tax')->getIncExcText(true) ?></SPAN>
+                        <?php echo Mage::helper('checkout')->formatPrice($_subtotalInclTax) ?>
                     <?php endif; ?>
                 <?php endif; ?>
             </p>

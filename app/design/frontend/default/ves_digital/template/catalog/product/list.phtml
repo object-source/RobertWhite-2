@@ -150,7 +150,7 @@ $swap_image_number = !empty($swap_image_number)?(int)$swap_image_number: 0;
                            
                             
                             <div class="desc std">
-                                <?php echo $_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description') ?>
+                                <?php echo substr($_helper->productAttribute($_product, $_product->getShortDescription(), 'short_description'), 0, 240); ?>
                                 <!--<a href="<?php echo $_product->getProductUrl() ?>" title="<?php echo $_productNameStripped ?>" class="link-learn"><?php echo $this->__('Learn More') ?></a> -->
                             </div>
                         </div>
@@ -266,18 +266,41 @@ $swap_image_number = !empty($swap_image_number)?(int)$swap_image_number: 0;
                     <?php endif; ?>
 					
                     <div class="actions">
-                        <?php if($_product->isSaleable()): ?>
-                            <button type="button" title="<?php echo $this->__('Add to Cart') ?>" class="button btn-cart" onclick="<?php if($ajax_cart) { ?>addToCart('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } else { ?>setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } ?>"><span><span><?php echo $this->__('Add to Cart') ?></span></span></button>
-                        <?php else: ?>
-                            <p class="availability out-of-stock"><span><?php echo $this->__('Out of stock') ?></span></p>
-                        <?php endif; ?>
-                        <ul class="add-to-links">
-                            <?php if ($this->helper('wishlist')->isAllow()) : ?>
-                                <li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist fa fa-heart"><span><?php echo $this->__('Add to Wishlist') ?></span></a></li>
-                            <?php endif; ?>
-                            <?php if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
-                                <li><a href="<?php echo $_compareUrl ?>" class="link-compare fa fa-retweet"><span><?php echo $this->__('Add to Compare') ?></span></a></li>
-                            <?php endif; ?>
+<?php 					if($_product->isSaleable()) { 
+                        
+                        	if ('Yes' === $_product->getAttributeText('special_order')) {
+                        		$BtnText = 'Special Order Only';
+                        	} else {
+                        		$BtnText = 'Add to Cart';
+                        	}
+?>
+                            <button type="button" title="<?php echo $BtnText; ?>" class="button btn-cart" onclick="<?php if($ajax_cart) { ?>addToCart('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } else { ?>setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } ?>"><span><span><?php echo $BtnText; ?></span></span></button>                        
+<?php                            
+								$StockLevel = (int) Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+	
+							if ('No' === $_product->getAttributeText('special_order')) {
+    							switch(true) {
+    								case $StockLevel <= 0:
+    									echo '<span class="stock-qty pull-right" STYLE="color: #e76d66;">Out of stock</span>';
+    									break;
+    								case $StockLevel < 11:
+										echo '<span class="stock-qty pull-right" STYLE="color: #95BB7C;">' . $StockLevel . ' in stock <?php echo ; ?></span>';    		
+    									break;
+    								default:
+    									echo '<span class="stock-qty pull-right" STYLE="color: #95BB7C;">In stock <?php echo ; ?></span>';    		
+    									break;
+								}
+							}
+                        } else {
+                            echo '<p class="availability out-of-stock"><span>' . $this->__('Out of stock') . '</span></p>';
+						} ?>
+                        <!--ul class="add-to-links"-->
+                            <?php i//f ($this->helper('wishlist')->isAllow()) : ?>
+                                <!--li><a href="<?php echo $this->helper('wishlist')->getAddUrl($_product) ?>" class="link-wishlist fa fa-heart" title="Wishlist"><span><?php echo $this->__('Add to Wishlist') ?></span></a></li-->
+                            <?php //endif; ?>
+                            <?php //if($_compareUrl=$this->getAddToCompareUrl($_product)): ?>
+                                <!--li><a href="<?php echo $_compareUrl ?>" class="link-compare fa fa-retweet" title="Compare"><span><?php echo $this->__('Add to Compare') ?></span></a></li-->
+                            <?php //endif; ?>
                         </ul>
                     </div>
                 </div>

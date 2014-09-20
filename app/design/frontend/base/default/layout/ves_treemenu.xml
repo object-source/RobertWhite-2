@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+		<reference name="head">
+	   		<action method="addJs"><script>ves_treemenu/script.js</script></action>
+            <action method="addItem"><type>skin_css</type><name>ves_treemenu/default/style.css</name></action>
+	  	</reference>
+		<reference name="right">	
+			<block type="core/text_list" name="treemenu" before="catalog.leftnav" as="treemenu" translate="label">
+				<block type="ves_treemenu/list" name="ves.treemenu" before="catalog.leftnav" />
+			</block>			
+		</reference>
+	</default>
+</layout>

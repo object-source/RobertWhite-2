@@ -29,13 +29,45 @@
 <?php $_wishlistSubmitUrl = $this->helper('wishlist')->getAddUrl($_product); ?>
 
 <ul class="add-to-links">
-<?php if ($this->helper('wishlist')->isAllow()) : ?>
-    <li><a href="<?php echo $_wishlistSubmitUrl ?>" title="<?php echo $this->__('Wishlist') ?>" onclick="productAddToCartForm.submitLight(this, this.href); return false;" class="link-wishlist fa fa-heart"><span><?php echo $this->__('Add to Wishlist') ?></span></a></li>
-<?php endif; ?>
-<?php
+	<li>	
+<?php 
+	if ($_product->isSaleable()) {
+		$StockLevel = (int) Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
+	
+		if ('No' === $_product->getAttributeText('special_order')) {
+            switch(true) {
+    			case $StockLevel <= 0:
+    				echo '<span class="stock-qty" STYLE="color: #e76d66;">Out of stock</span>';
+    				break;
+    			case $StockLevel < 11:
+					echo '<span class="stock-qty" STYLE="color: #95BB7C;">' . $StockLevel . ' in stock <?php echo ; ?></span>';    		
+    				break;
+    			default:
+    				echo '<span class="stock-qty" STYLE="color: #95BB7C;">In stock <?php echo ; ?></span>';    		
+    				break;
+			}
+		}
+	} else {
+		echo '<span class="stock-qty" STYLE="color: #e76d66;">Out of stock</span>';
+	}
+?>			
+
+</li>
+<?php 
+	if ($this->helper('wishlist')->isAllow()) { ?>
+    	<li><a href="<?php echo $_wishlistSubmitUrl ?>" title="<?php echo $this->__('Wishlist') ?>" onclick="productAddToCartForm.submitLight(this, this.href); return false;" class="link-wishlist fa fa-heart"><span><?php echo $this->__('Add to Wishlist') ?></span></a></li>
+<?php 
+	}
+
     $_compareUrl = $this->helper('catalog/product_compare')->getAddUrl($_product);
-?>
-<?php if($_compareUrl) : ?>
-    <li><a href="<?php echo $_compareUrl ?>" title="<?php echo $this->__('Compare') ?>" class="link-compare fa fa-retweet"><span><?php echo $this->__('Add to Compare') ?></span></a></li>
-<?php endif; ?>
+
+	if($_compareUrl) { ?>
+	    <li><a href="<?php echo $_compareUrl ?>" title="<?php echo $this->__('Compare') ?>" class="link-compare fa fa-retweet"><span><?php echo $this->__('Add to Compare') ?></span></a></li>
+<?php
+	}
+
+	if ($this->canEmailToFriend()) { ?>
+		<li><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>" title="<?php echo $this->__('Email to a Friend'); ?>" class="link-emailfriend fa fa-envelope"><span><?php echo $this->__('Email to a Friend') ?></span></a></li>
+<?php 
+	} ?>
 </ul>

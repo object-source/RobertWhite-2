@@ -88,7 +88,10 @@ if($route == "tempcp") {
                     <?php echo $this->getTierPriceHtml() ?>
                     <?php echo $this->getChildHtml('extrahint') ?>
 
-                    
+                    <div class="product-brand" STYLE="margin-bottom: 20px;">
+						<strong STYLE="margin-right: 56px;">SKU</strong>
+                        RW # <?php echo $_helper->productAttribute($_product, nl2br($_product->getSku()), 'sku') . "<span STYLE='margin-left: 20px;'>Mfr. # " . $_helper->productAttribute($_product, nl2br($_product->getManufacturersku()), 'manufacturer sku') . "</span>";?>
+                    </div>
 
                     <?php if ($_product->getShortDescription()):?>
                         <div class="short-description">
@@ -97,9 +100,9 @@ if($route == "tempcp") {
                         </div>
                     <?php endif;?>
 
-                    <?php if ($this->canEmailToFriend()): ?>
-                        <div class="email-friend"><a href="<?php echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><span class="fa fa-envelope"></span><?php echo $this->__('Email to a Friend') ?></a></div>
-                    <?php endif; ?>
+                    <?php // if ($this->canEmailToFriend()): ?> <!-- MOVED TO view/addto.phtml NEXT TO WISHLIST AND COMPARE BUTTONS -->
+                        <!--div class="email-friend"><a href="<?php // echo $this->helper('catalog/product')->getEmailToFriendUrl($_product) ?>"><span class="fa fa-envelope"></span><?php echo $this->__('Email to a Friend') ?></a></div-->
+                    <?php //endif; ?>
 
                     <?php echo $this->getReviewsSummaryHtml($_product, false, true)?>
 
@@ -222,41 +225,53 @@ if($route == "tempcp") {
     $route = Mage::app()->getRequest()->getRouteName();
 ?>
     <?php if($route != "review" && $route !="tempcp") { ?>
-         <?php if($product_additional_data = $this->getChildHtml('product_additional_data')): ?>
-             <a href="#tab-tags"><?php echo Mage::helper('ves_tempcp')->__("Product Tags");?></a>
-               <?php $product_additional_data = '<div id="tab-tags" class="tab-content">'.$product_additional_data.'<br class="clear clr"/></div>'; ?>
-            <?php endif; ?>
+         <?php // if($product_additional_data = $this->getChildHtml('product_additional_data')): ?>
+             <!-- a href="#tab-tags"><?php echo Mage::helper('ves_tempcp')->__("Product Tags");?></a-->
+               <?php // $product_additional_data = '<div id="tab-tags" class="tab-content">'.$product_additional_data.'<br class="clear clr"/></div>'; ?>
+            <?php // endif; ?>
     <?php } ?>
 
     <?php 
-            $product_customtab = "";
-            if($themeConfig->get("enable_product_customtab", 0)){ 
-                echo '<a href="#tab-custom">'.$themeConfig->get("product_customtab_name","").'</a>';
-                $product_customtab = "<div id=\"tab-custom\" class=\"tab-content box-custom\">";
-                $product_customtab .= $themeConfig->get("product_customtab_content","",true);
-                $product_customtab .= '<br class="clear clr"/>';
-                $product_customtab .= '</div>';
-            } ?>
-        <?php if($route != "review" && $route !="tempcp") { ?>
-        <a href="#tab-reviews"><?php echo Mage::helper('ves_tempcp')->__("Reviews");?></a>
-        <?php } ?>
+
+		$VideoUrl = $_helper->productAttribute($_product, $_product->getProduct_video(), 'video');
+	
+		if (0 !== strlen($VideoUrl)) {
+			$videoHTML =  '<p class="text-center">Content of video may not represent the actual product or contents and is for information/educational/illustrative purposes only.</p>
+<div class="hidden-xs" style="width: 520px; margin-left: auto; margin-right: auto;"><iframe style="margin: 0 auto;" src="//www.youtube.com/embed/' . $VideoUrl . '?showinfo=0" frameborder="0" width="520" height="315"></iframe></div>
+<p class="visible-xs"><iframe style="margin: 0 auto;" src="//www.youtube.com/embed/' . $VideoUrl . '?showinfo=0&controls=0" frameborder="0" width="270" height="169"></iframe></p>';
+		} else {
+			$videoHTML = 'There is no video for this product.';
+		}
+		
+        $product_customtab = "";
+        if($themeConfig->get("enable_product_customtab", 0)){ 
+            echo '<a href="#tab-custom">'.$themeConfig->get("product_customtab_name","").'</a>';
+            // CUSTOM CODE TO GENERATE RESPONSIVE VIDEO IFRAMES 
+            $product_customtab = "<div id=\"tab-custom\" class=\"tab-content box-custom\">" .  $videoHTML . '<br class="clear clr"/></div>';
+        } 
+    
+ 		if ($route != "review" && $route !="tempcp") {
+	        echo '<a href="#tab-reviews">' . Mage::helper('ves_tempcp')->__("Reviews") . '</a>';	        
+	 	}
+
+     echo "</div>"; 
+     echo $tmp_html;
+	 echo $product_additional_data;
+     echo $product_customtab; 
+
+	 if($route != "review" && $route !="tempcp") { ?>  
+        <div id="tab-reviews" class="tab-content">
+            <?php echo $this->getChildHtml("review_tab"); ?>
         </div>
-        <?php echo $tmp_html; ?>
-        <?php echo $product_additional_data; ?>
-        <?php echo $product_customtab; ?>
-        
-        <?php if($route != "review" && $route !="tempcp") { ?>  
-            <div id="tab-reviews" class="tab-content">
-                <?php echo $this->getChildHtml("review_tab"); ?>
-            </div>
-        <?php } else { ?>
-
-        <?php echo $this->getChildHtml('product_additional_data'); ?>
-
-        <?php } ?>
+<?php 
+	 } else {
+		echo $this->getChildHtml('product_additional_data');
+     }
+?>
     </div>
-     <?php echo $this->getChildHtml('upsell_products') ?>
+<?php echo $this->getChildHtml('upsell_products') ?>
 </div>
+
 <script type="text/javascript">
 jQuery('#tabs a').tabs();
 </script> 
