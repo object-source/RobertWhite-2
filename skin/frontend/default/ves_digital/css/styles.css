@@ -5142,7 +5142,9 @@ body,
   transition: all 0.4s ease 0s;
 }
 
-.product-shop .add-to-links .link-wishlist, .product-shop .add-to-links .link-compare,
+.product-shop .add-to-links .link-wishlist, 
+.product-shop .add-to-links .link-compare,
+.product-shop .add-to-links .link-emailfriend,
 .products-grid .actions .link-wishlist,
 .products-grid .actions .link-compare {
   border: 1px solid #c9c9c9;
@@ -5162,8 +5164,48 @@ body,
   border-bottom-left-radius: 3px;
   color: #6e6e6e;
 }
-.product-shop .add-to-links .link-wishlist:hover, .product-shop .add-to-links .link-compare:hover,
+
+.product-shop .add-to-links .stock-qty,
+.actions .stock-qty,
+.row .cart .stock-qty {
+	border: 1px solid #c9c9c9;
+  	display: inline-block;
+  	font-size: 14px;
+  	line-height: 30px !important;
+  	height: 30px;
+  	text-align: center;
+  	text-decoration: none;
+  	border-top-right-radius: 3px;
+  	border-top-left-radius: 3px;
+  	border-bottom-right-radius: 3px;
+  	border-bottom-left-radius: 3px;
+  	padding: 0 0.5em 0 0.5em;
+  	position: relative;
+  	top: -1px;
+  	margin-right: 8px;
+}
+
+.actions .stock-qty {
+	top: 0px;
+	margin-right: 3px;
+  	float: right;
+}
+
+.row .cart .stock-qty {
+	top: 10px;
+  	float: right;
+}
+
+@media all and (min-device-width: 768px) and (max-device-width 1024px) {
+	.row .cart .stock-qty {
+		float: left;
+	}
+}
+
+.product-shop .add-to-links .link-wishlist:hover, 
+.product-shop .add-to-links .link-compare:hover,
 .products-grid .actions .link-wishlist:hover,
+.product-shop .add-to-links .link-emailfriend:hover,
 .products-grid .actions .link-compare:hover {
   background-color: #e76d66;
   border: 1px solid #e76d66;

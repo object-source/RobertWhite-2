@@ -31,7 +31,7 @@
 <?php if ($this->displayBoth()):?>
 <tr>
     <td style="<?php echo $this->getStyle() ?>" class="a-right" colspan="<?php echo $this->getColspan(); ?>">
-        <?php echo $this->helper('tax')->__('Subtotal (Excl. Tax)') ?>
+        <?php echo $this->helper('tax')->__('Subtotal (Excl. VAT)') ?>
     </td>
     <td style="<?php echo $this->getStyle() ?>" class="a-right">
         <?php echo $this->helper('checkout')->formatPrice($this->getTotal()->getValueExclTax()) ?>
@@ -39,7 +39,7 @@
 </tr>
 <tr>
     <td style="<?php echo $this->getStyle() ?>" class="a-right" colspan="<?php echo $this->getColspan(); ?>">
-        <?php echo $this->helper('tax')->__('Subtotal (Incl. Tax)') ?>
+        <?php echo $this->helper('tax')->__('Subtotal (Incl. VAT)') ?>
     </td>
     <td style="<?php echo $this->getStyle() ?>" class="a-right">
         <?php echo $this->helper('checkout')->formatPrice($this->getTotal()->getValueInclTax()) ?>

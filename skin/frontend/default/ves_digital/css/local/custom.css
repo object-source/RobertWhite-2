@@ -63,3 +63,43 @@
 .social #footer a {
 	colour: #e76d66;
 }
+
+.header .links li > a, .currency > a, .form-language > a {
+	color: #CFD0D2;
+} 
+
+span .label {
+	display: inline;
+}
+
+.price-including-tax .price {
+	font-size: 13px;
+	padding-left: 0.35em;
+}
+
+.products-grid .product-block .product-name {
+	min-height: 72px;
+}
+
+.btnMoreFilterOptions {
+	margin-bottom: 10px;
+	margin-left: 20px;
+	border-color: #666;
+	color: #666;
+}
+
+#footer .social a {
+	color: #CC2D2D;
+}
+
+.block.block-cart .block-content .subtotal .price {
+	margin-bottom: 0px;
+}
+
+.sp-methods label {
+	font-size: 12px;
+	font-weight: normal;
+	margin-left: 6px;
+	position: relative;
+	top: 2px;
+}

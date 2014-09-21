@@ -33,16 +33,44 @@
 ?>
 
 <ol>
-<?php foreach ($this->getItems() as $_item): ?>
-    <li>
-        <?php if ($_item->getCount() > 0): ?>
-        <a href="<?php echo $this->urlEscape($_item->getUrl()) ?>"><?php echo $_item->getLabel() ?>
-        <?php else: echo $_item->getLabel() ?>
-        <?php endif; ?>
-        <?php if ($this->shouldDisplayProductCount()): ?>
-        (<?php echo $_item->getCount() ?>)
-        <?php endif; ?>
-    </a>
-    </li>
-<?php endforeach ?>
+<?php 
+	$FilterOptionCount = 1;
+	$intOptionLimit    = 5;
+	
+	foreach ($this->getItems() as $_item) { 
+		if (($intOptionLimit +1) === $FilterOptionCount) {			
+			$FilterHiddenOLID = sha1($_item->getUrl());
+			echo "
 </ol>
+<ol STYLE='display: none;' ID='$FilterHiddenOLID'>";
+		}
+	
+		echo '
+    <li>';      
+        if ($_item->getCount() > 0) {
+        	echo '
+        <a href="' . $this->urlEscape($_item->getUrl()) . '">' . $_item->getLabel();
+	
+		} else { 
+			echo $_item->getLabel();
+		}
+		
+        if ($this->shouldDisplayProductCount()) {
+			echo ' (' . $_item->getCount() . ')';
+		}
+		
+		echo '
+	    </a>
+    </li>';
+    
+    	$FilterOptionCount++;
+	}
+?>
+	
+</ol>
+
+<?php
+	if (($intOptionLimit + 1) < $FilterOptionCount) {
+		echo "<BUTTON CLASS='btnMoreFilterOptions' ONCLICK='jQuery(\"#$FilterHiddenOLID\").slideDown(\"fast\"); this.style.display = \"none\";' > Show " . ($FilterOptionCount - $intOptionLimit - 1) . " more</BUTTON>";	
+	}
+?>
