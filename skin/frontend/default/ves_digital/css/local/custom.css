@@ -103,3 +103,7 @@ span .label {
 	position: relative;
 	top: 2px;
 }
+
+.categorytabs .tab-nav ul li {
+	text-align: center;
+}

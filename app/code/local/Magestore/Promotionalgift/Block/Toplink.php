@@ -16,7 +16,7 @@ class Magestore_Promotionalgift_Block_Toplink extends Mage_Core_Block_Template {
     }
 
     public function addPromotionalGiftToplink() {
-        $block = $this->getLayout()->getBlock('top.links');
-        $block->addLink('Promotional Gift', Mage::helper('promotionalgift')->getPromotionalgiftUrl(), Mage::helper('promotionalgift')->__('Promotional Gift'), '', '', 10);
+        // $block = $this->getLayout()->getBlock('top.links');
+        // $block->addLink('Promotional Gift', Mage::helper('promotionalgift')->getPromotionalgiftUrl(), Mage::helper('promotionalgift')->__('Promotional Gift'), '', '', 10);
     }
 }
