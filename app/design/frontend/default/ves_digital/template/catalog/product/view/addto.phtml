@@ -37,13 +37,13 @@
 		if ('No' === $_product->getAttributeText('special_order')) {
             switch(true) {
     			case $StockLevel <= 0:
-    				echo '<span class="stock-qty" STYLE="color: #e76d66;">Out of stock</span>';
+    				echo '<span class="stock-qty">Out of stock</span>';
     				break;
     			case $StockLevel < 11:
-					echo '<span class="stock-qty" STYLE="color: #95BB7C;">' . $StockLevel . ' in stock <?php echo ; ?></span>';    		
+					echo '<span class="stock-qty">' . $StockLevel . ' in stock <?php echo ; ?></span>';    		
     				break;
     			default:
-    				echo '<span class="stock-qty" STYLE="color: #95BB7C;">In stock <?php echo ; ?></span>';    		
+    				echo '<span class="stock-qty">10+ In stock <?php echo ; ?></span>';    		
     				break;
 			}
 		}
