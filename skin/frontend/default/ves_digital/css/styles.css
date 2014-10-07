@@ -5191,11 +5191,19 @@ body,
   	float: right;
   	color: #CC2D2D;
   	border-color: #CC2D2D;
+  	border: 0;
+	font-weight: bold;
+}
+
+.actions .stock-qty.in-stock {
+	color : #95bb7a;
 }
 
 .row .cart .stock-qty {
 	top: 10px;
   	float: right;
+  	border: 0;
+	font-weight: bold;
 }
 
 @media all and (min-device-width: 768px) and (max-device-width 1024px) {
