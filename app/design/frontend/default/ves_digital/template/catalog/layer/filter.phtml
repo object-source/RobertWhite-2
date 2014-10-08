@@ -71,6 +71,7 @@
 
 <?php
 	if (($intOptionLimit + 1) < $FilterOptionCount) {
-		echo "<BUTTON CLASS='btnMoreFilterOptions' ONCLICK='jQuery(\"#$FilterHiddenOLID\").slideDown(\"fast\"); this.style.display = \"none\";' > Show " . ($FilterOptionCount - $intOptionLimit - 1) . " more</BUTTON>";	
+		echo "<BUTTON ID='more-" . $FilterHiddenOLID . "' CLASS='btnMoreFilterOptions' ONCLICK='jQuery(\"#$FilterHiddenOLID\").slideDown(\"fast\"); this.style.display = \"none\"; jQuery(\"#less-" . $FilterHiddenOLID . "\").show();' > Show " . ($FilterOptionCount - $intOptionLimit - 1) . " more</BUTTON>";	
+		echo "<BUTTON ID='less-" . $FilterHiddenOLID . "' CLASS='btnMoreFilterOptions' STYLE='display: none;' ONCLICK='jQuery(\"#$FilterHiddenOLID\").slideUp(\"fast\"); this.style.display = \"none\"; jQuery(\"#more-" . $FilterHiddenOLID . "\").show();' > Collapse</BUTTON>";	
 	}
 ?>

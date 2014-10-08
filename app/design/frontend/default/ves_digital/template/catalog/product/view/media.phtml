@@ -72,7 +72,7 @@
           }
         }
       ?>
-    <a href="<?php echo $this->helper('catalog/image')->init($_product, 'image'); ?>" title="<?php echo $heading_title; ?>" class="colorbox1">
+    <a href="<?php echo $this->helper('catalog/image')->init($_product, 'image'); ?>" title="<?php echo $this->escapeHtml($this->getImageLabel()); ?>" class="colorbox">
         <?php
         $_img = '<img id="image" src="'.$this->helper('catalog/image')->init($_product, 'image')->resize($main_image_width, $main_image_height).'" alt="'.$this->escapeHtml($this->getImageLabel()).'" title="'.$this->escapeHtml($this->getImageLabel()).'" data-zoom-image="'.$this->helper('catalog/image')->init($_product, 'image').'" class="product-image-zoom"/>';
         echo $_helper->productAttribute($_product, $_img, 'image');
@@ -126,8 +126,8 @@
 			<?php if( $i%$icols == 0 ) { ?>
 			<div class="item">
 			<?php } ?>
-			
-				<a style="width:<?php echo $col ?>%; float:left" href="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile()); ?>" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" class="colorbox" data-zoom-image="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile()); ?>" data-image="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize($main_image_width, $main_image_height); ?>">
+
+				<a style="width:<?php echo $col ?>%; float:left" href="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile()); ?>" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" class="<?php echo ($i > 0)?'colorbox':'';?>" data-zoom-image="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile()); ?>" data-image="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize($main_image_width, $main_image_height); ?>">
 				<img src="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile())->resize($additional_image_width, $additional_image_height); ?>" title="<?php echo $this->escapeHtml($_image->getLabel()) ?>" alt="<?php echo $this->escapeHtml($_image->getLabel()) ?>" data-zoom-image="<?php echo $this->helper('catalog/image')->init($this->getProduct(), 'thumbnail', $_image->getFile()) ?>" class="product-image-zoom" />
 				</a>
         <?php $i ++; ?>
