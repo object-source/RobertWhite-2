@@ -726,7 +726,7 @@ div.form-paypal{
 }
 .onestepcheckout-place{
 	width:250px !important;
-	padding-top:15px !important;
+	/* padding-top:15px !important;*/
 }
 .onestepcheckout-place span{
 	font-size:16px !important;

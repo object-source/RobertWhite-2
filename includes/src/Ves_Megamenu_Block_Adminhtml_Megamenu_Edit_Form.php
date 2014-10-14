@@ -25,7 +25,7 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Edit_Form extends Ves_Megamenu_Block
 		
 		foreach( $this->types as $type => $m ){
 			$data = new Varien_Object();
-			$data->setTitle($m['title'])
+			$data->setTitle($m['field'])
 				->setName($type)
 					->setModel($m['model'])
 						->setTitleField($m['name']);

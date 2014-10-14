@@ -267,17 +267,21 @@ $swap_image_number = !empty($swap_image_number)?(int)$swap_image_number: 0;
 					
                     <div class="actions">
 <?php 					if($_product->isSaleable()) { 
+
+							$StockLevel = (int) Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
                         
                         	if ('Yes' === $_product->getAttributeText('special_order')) {
                         		$BtnText = 'Special Order Only';
                         	} else {
-                        		$BtnText = 'Add to Cart';
+                        		if (1 > $StockLevel) {
+                        			$BtnText = 'Backorder';
+                        		} else {
+	                        		$BtnText = 'Add to Cart';
+	                        	}
                         	}
 ?>
                             <button type="button" title="<?php echo $BtnText; ?>" class="button btn-cart" onclick="<?php if($ajax_cart) { ?>addToCart('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } else { ?>setLocation('<?php echo $this->getAddToCartUrl($_product) ?>')<?php } ?>"><span><span><?php echo $BtnText; ?></span></span></button>                        
 <?php                            
-								$StockLevel = (int) Mage::getModel('cataloginventory/stock_item')->loadByProduct($_product)->getQty();
-	
 							if ('No' === $_product->getAttributeText('special_order')) {
     							switch(true) {
     								case $StockLevel <= 0:

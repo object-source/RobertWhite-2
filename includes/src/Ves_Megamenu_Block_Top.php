@@ -7,11 +7,12 @@
  * @license		GNU General Public License version 2
 *******************************************************/
 if (!class_exists("Ves_Megamenu_Block_List")) {
-    require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . "List.php";
+    require_once Mage::getBaseDir('code') . DIRECTORY_SEPARATOR . "community".DIRECTORY_SEPARATOR."Ves".DIRECTORY_SEPARATOR."Megamenu".DIRECTORY_SEPARATOR."Block".DIRECTORY_SEPARATOR."List.php";
 }
 
 class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 	
+	private $_menu_item_active_class = "active";
 	/**
 	 *
 	 */
@@ -36,9 +37,16 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 
 	private $_isLiveEdit = true;
 
+	private $_current_category_id = 0;
+
+	private $_current_product_id = 0;
+
+	private $_current_cms_id = 0;
+
     function _toHtml() {
+
 		$show_megamenu = $this->getConfig('show');
-		if(!$show_megamenu){
+		if(!$show_megamenu && is_object($this->getLayout()->getBlock('catalog.topnav'))){
 			return $this->getLayout()->getBlock('catalog.topnav')->toHtml();
 		}
 		
@@ -46,6 +54,7 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 
 		//get store
 		$store_id = Mage::app()->getStore()->getId();
+
 		$this->assign('store_id', $store_id);
 
 		$parent = '1';
@@ -64,7 +73,9 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
         $this->setTemplate($this->_config['template']);
         return parent::_toHtml();
     }
-	
+	public function getConfig( $key, $default = "" ){ 
+		return Mage::getStoreConfig( "ves_megamenu/ves_megamenu/".$key );
+	}
 	public function getMenuClassAcitve( $type ){
 
 		switch(  $this->getRequest()->getRouteName()  ){
@@ -89,7 +100,7 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 	 *
 	 */
 	public function hasChild( $id ){
-		return isset($this->children[$id]);
+		return (isset($this->children[$id]) && !empty($this->children[$id]));
 	}	
 	
 	/**
@@ -122,6 +133,73 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 
 	}
 
+	public function getActiveMenuItem ( $menu ) {
+		$active_class = "";
+		if($menu) {
+			$menu_type = $menu->getType();
+			$id = (int)$menu->getItem();
+			switch( $menu->getType() ) {
+				case "category":
+					if(!$this->_current_category_id) {
+
+						$_current_category = Mage::registry('current_category');
+						if(!is_object($_current_category))
+						{
+						    $current_product = Mage::registry('current_product');
+						    if(is_object($current_product))
+						    {
+						        $categories = $current_product->load($current_product->getId())->getCategoryIds();
+						        if (is_array($categories) and count($categories))
+						        {
+						            $this->_current_category_id = (int)$categories[0];
+						        }
+						    }
+						} else {
+						    $this->_current_category_id = (int)$_current_category->getId();
+						}
+					}
+					/*If isset current category check menu item id*/
+					if($this->_current_category_id && $id == $this->_current_category_id) {
+						$active_class = $this->_menu_item_active_class;
+					}
+				break;
+				case "product":
+					if(!$this->_current_product_id) {
+						$current_product = Mage::registry('current_product');
+					    if(is_object($current_product))
+					    {
+					        $this->_current_product_id = (int) $current_product->getId();
+					    }
+					}
+					/*If isset current product check menu item id*/
+					if($this->_current_product_id && $id == $this->_current_product_id) {
+						$active_class = $this->_menu_item_active_class;
+					}
+				break;
+				case "cms_page":
+					if(!$this->_current_cms_id) {
+						$this->_current_cms_id = Mage::getBlockSingleton('cms/page')->getPage()->getId();
+					}
+					/*If isset current product check menu item id*/
+					if($this->_current_cms_id && $id == $this->_current_cms_id) {
+						$active_class = $this->_menu_item_active_class;
+					}
+				break;
+				case "ves_blog":
+					$module_name = Mage::app()->getRequest()->getModuleName();
+					if($module_name == "venusblog") {
+						$active_class = $this->_menu_item_active_class;
+					}
+				break;
+				case 'url':
+					if(($menu->getUrl() == "" || $menu->getUrl() == "#") && $this->getUrl('') == $this->getUrl('*/*/*', array('_current'=>true, '_use_rewrite'=>true))) {
+						$active_class = $this->_menu_item_active_class;
+					}
+				break;
+			}
+		}
+		return $active_class;
+	}
 	/**
 	 *
 	 */
@@ -172,26 +250,38 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 			$this->_editString  = ' data-id="%s" data-group="%s"  data-cols="%s" ';
 		}
 		$this->_editStringCol = ' data-colwidth="%s" data-class="%s" ' ;
-
+		$parent_existed = true;
 		if($parent == 1 || empty($parent)){
 			$parent = 1;
-			$childs = Mage::getModel('ves_megamenu/megamenu')->getChilds( $parent, $store_id );
-			$parent = $childs->getFirstItem()->getId();
+			if($childs = Mage::getModel('ves_megamenu/megamenu')->getChilds( $parent, $store_id )) {
+				$parent = $childs->getFirstItem()->getId();
+
+			} else {
+				$parent_existed = false;
+			}
+			
 		}
+		if(!$parent_existed)
+			return;
+		
 		$childs = Mage::getModel('ves_megamenu/megamenu')->getChilds( null, $store_id );
 
 		foreach($childs as $child ){
 			$megaconfig = $this->hasMegaMenuConfig( $child );
-			$child->setData("megaconfig", $megaconfig);
+			if( isset($megaconfig->submenu) && $megaconfig->submenu != 0) {
+				$child->setData("megaconfig", $megaconfig);
 
-			if( isset($megaconfig->group) && $megaconfig->group) {
-                $child->setData( "is_group", $megaconfig->group );
-            } 
-
+				if( isset($megaconfig->group) && $megaconfig->group) {
+	                $child->setData( "is_group", $megaconfig->group );
+	            } 
+	        }
+	        
             if( isset($megaconfig->submenu) && $megaconfig->submenu == 0) {
                 $menu_class = $child->getData("menu_class");
                 $child->setData("menu_class", $menu_class .' disable-menu');
             }
+
+			
 
 			$this->children[$child->getParentId()][] = $child;	
 		}
@@ -204,9 +294,13 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 			// render menu at level 0
 			$output = '<ul class="nav navbar-nav megamenu">';
 			foreach( $data as $menu ){
- 				
+ 				$menu_class = $menu->getMenuClass();
+                if( isset($menu->getMegaconfig()->align) ){
+                    $menu_class .= ' '.$menu->getMegaconfig()->align;
+                }
 				if( $this->hasChild($menu->getId()) || $menu->getTypeSubmenu() == 'html' || $menu->getTypeSubmenu() == 'widget'){
-					$output .= '<li class="parent dropdown '.$menu->getMenuClass().'" '.$this->renderAttrs($menu).'>
+					$menu_class .=' '.$this->getActiveMenuItem($menu);
+					$output .= '<li class="parent dropdown '.$menu_class.'" '.$this->renderAttrs($menu).'>
 					<a class="dropdown-toggle" data-toggle="dropdown" href="'.$this->getLink( $menu ).'">';
 					
 					if( $menu->getImage()){ $output .= '<span class="menu-icon" style="background:url(\''.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$menu->getImage().'\') no-repeat;">';	}
@@ -226,7 +320,7 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 				} else if ( !$this->hasChild($menu->getId()) && isset($menu->getMegaconfig()->rows) && $menu->getMegaconfig()->rows ){
 					$output .= $this->genMegaMenuByConfig( $menu->getId(), 1, $menu );
 				}elseif($menu->getType() == 'html'){
-					$output .= '<li class="'.$menu->getMenuClass().'" '.$this->renderAttrs($menu).'>';
+					$output .= '<li class="'.$menu_class.'" '.$this->renderAttrs($menu).'>';
 					
 					if( $menu->getImage()){ $output .= '<span class="menu-icon" style="background:url(\''.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$menu->getImage().'\') no-repeat;">';	}
 					
@@ -242,8 +336,8 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 					if( $menu->getImage()){ $output .= '</span>';	}
 					$output .= '</li>';
 				}else {
-
-					$output .= '<li class="'.$menu->getMenuClass().'" '.$this->renderAttrs($menu).'>
+					$menu_class .=' '.$this->getActiveMenuItem($menu);
+					$output .= '<li class="'.$menu_class.'" '.$this->renderAttrs($menu).'>
 					<a href="'.$this->getLink( $menu ).'">';
 					
 					if( $menu->getImage()){ $output .= '<span class="menu-icon" style="background:url(\''.Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_MEDIA).$menu->getImage().'\') no-repeat;">';	}
@@ -273,7 +367,6 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 	public function genTree( $parentId, $level,$parent, $store_id = 0) {
 		 
 		$attrw = '';
-
 		$class = $parent->getIsGroup()?"dropdown-mega":"dropdown-menu";
 		$class = $class." ";//$parent->getMenuClass();
 		$menu_width = (float)$parent->getWidth();
@@ -410,6 +503,11 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 	 
 		$attrw = '';
 		$class = $level > 1 ? "dropdown-submenu":"dropdown";
+		if( isset($menu->getMegaconfig()->align) ){
+            $class .= ' '.$menu->getMegaconfig()->align;
+        }
+        $class .=' '.$this->getActiveMenuItem($menu);
+
 		$output = '<li class="'.$menu->getMenuClass().' parent '.$class.' " '.$this->renderAttrs($menu).'>
 					<a href="'.$this->getLink( $menu ).'" class="dropdown-toggle" data-toggle="dropdown">';
 					
@@ -485,8 +583,9 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 			$output .= '</li>';
 			return $output;
 		}
-		if( $this->hasChild($menu->getId()) || $menu->getTypeSubmenu() == 'html' || $menu->getTypeSubmenu() == 'widget'){
 
+		if( $this->hasChild($menu->getId()) || $menu->getTypeSubmenu() == 'html' || $menu->getTypeSubmenu() == 'widget'){
+			$menu_class .=' '.$this->getActiveMenuItem($menu);
 			$output .= '<li class="parent dropdown-submenu'.$menu_class.'" '.$this->renderAttrs($menu). '>';
 			if( $menu->getShowTitle() ){
 				$output .= '<a class="dropdown-toggle" data-toggle="dropdown" href="'.$this->getLink( $menu ).'">';
@@ -507,9 +606,10 @@ class Ves_Megamenu_Block_Top extends Ves_Megamenu_Block_List {
 			}
 			$output .= '</li>';
 
-		}else if ( $menu->getMegaconfig()->rows ){
+		}else if ( isset($menu->getMegaconfig()->rows) && $menu->getMegaconfig()->rows ){
 			$output .= $this->genMegaMenuByConfig( $menu->getId(), $level, $menu );
 		}else {
+			$menu_class .=' '.$this->getActiveMenuItem($menu);
 			$output .= '<li class="'.$menu_class.'" '.$this->renderAttrs($menu).'>';
 			if( $menu->getShowTitle() ){
 				$output .= '<a href="'.$this->getLink( $menu ).'">';

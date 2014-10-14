@@ -107,3 +107,7 @@ span .label {
 .categorytabs .tab-nav ul li {
 	text-align: center;
 }
+
+.action_button li a.button:hover {
+	color: #fff;
+}

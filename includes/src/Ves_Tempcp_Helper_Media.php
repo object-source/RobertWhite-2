@@ -48,17 +48,7 @@ class Ves_Tempcp_Helper_Media extends Mage_Core_Helper_Abstract {
         }
     }
     public function loadMedia() {
-        /*
-        if ( !defined("_LOAD_JQUERY_") ) {
-            $this->addMediaFile("js", "venustheme/ves_tempcp/admin/jquery/jquery-1.7.1.min.js");
-            define( "_LOAD_JQUERY_",1 );
-        }
-        
-        $this->addMediaFile("js", "venustheme/ves_tempcp/admin/jquery/ui/jquery-ui-1.8.16.custom.min.js");
-        $this->addMediaFile("js", "venustheme/ves_tempcp/admin/jquery/tabs.js");
-        $this->addMediaFile("js", "venustheme/ves_tempcp/admin/jquery/jquerycookie.js");
-        $this->addMediaFile("js", "venustheme/ves_tempcp/admin/themecontrol/pekeUpload.js");
-        */
+
         $this->addMediaFile("skin_css", "venustheme/ves_tempcp/ui/themes/ui-lightness/jquery-ui-1.8.16.custom.css");
 
         $this->addMediaFile("skin_css", "venustheme/ves_tempcp/css/stylesheet.css");

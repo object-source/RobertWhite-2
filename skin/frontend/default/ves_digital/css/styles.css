@@ -5192,7 +5192,9 @@ body,
 	font-weight: bold;
 }
 
-.actions .stock-qty.in-stock {
+.actions .stock-qty.in-stock,
+.row .cart .stock-qty.in-stock,
+.product-shop .add-to-links .stock-qty.in-stock {
 	color : #95bb7a;
 }
 

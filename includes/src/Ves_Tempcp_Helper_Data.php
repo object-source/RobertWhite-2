@@ -54,34 +54,34 @@ class Ves_Tempcp_Helper_Data extends Mage_Core_Helper_Abstract {
     public function get($attributes = NULL) {
         $data = array();
         $arrayParams = array(
-		'font_setting' =>	array(
-			'enable_customfont',
+        'font_setting' =>   array(
+            'enable_customfont',
             'fonturl1',
-			'fontfamily1',
-			'fontselectors1',
-			'fonturl2',
-			'fontfamily2',
-			'fontselectors2',
-				'fonturl3',
-			'fontfamily3',
-			'fontselectors3',
-			
-			'fonturl4',
-			'fontfamily4',
-			'fontselectors4'
-		), 
-		'ves_tempcp' => array(
+            'fontfamily1',
+            'fontselectors1',
+            'fonturl2',
+            'fontfamily2',
+            'fontselectors2',
+                'fonturl3',
+            'fontfamily3',
+            'fontselectors3',
+            
+            'fonturl4',
+            'fontfamily4',
+            'fontselectors4'
+        ), 
+        'ves_tempcp' => array(
             'show',
-			'templatewidth',
+            'templatewidth',
             'skin',
             'layout',
             'paneltool',
             'responsive',
-			'enablejquery',
-			'panelposition',
+            'enablejquery',
+            'panelposition',
             'backgroundpattern'
-			
-		)	
+            
+        )   
         );
 
         foreach ($arrayParams as $tag => $vars) {
@@ -126,17 +126,17 @@ class Ves_Tempcp_Helper_Data extends Mage_Core_Helper_Abstract {
     
     public function getThemeInfo($is = 0) {
         
-		if($is){
-			$path = str_replace('adminhtml'.DS,'',Mage::getSingleton('core/design_package')->getSkinBaseDir(array('_package' => 'frontend\default')));
-			//var_dump($path); echo "<br/>";
-			$path = str_replace( "\\", DS, $path );
-		}else{
-			$path = Mage::getSingleton('core/design_package')->getSkinBaseDir();
-			//var_dump($path); echo "<br/>";
-		}
-		
-		//die;
-		
+        if($is){
+            $path = str_replace('adminhtml'.DS,'',Mage::getSingleton('core/design_package')->getSkinBaseDir(array('_package' => 'frontend\default')));
+            //var_dump($path); echo "<br/>";
+            $path = str_replace( "\\", DS, $path );
+        }else{
+            $path = Mage::getSingleton('core/design_package')->getSkinBaseDir();
+            //var_dump($path); echo "<br/>";
+        }
+        
+        //die;
+        
         $info = null;
         if(is_file($path . '/config.xml')){
             $info = simplexml_load_file($path . '/config.xml');
@@ -152,25 +152,25 @@ class Ves_Tempcp_Helper_Data extends Mage_Core_Helper_Abstract {
             $output["skins"] = $tmp["skin"];
         }
         $output = $this->onGetInfo( $path, $output );
-		
+        
         return $output;
     }
     
     public function onGetInfo($fpath, $output = array()) {
         $output["patterns"] = array();
-		
-		$path = $fpath. '/venustheme/images/patterns';
-		
+        
+        $path = $fpath. '/venustheme/images/patterns';
+        
         $regex = '/(\.gif)|(.jpg)|(.png)|(.bmp)$/i';
         if($dk = opendir($path)){
-			$files = array();
-			while (false !== ($filename = readdir($dk))) {
-				if (preg_match($regex, $filename)) {
-					$files[] = $filename;
-				}
-			}
-			$output["patterns"] = $files;
-		}
+            $files = array();
+            while (false !== ($filename = readdir($dk))) {
+                if (preg_match($regex, $filename)) {
+                    $files[] = $filename;
+                }
+            }
+            $output["patterns"] = $files;
+        }
         return $output;
     }
 
@@ -179,14 +179,23 @@ class Ves_Tempcp_Helper_Data extends Mage_Core_Helper_Abstract {
      */
     public function writeToCache( $folder, $file, $value, $e='css' ){
         $file = $folder  . preg_replace('/[^A-Z0-9\._-]/i', '', $file).'.'.$e ;
+        if (file_exists($file)) {
+            unlink($file);
+        }
 
         $flocal = new Varien_Io_File();
+        $flocal->open(array('path' => $folder));
         $flocal->write($file, $value);
         $flocal->close();
+        @chmod($file, 0755);
     }
 
     public function getThemeCustomizePath($theme = "") {
-        $customize_path = Mage::getBaseDir('skin')."/frontend/default/".$theme."/css/customize/";
+        $tmp_theme = explode("/", $theme);
+        if(count($tmp_theme) == 1) {
+            $theme = "default/".$theme;
+        }
+        $customize_path = Mage::getBaseDir('skin')."/frontend/".$theme."/css/customize/";
         if(!file_exists($customize_path)) {
             $file = new Varien_Io_File();
             $file->mkdir($customize_path);
@@ -196,7 +205,13 @@ class Ves_Tempcp_Helper_Data extends Mage_Core_Helper_Abstract {
     }
 
     public function getImportCMSPath($theme = ""){
-        $path = Mage::getBaseDir('skin') . DS.'frontend'.DS.'default'.DS.$theme.DS.'import'.DS.'cms'.DS;
+        $tmp_theme = explode("/", $theme);
+        if(count($tmp_theme) == 1) {
+            $theme = "default".DS.$theme;
+        } else{
+            $theme = implode(DS, $tmp_theme);
+        }
+        $path = Mage::getBaseDir('skin') . DS.'frontend'.DS.$theme.DS.'import'.DS.'cms'.DS;
 
         if (is_dir_writeable($path) != true) {
             mkdir ($path, '0744', $recursive  = true );
@@ -206,7 +221,13 @@ class Ves_Tempcp_Helper_Data extends Mage_Core_Helper_Abstract {
     }
 
     public function getImportPath($theme = ""){
-        $path = Mage::getBaseDir('skin') . DS.'frontend'.DS.'default'.DS.$theme.DS.'import'.DS;
+        $tmp_theme = explode("/", $theme);
+        if(count($tmp_theme) == 1) {
+            $theme = "default".DS.$theme;
+        } else{
+            $theme = implode(DS, $tmp_theme);
+        }
+        $path = Mage::getBaseDir('skin') . DS.'frontend'.DS.$theme.DS.'import'.DS;
 
         if (is_dir_writeable($path) != true) {
             mkdir ($path, '0744', $recursive  = true );
@@ -245,14 +266,28 @@ class Ves_Tempcp_Helper_Data extends Mage_Core_Helper_Abstract {
      *
      */
     public function getQuickviewURL( $product_url = "") {
-        $prodHref = "";
-        $prodHref = $this->readHref($product_url);
-        $prodHref = $prodHref == "/" ? substr($prodHref, 1, strlen($prodHref)) : $prodHref;
-        $prodHref = trim($prodHref);
+        
+        if(is_numeric($product_url)) {
+            return Mage::getUrl('vestempcp/quickview/view').'id/'.$product_url;
+        } else {
+            $prodHref = "";
+            $prodHref = $this->readHref($product_url);
+            $prodHref = $prodHref == "/" ? substr($prodHref, 1, strlen($prodHref)) : $prodHref;
+            $prodHref = trim($prodHref);
 
-        return Mage::getUrl('vestempcp/quickview/view').'path'.$prodHref;
+            return Mage::getUrl('vestempcp/quickview/view').'path'.$prodHref;
+        }
     }
 
+    public function getAllStores() {
+        $allStores = Mage::app()->getStores();
+        $stores = array();
+        foreach ($allStores as $_eachStoreId => $val) 
+        {
+            $stores[]  = Mage::app()->getStore($_eachStoreId)->getId();
+        }
+        return $stores;
+    }
     public function checkProductIsNew( $_product = null ) {
         $from_date = $_product->getNewsFromDate();
         $to_date = $_product->getNewsToDate();
@@ -319,6 +354,32 @@ class Ves_Tempcp_Helper_Data extends Mage_Core_Helper_Abstract {
             $text = substr($text,0,$length);
             $pos_space = strrpos($text,' ');
             return substr($text,0,$pos_space).$replacer;
+    }
+    public function getCartSubtotal() {
+        $include_tax = Mage::getStoreConfig("tax/cart_display/subtotal");
+        $subtotal = 0;
+        
+        if($include_tax ==1 ) {
+            $quote = Mage::getSingleton('checkout/session')->getQuote();
+            $items = $quote->getAllItems();
+            foreach ($items as $item) {
+                $subtotal += $item->getRowTotalInclTax();
+            }
+        } else {
+            $subtotal = Mage::helper('checkout/cart')->getQuote()->getGrandTotal();
+        }
+
+        return Mage::helper('checkout')->formatPrice(  $subtotal );
+    }
+
+    public function getBought($product_sku = "") {
+        $sku = nl2br($product_sku);
+        $product = Mage::getResourceModel('reports/product_collection')
+            ->addOrderedQty()
+            ->addAttributeToFilter('sku', $sku)
+            ->setOrder('ordered_qty', 'desc')
+            ->getFirstItem();
+        return (int)$product->getOrderedQty();
     }
 }
 

@@ -38,16 +38,19 @@ class Ves_Tempcp_QuickviewController extends Mage_Core_Controller_Front_Action{
         $productId  = (int) $this->getRequest()->getParam('id');
 		
 		$path  = (string) $this->getRequest()->getParam('path');
-		$path[0] == "\/" ? $path = substr($path, 1, strlen($path)) : $path;
+        if($path) {
+            $path[0] == "\/" ? $path = substr($path, 1, strlen($path)) : $path;
 
-		$tableName = Mage::getSingleton('core/resource')->getTableName('core_url_rewrite'); 
-		$write = Mage::getSingleton('core/resource')->getConnection('core_write');
+            $tableName = Mage::getSingleton('core/resource')->getTableName('core_url_rewrite'); 
+            $write = Mage::getSingleton('core/resource')->getConnection('core_write');
 
-		$query = "select MAIN_TABLE.`product_id` from `{$tableName}` as MAIN_TABLE where MAIN_TABLE.`request_path` in('{$path}')";
-		$readresult=$write->query($query);
-		if ($row = $readresult->fetch() ) {
-			$productId=$row['product_id'];
-		}
+            $query = "select MAIN_TABLE.`product_id` from `{$tableName}` as MAIN_TABLE where MAIN_TABLE.`request_path` in('{$path}')";
+            $readresult=$write->query($query);
+            if ($row = $readresult->fetch() ) {
+                $productId=$row['product_id'];
+            }
+        }
+		
 
         if (!$productId) {
             return false;

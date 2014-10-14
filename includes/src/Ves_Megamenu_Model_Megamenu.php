@@ -8,11 +8,9 @@
 *******************************************************/
 ?>
 <?php
-if(!class_exists("Ves_Megamenu_Model_Abtract")) {
-	require_once("Abstract.php");
-}
-class Ves_Megamenu_Model_Megamenu extends Ves_Megamenu_Model_Abtract
+class Ves_Megamenu_Model_Megamenu extends Mage_Core_Model_Abstract
 {
+	const DEFAULT_STORE_ID = 0;
 	const TREE_ROOT_ID = 1;
 	
     public function _construct()
@@ -43,7 +41,18 @@ class Ves_Megamenu_Model_Megamenu extends Ves_Megamenu_Model_Abtract
         return false;
     }
 	
-	
+	public function checkExistMenuRoot($parent_id = 1, $store_id = null) {
+		$collection = Mage::getModel('ves_megamenu/megamenu')->getCollection()
+			->addFieldToFilter('parent_id', $parent_id);
+
+		if($store_id !== null) {
+			$collection->addStoreFilter((int)$store_id);
+		}
+		$total = $collection->getSize();
+        if((int)$total > 0)
+            return true;
+        return false;
+	}
     public function getMegaMenus($id_megamenu = null, $active = false, $position_type = false, $parent_id = null){
 		$where = ( $id_megamenu ? 'AND megamenu_id <> '.$id_megamenu : '').( $active ? ' AND published = 1' : '');
 		
@@ -215,9 +224,9 @@ class Ves_Megamenu_Model_Megamenu extends Ves_Megamenu_Model_Abtract
     	return $this->_getResource()->updateStores( $stores, $menu_id );
     }
 
-    public function loadByCategoryId($categoryId, $store_id = 0)
+    public function loadByCategoryId($categoryId, $store_id = 0, $import_mode = false)
     {	
-    	if($store_id) {
+    	if($store_id || $import_mode) {
     		return $this->getCollection()
     				->addFieldToFilter('item', $categoryId)
     				->addStoreFilter($store_id)
@@ -232,14 +241,25 @@ class Ves_Megamenu_Model_Megamenu extends Ves_Megamenu_Model_Abtract
 		return $this->getCollection()->addFieldToFilter('title', $menu_title)->getFirstItem();
     }
 
-	public function load($megamenu_id = 0, $field = NULL){
-		return $this->getCollection()->addFieldToFilter('megamenu_id', $megamenu_id)->getFirstItem();
-	}
-
 	/**
 	 *
 	 */
-	public function getChilds( $id=null, $store_id=0 ){
+	public function getChilds( $id=null, $store_id=null ){
+
+		$collection = $this->getChildsCollection( $id, $store_id );
+        //verify if the user is logged in to the backend
+        if(!$this->isAdmin()  && (!is_array($store_id) || (is_array($store_id) && !in_array(0, $store_id))) ){
+
+        	$parent = $collection->getFirstItem()->getId();
+        	if(!$parent || $collection->getSize() == 0) {
+        		$collection = $this->getChildsCollection( $id, array(0, $store_id) );
+        	}
+        }
+
+		return $collection;
+	}
+
+	public function getChildsCollection( $id=null, $store_id = null) {
 		if( $id != null ) {
 			$collection = $this->getCollection()
 								->addFieldToFilter('parent_id', (int)$id);
@@ -249,22 +269,31 @@ class Ves_Megamenu_Model_Megamenu extends Ves_Megamenu_Model_Abtract
 				
 		$collection->addFieldToFilter('published', 1)
 				   ->setOrder('position', 'ASC');
-		if($store_id) {
+
+		if(!$collection->getSize()) {
+			return false;
+		}
+		
+		if($store_id !== null) {
 			$collection->addStoreFilter($store_id);
 		}
-		 //get the admin session
-        Mage::getSingleton('core/session', array('name'=>'adminhtml'));
-
-        //verify if the user is logged in to the backend
-        if(!Mage::getSingleton('admin/session')->isLoggedIn()){
-        	$parent = $collection->getFirstItem()->getId();
-        	if(!$parent) {
-        		return $this->getChilds($id, array(0, $store_id));
-        	}
-        }
-
 		return $collection;
 	}
+
+	public function isAdmin()
+    {
+        if(Mage::app()->getStore()->isAdmin())
+        {
+            return true;
+        }
+
+        if(Mage::getDesign()->getArea() == 'adminhtml')
+        {
+            return true;
+        }
+
+        return false;
+    }
 
 	public function updateId($new_id = 0){
 		$write = Mage::getSingleton('core/resource')->getConnection('core_write');

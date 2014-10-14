@@ -28,9 +28,10 @@ class Ves_Tempcp_Model_Theme extends Mage_Core_Model_Abstract
         $theme_id = 0;
         if($enable_cache){
             $cache = Mage::app()->getCache();
-            if(!$theme_id = $cache->load( $group."_".$store_id )){
+            $group_name = str_replace("/","_", $group_name);
+            if(!$theme_id = $cache->load( $group_name."_".$store_id )){
                 $theme_id = $this->getResource()->loadThemeByGroup( $group, $store_id );
-                $cache->save($theme_id, $group."_".$store_id, array($group,"theme_".$theme_id), 60*60);
+                $cache->save($theme_id, $group_name."_".$store_id, array($group_name,"theme_".$theme_id), 60*60);
             }
         }else{
             $theme_id = $this->getResource()->loadThemeByGroup( $group, $store_id );
@@ -43,17 +44,17 @@ class Ves_Tempcp_Model_Theme extends Mage_Core_Model_Abstract
         return false;
     }
     public function checkExistsByGroup($group = ""){
-    	if($group){
-    		$data = $this->getResource()->loadThemeByGroup( $group );
-	        if($data && count($data) > 0){
-	        	return true;
-	        }else{
-	        	return false;
-	        }
-    	}
-		
+        if($group){
+            $data = $this->getResource()->loadThemeByGroup( $group );
+            if($data && count($data) > 0){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        
         return true;
-	}
+    }
 
     public function getStoresByTheme( $theme_id = 0) {
         $stores = array();
@@ -62,5 +63,14 @@ class Ves_Tempcp_Model_Theme extends Mage_Core_Model_Abstract
            $stores = $model->getStoreId();
         }
         return $stores;
+    }
+
+    public function insertNewStoreView($data = array()){
+        $write = Mage::getSingleton('core/resource')->getConnection('core_write');
+        $resource = Mage::getSingleton('core/resource');
+        $table = $resource->getTableName('core/store');
+        // now $write is an instance of Zend_Db_Adapter_Abstract
+        $writeresult = $write->query("INSERT IGNORE INTO `".$table."` (`store_id`,`code`,`website_id`,`group_id`,`name`, `sort_order`,`is_active`) VALUES (:store_id,:code,:website_id,:group_id,:name,:sort_order,:is_active)", $data);
+        return $writeresult;
     }
 }

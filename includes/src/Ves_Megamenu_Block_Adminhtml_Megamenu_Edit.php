@@ -13,6 +13,7 @@ class Ves_Megamenu_Block_Adminhtml_Megamenu_Edit extends Mage_Adminhtml_Block_Wi
     var $data = null;
     public function __construct()
     {
+
 	    $this->_blockGroup  = 'ves_megamenu';
         $this->_objectId    = 'ves_megamenu_id';
         $this->_controller  = 'adminhtml_megamenu';

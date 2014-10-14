@@ -9,7 +9,7 @@
 class Ves_Tempcp_Model_Import_Block extends Mage_Core_Model_Abstract {
 
 
-	public function process($filepath) {
+	public function process($filepath, $stores = array()) {
 
 		// get the file extension
 		$array = pathinfo($filepath);
@@ -18,7 +18,7 @@ class Ves_Tempcp_Model_Import_Block extends Mage_Core_Model_Abstract {
 
 			case "csv":
 			case "txt":
-				Mage::getModel('ves_tempcp/import_block_csv')->process($filepath);
+				Mage::getModel('ves_tempcp/import_block_csv')->process($filepath, $stores);
 			break;
 
 			default:

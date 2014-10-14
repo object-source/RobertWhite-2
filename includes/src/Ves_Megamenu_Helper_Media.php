@@ -71,6 +71,7 @@ class Ves_Megamenu_Helper_Media extends Mage_Core_Helper_Abstract {
     }
     public function loadMediaLiveEdit(){
         $this->addMediaFile("js_css", "venustheme/ves_megamenu/admin/megamenu/css/bootstrap.css");
+        $this->addMediaFile("js_css", "venustheme/ves_megamenu/admin/megamenu/css/font-awesome.min.css");
         $this->addMediaFile("skin_css", "ves_megamenu/css/megamenu_live.css");
         $this->addMediaFile("skin_css", "ves_megamenu/css/stylesheet.css");
         $this->addMediaFile("skin_css", "ves_megamenu/css/style.css");

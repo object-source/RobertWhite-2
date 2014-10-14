@@ -352,7 +352,7 @@ class Ves_Megamenu_Helper_Data extends Mage_Core_Helper_Abstract {
 
     public function resizeImage($image, $width = 100, $height = 100){
         $_imageUrl = Mage::getBaseDir('media').DS.$image;
-        $_imageResized = Mage::getBaseDir('media').DS."resized".DS.$image;
+        $_imageResized = Mage::getBaseDir('media').DS."resized".DS.(int)$width."x".(int)$height.DS.$image;
 
         if (!file_exists($_imageResized)&&file_exists($_imageUrl)){
             $imageObj = new Varien_Image($_imageUrl);
@@ -362,7 +362,7 @@ class Ves_Megamenu_Helper_Data extends Mage_Core_Helper_Abstract {
             $imageObj->resize($width, $height);
             $imageObj->save($_imageResized);
         }
-        return Mage::getBaseUrl("media")."resized/".$image;
+        return Mage::getBaseUrl("media")."resized/".(int)$width."x".(int)$height."/".$image;
     }
     public function getCustomLink($route , $params = array()){
         $link =  Mage::helper("adminhtml")->getUrl($route, $params);
@@ -546,6 +546,16 @@ class Ves_Megamenu_Helper_Data extends Mage_Core_Helper_Abstract {
     public function getWidgetVes_blogForm( $args, $data  ){  
         $fields  = array(
             'limit' => array( 'type' => 'text', 'value' => ''  )
+        );
+
+        return $this->_renderFormByFields( $fields, $data );
+    }
+
+    public function getWidgetVes_brandForm( $args, $data  ){  
+        $fields  = array(
+            'limit' => array( 'type' => 'text', 'value' => ''  ),
+            'image_width' => array( 'type' => 'text', 'value' => '' ),
+            'image_height' => array( 'type' => 'text', 'value' => '' )
         );
 
         return $this->_renderFormByFields( $fields, $data );

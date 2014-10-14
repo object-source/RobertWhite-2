@@ -27,6 +27,12 @@
 <?php $_item = $this->getItem()?>
 <tr>
     <td><h3 class="product-name"><?php echo $this->escapeHtml($this->getProductName()) ?></h3>
+<?php 	//if ($messages = $this->getMessages()) {
+        	//foreach ($messages as $message) {
+        		//echo '<p class="item-msg ' . $message['type'] . '">* ' . this->escapeHtml($message['text']) . '</p>';
+			//}
+		//}
+?>
         <?php if ($_options = $this->getOptionList()):?>
         <dl class="item-options">
             <?php foreach ($_options as $_option) : ?>

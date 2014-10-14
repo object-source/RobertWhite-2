@@ -77,6 +77,7 @@ class Ves_Megamenu_Model_Mysql4_Megamenu_Collection extends Mage_Core_Model_Mysq
             );
         }
         $store = is_array($store)?$store:array($store);
+
         //do stuff
         $this->getSelect()->join(
             array('store_table' => $this->getTable('ves_megamenu/megamenu_store')),
