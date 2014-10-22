@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <wpos>
-  <onestepcheckout_admin_key>vl77tnldb9k4tjv5nb0r6alvc4</onestepcheckout_admin_key>
-  <onestepcheckout_admin_code>a31014249399c7fb273dc502e253a957</onestepcheckout_admin_code>
+  <onestepcheckout_admin_key>vihk9k2g9k7nvn1h2b96bi48k5</onestepcheckout_admin_key>
+  <onestepcheckout_admin_code>3b35e8845946024c1a0ca98c466c374d</onestepcheckout_admin_code>
   <onestepcheckout_admin_id>2</onestepcheckout_admin_id>
-  <onestepcheckout_admin_adminlogout>https://54.77.112.112/index.php/admin/index/logout/key/7e0c0a715d8349e6238714df194904ab/</onestepcheckout_admin_adminlogout>
-  <onestepcheckout_admin_adminlogin>https://54.77.112.112/index.php/webposadmin/adminhtml_webpos/index/key/07c99f6aae5f49a6b628c7507dcd8816/</onestepcheckout_admin_adminlogin>
+  <onestepcheckout_admin_adminlogout>https://54.77.112.112/index.php/admin/index/logout/key/3143efadc213248cc9ed735273f99c17/</onestepcheckout_admin_adminlogout>
+  <onestepcheckout_admin_adminlogin>https://54.77.112.112/index.php/webposadmin/adminhtml_webpos/index/key/a685307448a5db6f38886aa45a370961/</onestepcheckout_admin_adminlogin>
   <firstname>Matt</firstname>
   <lastname>Henrick</lastname>
   <username>e-foundry</username>

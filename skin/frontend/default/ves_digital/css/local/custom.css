@@ -111,3 +111,25 @@ span .label {
 .action_button li a.button:hover {
 	color: #fff;
 }
+
+ul.button li,
+.button.btn-update {
+	background: #BA200F !important;
+	border: 0 none;
+	border-radius: 3px;
+	padding: 0 10px;
+	transition: all 0.3s ease 0s;font-size: 14px;
+	line-height: 30px;
+	cursor: pointer;
+	box-sizing: border-box;
+	color: #fff; 
+}
+
+ul.button li:hover,
+.button.btn-update:hover {
+	background-color: #95bb7a !important;
+}
+
+ul.button li a {
+	color: #FFFFFF;
+}

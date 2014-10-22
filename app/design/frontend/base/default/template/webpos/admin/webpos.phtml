@@ -351,7 +351,7 @@
                         </ul>
                         <ul class="button">
 							<li><a href="<?php echo $data_wp['onestepcheckout_admin_adminlogin'] ?>" class="link-logout"><?php echo $this->__('Return to Admin') ?></a></li>
-							<li><a href="<?php echo $data_wp['onestepcheckout_admin_adminlogout']; ?>" class="link-logout"><?php echo $this->__('Log Out') ?></a></li>
+							<!--li><a href="<?php //echo $data_wp['onestepcheckout_admin_adminlogout']; ?>" class="link-logout"><?php echo $this->__('Log Out') ?></a></li-->
                         </ul>
                     </div>
                     <div class="clearfix"></div>
@@ -426,7 +426,7 @@
     <div id="customer_account_fields">
         <div id="customer_guest" style="float:left;padding-right:20px;">
             <input id="guest_customer" type="radio" name="order[account][type]" value="guest" onclick="showSearchCustomer();"/>
-            <label for="guest_customer"><?php echo $this->__("Guest Checkout") ?></label>
+            <label for="guest_customer"> <?php echo $this->__("Guest Checkout") ?></label>
             <div id="customer_guest_content">
                 <input id="guest_customer_id" disabled="disabled" type="hidden" name="order[customer_id]" value="false" />
             </div>
@@ -438,7 +438,7 @@
                 echo 'checked="checked"';
             }
             ?> onclick="showSearchCustomer();"/>
-            <label for="exist_customer"><?php echo $this->__("Existing Customer") ?></label>
+            <label for="exist_customer"> <?php echo $this->__("Existing Customer") ?></label>
             <br />
             <?php $defCusSearch = $this->__('Phone/Email/Name') ?>
             <input style="display:none;" id="search_customer" name="query" type="text" class="input-text" value="<?php if (!empty($query)): ?><?php echo $query ?><?php else: ?><?php echo $defCusSearch ?><?php endif ?>" onfocus="if (this.value == '<?php echo $defCusSearch ?>')
