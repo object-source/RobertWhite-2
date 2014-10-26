@@ -1876,23 +1876,27 @@ body.layout-boxed-lg #page {
   width: 28px;
   text-indent: -9999em;
   overflow: hidden;
+  display: inline-block !important;
 }
 .sorter .view-mode strong.grid,
 .sorter .view-mode strong.list {
   background-color: #CC2D2D;
   border: 1px solid #CC2D2D;
+  display: inline-block !important;
 }
 .sorter .view-mode strong.grid {
   background-position: 7px 7px;
 }
 .sorter .view-mode strong.list {
   background-position: -23px 7px;
+  display: inline-block !important;
 }
 .sorter .view-mode a.grid {
   background-position: 7px -20px;
 }
 .sorter .view-mode a.list {
   background-position: -23px -20px;
+  display: inline-block !important;
 }
 .sorter .view-mode span {
   float: left;
@@ -5180,6 +5184,7 @@ body,
   	position: relative;
   	top: -1px;
   	margin-right: 8px;
+  	color: #CC2D2D;
 }
 
 .actions .stock-qty {

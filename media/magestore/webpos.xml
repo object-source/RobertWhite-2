@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <wpos>
-  <onestepcheckout_admin_key>vihk9k2g9k7nvn1h2b96bi48k5</onestepcheckout_admin_key>
-  <onestepcheckout_admin_code>3b35e8845946024c1a0ca98c466c374d</onestepcheckout_admin_code>
-  <onestepcheckout_admin_id>2</onestepcheckout_admin_id>
-  <onestepcheckout_admin_adminlogout>https://54.77.112.112/index.php/admin/index/logout/key/3143efadc213248cc9ed735273f99c17/</onestepcheckout_admin_adminlogout>
-  <onestepcheckout_admin_adminlogin>https://54.77.112.112/index.php/webposadmin/adminhtml_webpos/index/key/a685307448a5db6f38886aa45a370961/</onestepcheckout_admin_adminlogin>
-  <firstname>Matt</firstname>
-  <lastname>Henrick</lastname>
-  <username>e-foundry</username>
+  <onestepcheckout_admin_key>b26n63v8vsi34jr78ji977uo72</onestepcheckout_admin_key>
+  <onestepcheckout_admin_code>1362678d501ad9c9d8773a688ab6cf0d</onestepcheckout_admin_code>
+  <onestepcheckout_admin_id>3</onestepcheckout_admin_id>
+  <onestepcheckout_admin_adminlogout>https://54.77.112.112/index.php/admin/index/logout/key/4f636c3871db06c1755a1764cbbc5fa5/</onestepcheckout_admin_adminlogout>
+  <onestepcheckout_admin_adminlogin>https://54.77.112.112/index.php/webposadmin/adminhtml_webpos/index/key/df89794d08ca8f3d7e95a98be362eea1/</onestepcheckout_admin_adminlogin>
+  <firstname>Daniel</firstname>
+  <lastname>Barnett</lastname>
+  <username>dan</username>
 </wpos>

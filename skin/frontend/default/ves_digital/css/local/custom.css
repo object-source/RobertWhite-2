@@ -133,3 +133,9 @@ ul.button li:hover,
 ul.button li a {
 	color: #FFFFFF;
 }
+
+.hr-border {
+	padding-bottom: 1em !important;
+	margin-bottom: 1em !important;
+	border-bottom: 1px solid #E5E5E5 !important;
+}
