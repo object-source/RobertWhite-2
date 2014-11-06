@@ -100,6 +100,7 @@ class Magestore_Webpos_Model_Cart
 					if (!$cart->getQuote()->getHasError()){
 						$this->_getSession()->addSuccess(Mage::helper('checkout')->__('%s was added to your shopping cart.', Mage::helper('core')->htmlEscape($product->getName())));
 					}
+					$result['redirectUrl'] = Mage::getUrl('webpos/index/index',array('_secure' => true));
 				} else {
 					$this->_getSession()->addError(Mage::helper('checkout')->__('Product not found!'));
 				}

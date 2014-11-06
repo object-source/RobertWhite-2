@@ -27,6 +27,10 @@
         </Magestore_Webpos>
     </modules>
     <frontend>
+		<secure_url>
+            <checkout_cart>/checkout/cart</checkout_cart>
+            <webpos>/webpos</webpos>
+		</secure_url>
         <routers>
             <webpos>
                 <use>standard</use>
@@ -311,10 +315,10 @@
 			<order_creditmemo>
 				<totals>
 					<weboposgiftwrap>
-						<class>webpos/sales_order_invoice_total_giftwrap</class>
+						<class>webpos/sales_order_creditmemo_total_giftwrap</class>
 					</weboposgiftwrap>
 					<webposdiscount>
-						<class>webpos/sales_order_invoice_total_discount</class>
+						<class>webpos/sales_order_creditmemo_total_discount</class>
 					</webposdiscount>
 				</totals>
 			</order_creditmemo>

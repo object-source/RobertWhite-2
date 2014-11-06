@@ -83,11 +83,11 @@
                     <type>skin_js</type>
                     <name>sagepaysuite/js/sagePaySuite_Checkout.js</name>
                     <params />
-            </action> 
+            </action> -->
             <action method="addItem">
                     <type>skin_js</type>
                     <name>onestepcheckout/js/sagePaySuite_Checkout.js</name>
-            </action> -->
+            </action> 
             <action method="removeItem">
                 <type>js</type>
                 <name>magestore/ajaxcart.js</name>

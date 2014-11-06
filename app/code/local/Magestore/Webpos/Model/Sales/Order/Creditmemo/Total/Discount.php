@@ -1,7 +1,7 @@
 <?php
 class Magestore_Webpos_Model_Sales_Order_Creditmemo_Total_Discount extends Mage_Sales_Model_Order_Creditmemo_Total_Abstract {
 	
-	public function collect(Mage_Sales_Model_Order_Invoice $creditmemo) {
+	public function collect(Mage_Sales_Model_Order_Creditmemo $creditmemo) {
 		$creditmemo->setWebposDiscountAmount(0);        
         $orderWebposDiscount = $creditmemo->getOrder()->getWebposDiscountAmount();		
         if ($orderWebposDiscount) {
