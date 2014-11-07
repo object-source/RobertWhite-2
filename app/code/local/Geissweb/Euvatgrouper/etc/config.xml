@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Geissweb_Euvatgrouper>
-            <version>1.5.4</version>
+            <version>1.5.7</version>
         </Geissweb_Euvatgrouper>
     </modules>
     <global>
@@ -20,6 +20,8 @@
             <adminhtml>
                 <rewrite>
                     <customer_edit_tab_addresses>Geissweb_Euvatgrouper_Block_Adminhtml_Customer_Edit_Tab_Vat</customer_edit_tab_addresses>
+                    <customer_sales_order_address_form_renderer_vat>Geissweb_Euvatgrouper_Block_Adminhtml_Customer_Sales_Order_Address_Form_Renderer_Vat</customer_sales_order_address_form_renderer_vat>
+                    <sales_order_create_form_account>Geissweb_Euvatgrouper_Block_Adminhtml_Customer_Sales_Order_Create_Form_Account</sales_order_create_form_account>
                 </rewrite>
             </adminhtml>
             <euvatgrouper>
@@ -33,11 +35,11 @@
         </helpers>
         <template>
             <email>
-                <euvatgrouper_vat_settings_mail_template translate="label" module="euvatgrouper">
+                <euvatgrouper_email_settings_mail_template translate="label" module="euvatgrouper">
                     <label>EU VAT validation results</label>
                     <file>geissweb_vat_validation.html</file>
                     <type>html</type>
-                </euvatgrouper_vat_settings_mail_template>
+                </euvatgrouper_email_settings_mail_template>
             </email>
         </template>
         <resources>
@@ -160,19 +162,6 @@
             </sales_order_place_after>
         </events>
     </global>
-    <adminhtml>
-        <events>
-            <controller_action_predispatch>
-                <observers>
-                    <geissweb_notification>
-                        <type>singleton</type>
-                        <class>Geissweb_Euvatgrouper_Model_Observer</class>
-                        <method>geissweb_check_for_updates</method>
-                    </geissweb_notification>
-                </observers>
-            </controller_action_predispatch>
-        </events>
-    </adminhtml>
     <frontend>
         <routers>
             <euvatgrouper>
@@ -211,7 +200,38 @@
             </vat_settings>
         </euvatgrouper>
     </default>
+    <admin>
+        <routers>
+            <euvatgrouper>
+                <use>admin</use>
+                <args>
+                    <module>Geissweb_Euvatgrouper</module>
+                    <frontName>euvatgrouper</frontName>
+                </args>
+            </euvatgrouper>
+        </routers>
+    </admin>
     <adminhtml>
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <geissweb_notification>
+                        <type>singleton</type>
+                        <class>Geissweb_Euvatgrouper_Model_Observer</class>
+                        <method>geissweb_check_for_updates</method>
+                    </geissweb_notification>
+                </observers>
+            </controller_action_predispatch>
+            <adminhtml_block_html_before>
+                <observers>
+                    <geissweb_euvatgrouper>
+                        <type>singleton</type>
+                        <class>Geissweb_Euvatgrouper_Model_Observer</class>
+                        <method>adminhtml_block_html_before</method>
+                    </geissweb_euvatgrouper>
+                </observers>
+            </adminhtml_block_html_before>
+        </events>
         <acl>
             <resources>
                 <admin>
@@ -241,7 +261,6 @@
                 </euvatgrouper>
             </modules>
         </translate>
-        <!--
         <layout>
             <updates>
                 <euvatgrouper>
@@ -249,6 +268,5 @@
                 </euvatgrouper>
             </updates>
         </layout>
-        -->
     </adminhtml>
 </config>

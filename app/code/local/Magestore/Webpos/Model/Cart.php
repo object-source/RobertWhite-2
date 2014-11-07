@@ -378,6 +378,7 @@ class Magestore_Webpos_Model_Cart
                                     ->toHtml();
                             
                             $result['cartPage'] = $cartHtml;
+							
 			}
 			if (!$cart->getQuote()->getItemsCount())
 				$result['emptyCart'] = true;

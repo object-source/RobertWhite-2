@@ -77,7 +77,7 @@ Ajaxcartpage.prototype = {
 	},
 	addToCartFinish: function(response){
 		if (this.getCartPage() && response.cartPage){
-			if (response.emptyCart){
+			if (response.emptyCart){	
 				this.getCartPage().update(response.cartPage);
 			} else {
 				$(this.popupContent).innerHTML = response.cartPage;

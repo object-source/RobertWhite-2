@@ -422,7 +422,7 @@
         <?php echo $this->getChildHtml('checkout.cart'); ?>	
     </div>
     <div class="clear"></div>
-
+	<div class="col-main" style="display:none;"></div>
     <div id="customer_account_fields">
         <div id="customer_guest" style="float:left;padding-right:20px;">
             <input id="guest_customer" type="radio" name="order[account][type]" value="guest" onclick="showSearchCustomer();"/>
@@ -764,6 +764,7 @@
 
     <?php if ($this->isAjaxBillingField('country')): ?>
             //save billing when country is changed
+			if($('billing:country_id'))
             Event.observe('billing:country_id', 'change', function() {
                 //check empty fields
                 var empty = checkEmptyFields($('billing-new-address-form'));
@@ -771,6 +772,7 @@
                     save_address_information(save_address_url);
             });
         <?php if ($this->isShowShippingAddress()): ?>
+			if($('shipping:country_id'))
                 Event.observe('shipping:country_id', 'change', function() {
                     //check empty fields
                     var empty = checkEmptyFields($('shipping-new-address-form'));
@@ -782,12 +784,14 @@
 
     <?php if ($this->isAjaxBillingField('state/region')): ?>
             //save billing when state / region is changed
+			if($('billing:country_id'))
             Event.observe('billing:region_id', 'change', function() {
                 //check empty fields
                 var empty = checkEmptyFields($('billing-new-address-form'));
                 if (empty == false || reload_payment == 2)
                     save_address_information(save_address_url);
             });
+			if($('billing:country_id'))
             Event.observe('billing:region', 'change', function() {
                 //check empty fields
                 var empty = checkEmptyFields($('billing-new-address-form'));
@@ -795,12 +799,14 @@
                     save_address_information(save_address_url);
             });
         <?php if ($this->isShowShippingAddress()): ?>
+		if($('shipping:region_id'))
                 Event.observe('shipping:region_id', 'change', function() {
                     //check empty fields
                     var empty = checkEmptyFields($('shipping-new-address-form'));
                     if (empty == false || reload_payment == 2)
                         save_address_information(save_address_url);
                 });
+				if($('shipping:change'))
                 Event.observe('shipping:region', 'change', function() {
                     //check empty fields
                     var empty = checkEmptyFields($('shipping-new-address-form'));
@@ -812,6 +818,7 @@
 
     <?php if ($this->isAjaxBillingField('postcode')): ?>
             //save billing when postcode is changed
+			if($('billing:postcode'))
             Event.observe('billing:postcode', 'change', function() {
                 //check empty fields
                 var empty = checkEmptyFields($('billing-new-address-form'));
@@ -819,6 +826,7 @@
                     save_address_information(save_address_url);
             });
         <?php if ($this->isShowShippingAddress()): ?>
+		if($('shipping:postcode'))
                 Event.observe('shipping:postcode', 'change', function() {
                     //check empty fields
                     var empty = checkEmptyFields($('shipping-new-address-form'));
@@ -830,6 +838,7 @@
 
     <?php if ($this->isAjaxBillingField('city')): ?>
             //save billing when city is changed
+			if($('billing:city'))
             Event.observe('billing:city', 'change', function() {
                 //check empty fields
                 var empty = checkEmptyFields($('billing-new-address-form'));
@@ -837,6 +846,7 @@
                     save_address_information(save_address_url);
             });
         <?php if ($this->isShowShippingAddress()): ?>
+		if($('shipping:city'))
                 Event.observe('shipping:city', 'change', function() {
                     //check empty fields
                     var empty = checkEmptyFields($('shipping-new-address-form'));
@@ -847,12 +857,14 @@
     <?php endif; ?>
 
         //telephone
+		if($('billing:telephone'))
         Event.observe('billing:telephone', 'change', function() {
             //check empty fields
             var empty = checkEmptyFields($('billing-new-address-form'));
             if (empty == false)
                 save_address_information(save_address_url);
         });
+		if($('shipping:telephone'))
         Event.observe('shipping:telephone', 'change', function() {
             //check empty fields
             var empty = checkEmptyFields($('shipping-new-address-form'));

@@ -34,12 +34,13 @@
 "Customer Group for customers outside EU","Kundengruppe für nicht-EU Kunden"
 
 "Additional 0% VAT Groups","Zusätzliche USt.-freie Gruppen"
-"In case you have more than one 0% VAT group, select them here.","Falls Sie mit zusätzlichen Ust.-freien Gruppen arbeiten, außer der oben gewählten."
+"In case you have more than one 0% VAT group, select them here.","Falls Sie mit zusätzlichen Ust.-freien Gruppen (für Rabatte o.ä.) arbeiten, außer der oben gewählten."
 
 "Excluded Groups","Ausgenommene Kundengruppen"
 "The selected groups will be excluded from the automatic (re-)grouping after each validation.","Die Kunden dieser Gruppen werden nicht automatisch neu zugeordnet, wenn eine USt.-Validierung ausgeführt wird."
 
 "Validate VAT-ID","USt.-ID prüfen"
+"Validate VAT Number","USt.-ID prüfen"
 "The VAT-ID is valid.","Die USt.-ID ist gültig."
 "The VAT-ID is invalid.","Die USt.-ID ist ungültig."
 "The VAT-ID is invalid, please check the syntax.","DIe USt.-ID ist ungültig. Bitte überprüfen Sie die Schreibweise."
@@ -47,3 +48,13 @@
 "Currently the member state service is unavailable.","Derzeit kann die USt.-ID nicht überprüft werden, da der zugehörige Mitgliedsstaat nicht erreichbar ist."
 "There was an error processing your request.","Allgemeiner Fehler bei der USt.-ID Abfrage"
 "Please enter your VAT-ID including the ISO-3166 two letter country code.","Bitte geben Sie die USt.-ID inklusive dem zweistelligen Ländercode an."
+
+"The customer is currently assigned to Customer Group %s.","Der Kunde ist derzeit in der Kundengruppe %s."
+"Would you like to change the Customer Group for this order?","Möchten Sie die Kundengruppe für diese Bestellung ändern?"
+"The VAT ID is valid. The current Customer Group will be used.","Die USt.-ID ist gültig. Die derzeitige Kundengruppe wird verwendet."
+"Based on the VAT ID, the customer would belong to the Customer Group %s.","Basierend auf dem Prüfungsergebnis, würde der Kunde zur Gruppe %s gehören."
+"VAT number","USt.-ID"
+"The VAT ID entered (%s) is not a valid VAT ID. The customer would belong to Customer Group %s.","Die USt.-ID (%s) ist ungültig. Der Kunde würde in die Gruppe %s gehören."
+"There was an error validating the VAT ID. The customer would belong to Customer Group %s.","Leider konnte die USt.-ID nicht beim Abfragedienst überprüft werden. Der Kunde würde in die Gruppe %s gehören."
+"There was an error validating the VAT ID.","Leider konnte die USt.-ID nicht beim Abfragedienst überprüft werden."
+"Please declare a VAT number before validating.","Bitte geben Sie eine USt.-ID ein, bevor Sie die Prüfung starten."

@@ -25,8 +25,6 @@
  */
 class Geissweb_Euvatgrouper_Model_Vatvalidation extends Varien_Object
 {
-    //protected $_eventPrefix = 'euvatgrouper_vatvalidation';
-    //protected $_eventObject = 'vatvalidation';
     protected $_viesUrl = 'http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl';
 
     public $shop_nr = "";
@@ -86,7 +84,6 @@ class Geissweb_Euvatgrouper_Model_Vatvalidation extends Varien_Object
     {
         if (Mage::helper('euvatgrouper')->isValidationEnabled() && $this->isViesOnline())
         {
-
 			$this->vies_params = array(
 				'countryCode' => $this->getUserCc(),
 				'vatNumber' => $this->getUserNr(),
@@ -117,9 +114,9 @@ class Geissweb_Euvatgrouper_Model_Vatvalidation extends Varien_Object
 					$this->result->traderCompanyType = (property_exists($this->result, 'traderCompanyType')) ? $this->result->traderCompanyType : '';
 					$this->result->traderAddress = (property_exists($this->result, 'traderAddress')) ? $this->result->traderAddress : '';
 
-
                     if ($this->result->valid == 'true')
 					{
+						$this->result->valid = true;
                         if ($this->getUserCc() != $this->getShopCc()) {
                             $this->result->valid_vat = true;
                             $this->result->is_vat_free = true;
@@ -133,12 +130,12 @@ class Geissweb_Euvatgrouper_Model_Vatvalidation extends Varien_Object
                             $this->result->is_vat_free = false;
                         }
                     } else {
+						$this->result->valid = false;
                         $this->result->valid_vat = false;
                         $this->result->is_vat_free = false;
                     }
 
-					// Use the validation result in session for tax calculation
-					Mage::log("Vies Result: ".var_export($this->result,true));
+					$this->result->group = Mage::helper('euvatgrouper')->getBestCustomerGroup((array)$this->result, $this->getUserCc());
 
                     //Save updated validation data to customer's address
 					Mage::dispatchEvent('vat_check_after', array(

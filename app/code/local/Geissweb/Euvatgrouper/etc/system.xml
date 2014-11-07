@@ -112,36 +112,6 @@
                             <comment>Please enter your own VAT-ID including the 2-letter country code.</comment>
                         </own_vatid>
 
-                        <mail_sender translate="label,comment">
-                            <label>Email Sender</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_email_identity</source_model>
-                            <sort_order>8</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </mail_sender>
-
-                        <mail_recipient translate="label,comment">
-                            <label>Email Recipient *</label>
-                            <frontend_type>text</frontend_type>
-                            <sort_order>8</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <validate>validate-one-required</validate>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </mail_recipient>
-
-                        <mail_template translate="label,comment">
-                            <label>Email Template</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_email_template</source_model>
-                            <sort_order>9</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </mail_template>
-
                         <offline_validation translate="label,comment">
                             <label>Offline Validation</label>
                             <frontend_type>select</frontend_type>
@@ -200,10 +170,59 @@
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
-                            <comment>The selected groups will be excluded from the automatic (re-)grouping after each validation.</comment>
+                            <comment>The selected groups will be excluded from the automatic (re-)grouping after each validation. Use this for special discount groups for EU business customers.</comment>
                         </excluded_groups>
                     </fields>
                 </grouping_settings>
+                <email_settings>
+                    <label>Email settings</label>
+                    <sort_order>40</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <fields>
+                        <send_mail translate="label,comment">
+                            <label>Send validation Email</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>0</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <comment>Whether to send an email with details after successful VAT-ID validation (Frontend or Backend)</comment>
+                        </send_mail>
+
+                        <mail_sender translate="label,comment">
+                            <label>Email Sender</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_identity</source_model>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mail_sender>
+
+                        <mail_recipient translate="label,comment">
+                            <label>Email Recipient</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>8</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <!--<validate>validate-one-required</validate>-->
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mail_recipient>
+
+                        <mail_template translate="label,comment">
+                            <label>Email Template</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_email_template</source_model>
+                            <sort_order>9</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </mail_template>
+                    </fields>
+                </email_settings>
             </groups>
         </euvatgrouper>
     </sections>

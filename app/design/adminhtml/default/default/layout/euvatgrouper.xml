@@ -1,3 +1,10 @@
 <?xml version="1.0"?>
 <layout>
+    <adminhtml_sales_order_edit_index>
+        <reference name="head">
+            <action method="addJs">
+                <script>geissweb/adminhtml/sales_order_edit.js</script>
+            </action>
+        </reference>
+    </adminhtml_sales_order_edit_index>
 </layout>

@@ -342,6 +342,16 @@ class Magestore_Webpos_IndexController extends Mage_Core_Controller_Front_Action
         }
         $customerId = $this->getRequest()->getParam('customerId');
         if ($customerId) {
+			$session = Mage::getModel('checkout/session');
+			try{
+				$oldcustomerId = $session->getData('webpos_customerid');
+				if($oldcustomerId != $customerId){
+					$customer = Mage::getModel('customer/customer')->load($customerId);
+					$Cquote = Mage::getModel('sales/quote')->loadByCustomer($customer);
+					$Cquote->delete();
+					$Cquote->save();
+				}
+			}catch(Exception $e){}
             Mage::getModel('checkout/session')->setData('webpos_customerid', $customerId);
             Mage::getModel('checkout/session')->setData('rewardpoints_customerid', $customerId);
             if (Mage::helper('webpos')->getActiveRewardPoints() && Mage::helper('rewardpoints')->isEnable()) {

@@ -181,7 +181,7 @@
 		}
 		itemIds = itemIds.filter(function(){return true});			
 		if(itemIds == ''){
-			alert('<?php echo $this->__("Please select %s promotional offers from the followings",$numberFreeItems);?>');
+			alert('<?php if($numberFreeItems == null)$numberFreeItems=1; echo $this->__("Please select %s promotional offers from the followings",$numberFreeItems);?>');
 			return;				
 		}
 		var url = '<?php echo $this->getUrl('promotionalgift/index/addPromotionalGiftsCheckout')?>'+'items/'+itemIds+'/ruleId/'+ruleId; 
