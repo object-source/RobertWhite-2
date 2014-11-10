@@ -80,10 +80,15 @@ Ajaxcartpage.prototype = {
 			if (response.emptyCart){	
 				this.getCartPage().update(response.cartPage);
 			} else {
-				$(this.popupContent).innerHTML = response.cartPage;
-				ajaxcartUpdateCartHtml(this.getCartPage(),$(this.popupContent));
-				$(this.popupContent).innerHTML = '';
-				this.updateJscartEvent();
+				if(response.cartPage){
+					this.getCartPage().update(response.cartPage);
+				}
+				if($(this.popupContent)){
+					$(this.popupContent).innerHTML = response.cartPage;
+					ajaxcartUpdateCartHtml(this.getCartPage(),$(this.popupContent));
+					$(this.popupContent).innerHTML = '';
+					this.updateJscartEvent();
+				}
 			}
 		}
 		if (this.links && response.ajaxlinks){
