@@ -171,7 +171,7 @@ function get_shipping_data(parameters) {
 function showLoading() {
 
 }
-
+var check = 0;
 function save_address_information(save_address_url) {
     var form = $('one-step-checkout-form');
     var shipping_method = $RF(form, 'shipping_method');
@@ -216,11 +216,16 @@ function save_address_information(save_address_url) {
 
                         }
                     }
-                    review.update(response.review);
-                    save_shipping_method(shipping_method_url);
-                    $('onestepcheckout-button-place-order').disabled = false;
-                    $('onestepcheckout-button-place-order').addClassName('btn-checkout');
-                    $('onestepcheckout-button-place-order').removeClassName('place-order-loader');
+					if(check%2 == 0){
+						save_address_information(save_address_url);
+					}else{
+						review.update(response.review);
+						save_shipping_method(shipping_method_url);
+						$('onestepcheckout-button-place-order').disabled = false;
+						$('onestepcheckout-button-place-order').addClassName('btn-checkout');
+						$('onestepcheckout-button-place-order').removeClassName('place-order-loader');
+					}check++;
+                    
                 }
             }
         },

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <wpos>
-  <onestepcheckout_admin_key>g2jca2f243jg7fgkebihplh4a0</onestepcheckout_admin_key>
-  <onestepcheckout_admin_code>4babd0fe4ebd009342d2774a6bc0c3f6</onestepcheckout_admin_code>
+  <onestepcheckout_admin_key>7dh2hacm5slf4rdhvrjsvmu2h7</onestepcheckout_admin_key>
+  <onestepcheckout_admin_code>3e5f3cd29468da244a2dbd4ebfe61156</onestepcheckout_admin_code>
   <onestepcheckout_admin_id>2</onestepcheckout_admin_id>
-  <onestepcheckout_admin_adminlogout>http://test.robertwhite.co.uk/index.php/admin/index/logout/key/16715e743d892fa540cf06c6731812fb/</onestepcheckout_admin_adminlogout>
-  <onestepcheckout_admin_adminlogin>http://test.robertwhite.co.uk/index.php/webposadmin/adminhtml_webpos/index/key/f31ae52142498c525c2835cc83568263/</onestepcheckout_admin_adminlogin>
+  <onestepcheckout_admin_adminlogout>http://test.robertwhite.co.uk/index.php/admin/index/logout/key/0de840328ed726ddb57e425bd0d0987b/</onestepcheckout_admin_adminlogout>
+  <onestepcheckout_admin_adminlogin>http://test.robertwhite.co.uk/index.php/webposadmin/adminhtml_webpos/index/key/4d26a3e24db6371abf59b89b8c981949/</onestepcheckout_admin_adminlogin>
   <firstname>Matt</firstname>
   <lastname>Henrick</lastname>
   <username>e-foundry</username>

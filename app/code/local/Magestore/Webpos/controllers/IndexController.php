@@ -401,15 +401,20 @@ class Magestore_Webpos_IndexController extends Mage_Core_Controller_Front_Action
                 $customerAddress = Mage::getModel('customer/address')->load($customer->getDefaultBilling());
                 $street = $customerAddress->getStreet();
                 if ($street[0]) {
-                    $street = $street[0];
+                    $street0 = $street[0];
                 } else {
-                    $street = '';
+                    $street0 = '';
+                }
+				if ($street[1]) {
+                    $street1 = $street[1];
+                } else {
+                    $street1 = '';
                 }
                 $html .= '<li id="' . $customer->getId() . '" email="' . $customer->getEmail() . '" prefix="' . $customerAddress->getPrefix() . '" firstname="' . $customerAddress->getFirstname() . '" middlename="' . $customerAddress->getMiddlename() . '"
 							lastname="' . $customerAddress->getLastname() . '" suffix="' . $customerAddress->getSuffix() . '" company="' . $customerAddress->getCompany() . '"
 							city="' . $customerAddress->getCity() . '" country_id="' . $customerAddress->getCountryId() . '" region="' . $customerAddress->getRegion() . '"
 							postcode="' . $customerAddress->getPostcode() . '" telephone="' . $customerAddress->getTelephone() . '" fax="' . $customerAddress->getFax() . '"
-							vat_id="' . $customerAddress->getVatId() . '" region_id="' . $customerAddress->getRegionId() . '" street="' . $street . '">';
+							vat_id="' . $customerAddress->getVatId() . '" region_id="' . $customerAddress->getRegionId() . '" street="' . $street0 . '" street1="' . $street1 . '">';
                 if ($customer->getAddressById($_pAddsses)->getData()) {
                     $address = $customer->getAddressById($_pAddsses)->format('html');
                     $address = str_replace('<br />', ',', $address);
@@ -462,8 +467,8 @@ class Magestore_Webpos_IndexController extends Mage_Core_Controller_Front_Action
             if (!isset($billing_data['use_for_shipping']) || $billing_data['use_for_shipping'] != '1') {
                 $shipping_address_id = $this->getRequest()->getPost('shipping_address_id', false);
                 $this->getOnepage()->saveShipping($shipping_data, $shipping_address_id);
-            }
-        }
+            }else $this->getOnepage()->saveShipping($billing_data, $billing_address_id);
+        }else $this->getOnepage()->saveShipping($billing_data, $billing_address_id);
         $this->getOnepage()->saveBilling($billing_data, $billing_address_id);
         if ($billing_data['country_id']) {
             Mage::getModel('checkout/session')->getQuote()->getBillingAddress()->setData('country_id', $billing_data['country_id'])->save();
@@ -1157,5 +1162,29 @@ class Magestore_Webpos_IndexController extends Mage_Core_Controller_Front_Action
 		Mage::getModel('webpos/file')->writeFile($data_file,$file);
 		$this->_redirect('adminhtml/dashboard/index');
 	}	
-
+	
+	public function loadshippingAction(){
+		$result = array();
+		$customerId = Mage::app()->getRequest()->getParam('customerid');
+		if($customerId)
+			$customerAddressId = Mage::getSingleton('customer/customer')->load($customerId)->getDefaultShipping();
+		if ($customerAddressId){
+			$address = Mage::getModel('customer/address')->load($customerAddressId);
+			$result = $address->getData();
+			$street = $address->getStreet();
+				if ($street[0]) {
+                    $street0 = $street[0];
+                } else {
+                    $street0 = '';
+                }
+                if ($street[1]) {
+                    $street1 = $street[1];
+                } else {
+                    $street1 = '';
+                }
+			$result['street1'] = $street0;
+			$result['street2'] = $street1;
+		}
+		$this->getResponse()->setBody(Zend_Json::encode($result));
+	}
 }

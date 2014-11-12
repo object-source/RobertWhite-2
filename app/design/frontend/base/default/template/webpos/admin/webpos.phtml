@@ -571,6 +571,11 @@
                             } else {
                                 var street = '';
                             }
+							if (li.getAttribute('street1') && (li.getAttribute('street1') != '') && (li.getAttribute('street1') != 'null')) {
+                                var street1 = li.getAttribute('street1');
+                            } else {
+                                var street1 = '';
+                            }
                             $('customer_id').value = id;
                             $('account_type_id').value = 'exist';
                             if ($('billing:email'))
@@ -605,6 +610,64 @@
                                 $('billing:region_id').value = region_id;
                             if ($('billing:street1'))
                                 $('billing:street1').value = street;
+							if ($('billing:street2'))
+                                $('billing:street2').value = street1;
+							if(id){
+								var loadshippingurl = '<?php echo $this->getUrl('webpos/index/loadshipping',array('_secure' => true));?>';
+								new Ajax.Request(loadshippingurl,{
+									method:'post',
+									parameters:{customerid:id},
+									onSuccess:function(transport){
+										var result = JSON.parse(transport.responseText);
+										if ($('shipping:email') && result.email)
+											$('shipping:email').value = result.email;
+										if ($('shipping:prefix') && result.prefix)
+											$('shipping:prefix').value = result.prefix;
+										if ($('shipping:firstname') && result.firstname)
+											$('shipping:firstname').value = result.firstname;
+										if ($('shipping:middlename') && result.middlename)
+											$('shipping:middlename').value = result.middlename;
+										if ($('shipping:lastname') && result.lastname)
+											$('shipping:lastname').value = result.lastname;
+										if ($('shipping:suffix') && result.suffix)
+											$('shipping:suffix').value = result.suffix;
+										if ($('shipping:company') && result.company)
+											$('shipping:company').value = result.company;
+										if ($('shipping:city') && result.city)
+											$('shipping:city').value = result.city;
+										if ($('shipping:country_id') && result.country_id)
+											$('shipping:country_id').value = result.country_id;
+										if ($('shipping:region') && result.region)
+											$('shipping:region').value = result.region;
+										if ($('shipping:postcode') && result.postcode)
+											$('shipping:postcode').value = result.postcode;
+										if ($('shipping:telephone') && result.telephone)
+											$('shipping:telephone').value = result.telephone;
+										if ($('shipping:fax') && result.fax)
+											$('shipping:fax').value = result.fax;
+										if ($('shipping:vat_id') && result.vat_id)
+											$('shipping:vat_id').value = result.vat_id;
+										if ($('shipping:region_id') && result.region_id)
+											$('shipping:region_id').value = result.region_id;
+										if ($('shipping:street1') && result.street1)
+											$('shipping:street1').value = result.street1;
+										if ($('shipping:street2') && result.street2)
+											$('shipping:street2').value = result.street2;
+									},
+									onFailure:function(transport){}
+								});
+								
+							}
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
 <?php if (Mage::helper('webpos')->getActiveRewardPoints() && Mage::helper('rewardpoints')->isEnable()): ?>
                                 var save_customer_exist_url = '<?php echo $this->getUrl('webpos/index/save_customer_exist', array('_secure' => true)); ?>';
                                 //					save_customer_exist_url += 'customerId/'+id;
