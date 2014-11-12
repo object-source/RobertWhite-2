@@ -350,9 +350,7 @@ class Magestore_Webpos_IndexController extends Mage_Core_Controller_Front_Action
 					$Cquote = Mage::getModel('sales/quote')->loadByCustomer($customer);
 					$Cquote->delete();
 					$Cquote->save();
-					
 				}
-				$session->getQuote()->setCustomerId($customerId);
 			}catch(Exception $e){}
             Mage::getModel('checkout/session')->setData('webpos_customerid', $customerId);
             Mage::getModel('checkout/session')->setData('rewardpoints_customerid', $customerId);
